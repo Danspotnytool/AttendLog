@@ -1,0 +1,24 @@
+{
+  "name": "capstone-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Danspotnytool/Attendance-Monitory-System.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Danspotnytool/Attendance-Monitory-System/issues"
+  },
+  "homepage": "https://github.com/Danspotnytool/Attendance-Monitory-System#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "socket.io": "^4.4.1",
+    "sqlite3": "^5.0.2"
+  }
+}
