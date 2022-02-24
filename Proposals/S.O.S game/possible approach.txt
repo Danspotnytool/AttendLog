@@ -1,0 +1,5 @@
+Possible approach:
+	To make this game, we could still use Node JS as our backend server and the: Express JS framework to serve the HTTP server; Socket IO to keep the connection between the Players; and sqlite3 as our database for user progress data.
+	First, same as the previous possible approaches, the server would check if the user is authorized or logged in.
+	Second, when the user clicks the play button, the website would ask if the user wants to play offline or online:  If the user decides to play offline, the user will go against a computer; And if the user chose to play online, they would play against another player.
+	Third, to give all players an equal chance to play, all players who clicked the multiplayer button will be added to the queue. So, the first two players from the queue line will play against each other and be cut from the queue.

@@ -1,0 +1,40 @@
+"Development of Web based Productivity Calendar Application using Node JS for Students"
+
+Possible approach:
+	We could create an entire calendar application connected to a database via Node JS using: the Express JS framework to serve the HTTP server, Socket IO to keep the connection between the client and the server, and sqlite3 as the database.
+	First, the user would visit the website, and then the server would serve an HTML page to the user with a JavaScript function connected to the server via Socket IO. From there, the server would detect if the user is already logged in or not based on an account token on the user's browser LocalStorage. If the user is not yet authorized or logged in, the server will prompt a Login Page. However, if there's a valid account token on the user's browser LocalStorage, the server would send data from the database corresponding to the user's data (E.g. Profile, Informations, Schedules, etc.).
+	Second, the user would start interacting with the page, and the server would keep track of it. Every element the user interacts with, the server would respond. If the user added a schedule to a specific date, the server would save that to the database.
+	Third, if the user decides to move a schedule to another day, they can click a button that would trigger an algorithm to start calculating possible choices.
+
+
+
+"Implementation of Web based Student Attendance Monitoring System using Node JS for both MDL and ODL modality in Asian Institute of Computer Studies Montalban"
+
+Possible approach:
+	To make this application, we will use Node JS as our backend server and the: Express JS framework to serve the HTTP server; Socket IO to keep the connection with the client; and sqlite3 as our database for attendance data.
+	First, the user would visit the website. The server would prompt a login page using an HTTP server. The login page would take an input of student ID and password. After the user inputs their student or teacher ID and password, the server will send an HTTP request to an API to check if the student or teacher ID and password are valid.
+	Second, if the user is a teacher, the server would display all sections and subjects monitored by this teacher. However, if the user is a student, the server would display all subjects/courses that this student is taking.
+	Third, to prevent students from faking their attendance by automation, the website would prompt an Hcaphcha every time the user logs in to the website.
+
+
+
+"Development of Web-based S.O.S game for Entertainment  using Node JS"
+
+Possible approach:
+	To make this game, we could still use Node JS as our backend server and the: Express JS framework to serve the HTTP server; Socket IO to keep the connection between the Players; and sqlite3 as our database for user progress data.
+	First, same as the previous possible approaches, the server would check if the user is authorized or logged in.
+	Second, when the user clicks the play button, the website would ask if the user wants to play offline or online:  If the user decides to play offline, the user will go against a computer; And if the user chose to play online, they would play against another player.
+	Third, to give all players an equal chance to play, all players who clicked the multiplayer button will be added to the queue. So, the first two players from the queue line will play against each other and be cut from the queue.
+
+
+
+
+
+
+
+
+
+
+
+
+

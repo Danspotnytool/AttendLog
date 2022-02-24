@@ -1,0 +1,81 @@
+"Development of Web based Productivity Calendar Application using Node JS for Students"
+
+BOS
+
+-As we all know many students are now at home doing their  Online classes.  students can benefit inside and outside of schools from organizational tools like calendars, presentation templates, and note-taking apps. Whether students are setting goals, receiving homework reminders, using mind maps, or tweaking their schedules, they are sure to be building long-lasting skills..
+-Rine
+
+SCRIPT:
+We know that many are engaging in online classes today so many students today are discovering the skills when it comes to making designs, templates, and what else they can add to their knowledge.
+-John Red
+
+Source : https://www.commonsense.org/education/top-picks/awesome-productivity-tools-for-back-to-school
+
+
+Scope and Limitation
+
+This study focuses on the use of the Productivity Calendar Application using Node JS for Students of the Asian Institute of Computer Studies. This can be help students to input their schedules or to set their important tasks. 
+-Jhean
+
+SCRIPT:
+We know that we have our schedules because our activities are never the same at the set times so our group decided to focus on using the calendar using the JS node for students studying at AICS. . This is a great help for the students for them to do their important work.
+-rewel
+
+
+
+Possible approach:
+	(SI DANIEL NA DAW BAHALA)
+
+
+
+
+
+"Implementation of Web based Student Attendance Monitoring System using Node JS for both MDL and ODL modality in Asian Institute of Computer Studies Montalban"
+
+
+BOS
+As we all know, it presents Attendance Monitoring System that can be accessed without the understudy login data being provided. Which also incorporates the section period, the student must enter his or her student ID number. The admin may include understudy records from the admin board by entering the ID, title, course, and segment. All the participation records can be accessed by the admin.'
+-Jhean
+
+SCRIPT:
+School Teachers are doing hard work in traditional way of recording Student's Attendance by writing notes on Logbooks of each sections they hold. This Attendance Monitoring System has servers that monitors the students that will help most Teachers to record the Student's Attendance with ease.
+-Andrian
+
+SCOPE AND LIMITATION
+This study focuses of developing web based student attendance using node Js for Online Classes to the Asian Institute of Computer Studies Montalban, that can help students especially teachers to list and record the student's presence during online classes.
+-Gwen
+
+SCRIPT:
+This study is all about how we will develop or improve student attendance via a website using node JavaScript language to make it easy for everyone. They could access it via mobile phone or using a laptop. It will beneficial for the teachers making it more convenient to track the attendance of the students and beneficial for students as well, it will serve as a record or proof of attendance on their own for future references in any cases.
+-John Red
+
+
+Possible approach:
+	(SI DANIEL NA DAW BAHALA)
+
+
+
+
+"Development of Web-based S.O.S game for Entertainment  using Node JS"
+
+BOS
+This is a design and implementation of a prototype application using server-side javascript programming language, Node JS as a backend database. It scales and evaluates the developed prototype application like the S.O.S game, Before the game begins, a square grid of at least 3x3 squares in size is drawn. The object of the game is for each player to attempt to create the straight sequence S-O-S among connected squares. If a player succeeds in creating an SOS, that player immediately takes another turn and continues to do so until no SOS can be created on their turn. The goal of this study is to improve the game's scalability and performance. As specified in Node JS website, one of the node’s goals is to make an easy way of developing scalable network programs.
+-Isaac
+
+SCRIPT:
+This server-side JavaScript programming language is like an extended version of JavaScript that enables the back-end access to databases which makes it more secure. It will act or serve like a firewall of the web-based game. Whenever they login incorrectly, will get an error message until you login your access correctly or might get an error message that you attempted multiple times.
+-Rine
+
+
+SCOPE AND LIMITATION
+
+The Study may Focus mainly on the "Developement Of the Game S.O.S" with The used of "Node JAVA script" inside and tutored by the (Asian Institute Of Computers Studies) also name As (AICS MONTALBAN),And There for This is Located In San Jose Rodriguez rizal Cross road In Robinsons Montalban.And the game is made for all intertainment And For The people.
+-Gwen
+
+SCRIPT:
+This study mainly focused on the development of the Game S.O.S using Node JavaScript for students of the Asian Institute of Computer Studies located in Rodriguez Rizal. This game is made for the entertainment of the people.
+-Rewel
+
+
+Possible approach:
+	(SI DANIEL NA DAW BAHALA)

@@ -1,0 +1,5 @@
+Possible approach:
+	To make this application, we will use Node JS as our backend server and the: Express JS framework to serve the HTTP server; Socket IO to keep the connection with the client; and sqlite3 as our database for attendance data.
+	First, the user would visit the website. The server would prompt a login page using an HTTP server. The login page would take an input of student ID and password. After the user inputs their student or teacher ID and password, the server will send an HTTP request to an API to check if the student or teacher ID and password are valid.
+	Second, if the user is a teacher, the server would display all sections and subjects monitored by this teacher. However, if the user is a student, the server would display all subjects/courses that this student is taking.
+	Third, to prevent students from faking their attendance by automation, the website would prompt an Hcaphcha every time the user logs in to the website.
