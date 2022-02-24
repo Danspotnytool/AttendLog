@@ -2,8 +2,9 @@
   "name": "capstone-project",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
+    "start": "main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,6 +18,8 @@
   },
   "homepage": "https://github.com/Danspotnytool/Attendance-Monitory-System#readme",
   "dependencies": {
+    "axios": "^0.26.0",
+    "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "socket.io": "^4.4.1",
     "sqlite3": "^5.0.2"
