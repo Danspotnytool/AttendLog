@@ -5,6 +5,7 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const http = require('http').createServer(app);
+const path = require('path');
 
 // Port
 const port = process.env.PORT || 8080;
@@ -14,10 +15,11 @@ const io = require('socket.io')(http, {});
 // Cors
 // app.use(cors({}));
 
-// Get index
-app.get('/', (req, res) => {
-    res.send('Hello World!');
-});
+// Static files
+app.use(express.static(path.join(__dirname, 'public')));
+
+// require all path routes
+require('./routes/index.js')(app);
 
 
 // Listen to port
@@ -26,5 +28,5 @@ http.listen(port, () => {
 });
 
 io.on('connection', (socket) => {
-    console.log('a user connected');
+    console.log(`A user connected: ${socket.id}`);
 });
