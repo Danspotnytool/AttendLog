@@ -6,5 +6,5 @@ const port = location.port;
 const socket = io.connect(`http://localhost:${port}`);
 
 socket.on('connect', () => {
-    console.log('Connected to WebSocket server');
+    console.log(`Connected to the server as: ${socket.id}`);
 });
