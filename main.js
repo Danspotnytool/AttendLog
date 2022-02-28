@@ -20,21 +20,21 @@ const io = require('socket.io')(http, {});
 app.use(express.static(path.join(__dirname, './routes/static/assets')));
 
 
-// require all path routes
-// Read all files in the routes directory
-const routes = fs.readdirSync(path.join(__dirname, 'routes'));
+// require all paths
+// Read all files in the paths directory
+const paths = fs.readdirSync(path.join(__dirname, 'routes'));
 // Require each file in the routes directory
 // But ignore folders
-routes.forEach((route) => {
-    if (!route.endsWith('.js')) { return };
-    const routName = route.split('.')[0];
+paths.forEach((path) => {
+    if (!path.endsWith('.js')) { return };
+    const routName = path.split('.')[0];
     app.get(`/${routName}`, (req, res, next) => {
-        require(`./routes/${route}`)(req, res, next);
+        require(`./paths/${path}`)(req, res, next);
     });
 });
 // Index route
 app.get('/', (req, res, next) => {
-    require('./routes/index.js')(req, res, next);
+    require('./paths/index.js')(req, res, next);
 });
 
 
