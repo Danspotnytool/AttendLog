@@ -26,14 +26,16 @@ const io = require('socket.io')(http, {});
 // });
 
 // Static files
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, './routes/static/assets')));
 
 
 // require all path routes
 // Read all files in the routes directory
 const routes = fs.readdirSync(path.join(__dirname, 'routes'));
 // Require each file in the routes directory
-routes.forEach(route => {
+// But ignore folders
+routes.forEach((route) => {
+    if (!route.endsWith('.js')) { return };
     const routName = route.split('.')[0];
     app.get(`/${routName}`, (req, res, next) => {
         require(`./routes/${route}`)(req, res, next);
@@ -56,6 +58,6 @@ io.on('connection', (socket) => {
 
 
     socket.on('disconnect', () => {
-        console.log(`${logger.blue(`${socket.id}`)} has disconnected`);
+        console.log(`${logger.red(`${socket.id}`)} has disconnected`);
     });
 });
