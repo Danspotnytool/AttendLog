@@ -52,4 +52,10 @@ http.listen(port, () => {
 
 io.on('connection', (socket) => {
     console.log(`${logger.blue(`${socket.id}`)} has connected`);
+
+
+
+    socket.on('disconnect', () => {
+        console.log(`${logger.blue(`${socket.id}`)} has disconnected`);
+    });
 });
