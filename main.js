@@ -16,15 +16,6 @@ const port = process.env.PORT || 8080;
 
 const io = require('socket.io')(http, {});
 
-// Cors strict same origin policy
-// app.use((req, res, next) => {
-//     res.setHeader('Access-Control-Allow-Origin', `http://localhost:${port}`);
-//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-//     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-//     res.setHeader('Access-Control-Allow-Credentials', false);
-//     next();
-// });
-
 // Static files
 app.use(express.static(path.join(__dirname, './routes/static/assets')));
 
