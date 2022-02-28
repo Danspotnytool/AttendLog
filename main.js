@@ -17,13 +17,13 @@ const port = process.env.PORT || 8080;
 const io = require('socket.io')(http, {});
 
 // Static files
-app.use(express.static(path.join(__dirname, './routes/static/assets')));
+app.use(express.static(path.join(__dirname, './paths/static/assets')));
 
 
 // require all paths
 // Read all files in the paths directory
-const paths = fs.readdirSync(path.join(__dirname, 'routes'));
-// Require each file in the routes directory
+const paths = fs.readdirSync(path.join(__dirname, 'paths'));
+// Require each file in the paths directory
 // But ignore folders
 paths.forEach((path) => {
     if (!path.endsWith('.js')) { return };
