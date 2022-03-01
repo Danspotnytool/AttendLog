@@ -39,7 +39,7 @@ app.get('/', (req, res, next) => {
 
 
 // Listen to port
-http.listen(port, () => {
+http.listen((port), () => {
     console.log(`Server is running on port ${port}`);
 });
 
