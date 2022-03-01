@@ -1,0 +1,93 @@
+
+:root {
+    --font-color: #000000;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+html {
+    font-size: 62.5%;
+    scroll-behavior: smooth;
+}
+body {
+    image-rendering: crisp-edges;
+    background-color: #024F99;
+}
+a {
+    text-decoration: none;
+    color: unset;
+}
+
+
+#loginCard {
+    max-width: 100%;
+    font-size: 1.5rem;
+    color: #ffffff;
+    background-color: #01284D;
+    display: inline-block;
+}
+#loginCard header {
+    margin: 3rem 0px;
+    text-align: center;
+}
+#loginCard header * {
+    margin: 1rem 0px;
+}
+#loginCard .content {
+    margin: 4rem;
+}
+#loginCard form {
+    display: flex;
+    flex-direction: column;
+}
+#loginCard form input {
+    outline: none;
+}
+#loginCard form .signinInput {
+    width: 100%;
+    margin: 1rem 0px;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 10rem;
+    font-size: unset;
+    background-color: #99A9B8;
+}
+/* -=-=-=-=-=-=-=-=-=-= Very Hacky Thing to do starts =-=-=-=-=-=-=-=-=-=- */
+#loginCard form .signinInput::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: white;
+    opacity: 1; /* Firefox */
+}
+#loginCard form .signinInput:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: white;
+}
+#loginCard form .signinInput::-ms-input-placeholder { /* Microsoft Edge */
+    color: white;
+}
+/* -=-=-=-=-=-=-=-=-=-= Very Hacky Thing to do ending =-=-=-=-=-=-=-=-=-=- */
+#loginCard form span {
+    margin: 2rem 0px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+#loginCard form #prompt {
+    font-size: 1.25rem;
+    color: #ff0000;
+    text-align: center;
+    opacity: 0;
+}
+#loginCard form span button {
+    padding: 0.5rem 1.5rem;
+    border: none;
+    border-radius: 10rem;
+    outline: none;
+    color: unset;
+    background-color: #5271FF;
+    cursor: pointer;
+}

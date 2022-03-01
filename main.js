@@ -17,7 +17,7 @@ const port = process.env.PORT || 8080;
 const io = require('socket.io')(http, {});
 
 // Static files
-app.use(express.static(path.join(__dirname, './paths/static/assets')));
+app.use(express.static(path.join(__dirname, './paths/static/')));
 
 
 // require all paths
