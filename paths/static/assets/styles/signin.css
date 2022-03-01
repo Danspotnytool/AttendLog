@@ -81,6 +81,15 @@ a {
     color: white;
 }
 /* -=-=-=-=-=-=-=-=-=-= Very Hacky Thing to do ending =-=-=-=-=-=-=-=-=-=- */
+#passwordContainer {
+    display: flex;
+    flex-direction: row;
+}
+#eyeIcon {
+    height: 1.5rem;
+    display: inline-block;
+    cursor: pointer;
+}
 #loginCard form span {
     margin: 2rem 1rem;
     display: flex;
