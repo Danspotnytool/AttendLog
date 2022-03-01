@@ -82,13 +82,17 @@ a {
 }
 /* -=-=-=-=-=-=-=-=-=-= Very Hacky Thing to do ending =-=-=-=-=-=-=-=-=-=- */
 #passwordContainer {
-    display: flex;
-    flex-direction: row;
+    width: 100%;
+    position: relative;
 }
 #eyeIcon {
-    height: 1.5rem;
-    display: inline-block;
+    height: 2rem;
+    right: 0;
     cursor: pointer;
+    position: absolute;
+}
+#password {
+    padding-right: 5rem !important;
 }
 #loginCard form span {
     margin: 2rem 1rem;
