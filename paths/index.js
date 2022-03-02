@@ -1,5 +1,8 @@
 const path = require('path');
 
-module.exports = (req, res, next) => {
-    res.sendFile(path.join(__dirname,'./static/index.html'));
+module.exports = {
+    ailias: ['home', 'dashboard', 'index', 'default', 'index.html'],
+    execute: (req, res, next) => {
+        res.sendFile(path.join(__dirname,'./static/index.html'));
+    }
 };

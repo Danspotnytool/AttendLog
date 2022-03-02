@@ -27,10 +27,25 @@ const paths = fs.readdirSync(path.join(__dirname, 'paths'));
 // But ignore folders
 paths.forEach((path) => {
     if (!path.endsWith('.js')) { return };
-    const routName = path.split('.')[0];
-    app.get(`/${routName}`, (req, res, next) => {
-        require(`./paths/${path}`)(req, res, next);
-    });
+    // const routName = path.split('.')[0];
+    // app.get(`/${routName}`, (req, res, next) => {
+    //     require(`./paths/${path}`)(req, res, next);
+    // });
+    try {
+        const pathObj = require(`./paths/${path}`);
+        if (pathObj.alias && pathObj.alias.length > 0) {
+            pathObj.alias.forEach((alias) => {
+                app.get(`/${alias}`, (req, res, next) => {
+                    pathObj.execute(req, res, next);
+                });
+            });
+        };
+        app.get(`/${path.replace('.js', '')}`, (req, res, next) => {
+            pathObj.execute(req, res, next);
+        });
+    } catch(err) {
+        console.log(err);
+    };
 });
 // Index route
 app.get('/', (req, res, next) => {
