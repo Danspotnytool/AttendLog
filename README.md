@@ -10,4 +10,9 @@
 <li>Flores, Markisaac</li>
 
 <h2>Purpose</h2>
-<p>This repository is our source code for our Capstone Project named: <a href="https://www.attendlog.ga/"><b>A</b>TTEND<b>L</b>OG</a></p>
+<p>
+  This repository is our source code for our Capstone Project named:
+  <a href="https://www.attendlog.ga/"><b>A</b>TTEND<b>L</b>OG</a>
+  <br>
+  The main purpose of this project is to help teachers to monitor their students' attendances.
+</p>
