@@ -124,10 +124,10 @@ a {
 }
 #loginCard form span button {
     padding: 0.5rem 1.5rem;
-    border: none;
+    border: solid 1px #ffffff;
     border-radius: 10rem;
     outline: none;
     color: unset;
-    background-color: #5271FF;
+    background-color: unset;
     cursor: pointer;
 }
