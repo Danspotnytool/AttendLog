@@ -48,7 +48,7 @@ eyeIcon.onclick = () => {
         eyeIcon.src = closedEyeIcon.src;
     };
     passwordInput.focus();
-    resizeEyeIcon();
+    moveEyeIcon();
 };
 
 
