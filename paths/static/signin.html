@@ -31,19 +31,19 @@
                 </header>
                 <form accept="null">
                     <div>
-                        <input type="text" name="userID" id="userID" class="signinInput" placeholder="User ID">
+                        <input type="text" name="userID" id="userID" class="signinInput noselect" placeholder="User ID">
                     </div>
                     <div id="passwordContainer">
-                        <input type="password" name="password" id="password" class="signinInput" placeholder="Password">
+                        <input type="password" name="password" id="password" class="signinInput noselect" placeholder="Password">
 
-                        <img src="./assets/svg/eye-slash-solid.svg" alt="hidden password" id="eyeIcon">
+                        <img src="./assets/svg/eye-slash-solid.svg" alt="hidden password" class="noselect" id="eyeIcon">
                     </div>
                     <div>
                         <p id="prompt">Hi Hello Bye</p>
                     </div>
                     <span>
                         <a href="./signup">Create Account</a>
-                        <button type="button">Sign In</button>
+                        <button type="button" class="noselect">Sign In</button>
                     </span>
                 </form>
             </div>
