@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Student Attendance Monitoring Application">
+
+        <!-- Image meta -->
+        <meta property="og:image" content="./assets/images/Logo.png">
+        <meta property="og:image:type" content="image/png">
+        <meta property="og:image:width" content="300">
+        <meta property="og:image:height" content="300">
+
+        <meta name="keywords" content="Student, Attendance, Monitoring, System">
+
+        <title>Sign Up - AttendLog</title>
+        <link rel="shortcut icon" href="./assets/images/favicon.png" type="image/x-icon">
+        <link rel="stylesheet" href="./assets/styles/signup.css">
+        <script defer src="./assets/scripts/signup_script.js"></script>
+
+        <!-- Preload font -->
+        <link rel="preload" href="./assets/fonts/Kollektif.ttf" as="font" crossorigin="anonymous">
+    </head>
+    <body>
+        <div id="registerCard">
+            <div class="content">
+                <header>
+                    <h1><span>A</span>TTEND<span>L</span>OG</h1>
+                    <h2>Sign Up</h2>
+                </header>
+                <form accept="null">
+                    <div>
+                        <input type="text" name="userID" id="userID" class="signinInput" placeholder="User ID">
+                    </div>
+                    <div>
+                        <input type="text" name="name" id="name" class="signinInput" placeholder="Last Name">
+                    </div>
+                    <div>
+                        <input type="text" name="firstName" id="firstName" class="signinInput" placeholder="First Name">
+                    </div>
+                    <div id="passwordContainer">
+                        <input type="password" name="password" id="password" class="signinInput" placeholder="Password">
+
+                        <img src="./assets/svg/eye-slash-solid.svg" alt="hidden password" id="eyeIcon">
+                    </div>
+                    <div>
+                        <p id="prompt">Hi Hello Bye</p>
+                    </div>
+                    <span>
+                        <a href="">Create Account</a>
+                        <button type="button">Sign Up</button>
+                    </span>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

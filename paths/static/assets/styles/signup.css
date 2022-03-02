@@ -1,0 +1,124 @@
+
+:root {
+    --font-color: #000000;
+}
+
+@font-face {
+    font-family: 'Kollektif';
+    src: url('../fonts/Kollektif.ttf');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+html {
+    font-size: 62.5%;
+    scroll-behavior: smooth;
+}
+body {
+    image-rendering: crisp-edges;
+    background-color: #024F99;
+    font-size: 0px;
+}
+a {
+    text-decoration: none;
+    color: unset;
+}
+
+
+#registerCard {
+    width: 450px;
+    max-width: 100%;
+    font-size: 1.5rem;
+    color: #ffffff;
+    background-color: #01284D;
+    display: inline-block;
+}
+#registerCard header {
+    margin: 3rem 0px;
+    text-align: center;
+}
+#registerCard header * {
+    margin: 2rem 0px;
+    font-size: unset;
+}
+#registerCard header h1 {
+    font-size: 3.5rem;
+    font-family: 'Kollektif';
+}
+#registerCard header span {
+    font-size: 4rem;
+}
+#registerCard header h2 {
+    font-size: 3rem;
+}
+#registerCard .content {
+    margin: 4rem;
+}
+#registerCard form {
+    display: flex;
+    flex-direction: column;
+}
+#registerCard form input {
+    outline: none;
+}
+#registerCard form .signinInput {
+    width: 100%;
+    margin: 0.5rem 0px;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 10rem;
+    font-size: unset;
+    background-color: #99A9B8;
+}
+/* -=-=-=-=-=-=-=-=-=-= Very Hacky Thing to do starts =-=-=-=-=-=-=-=-=-=- */
+#registerCard form .signinInput::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: white;
+    opacity: 1; /* Firefox */
+}
+#registerCard form .signinInput:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: white;
+}
+#registerCard form .signinInput::-ms-input-placeholder { /* Microsoft Edge */
+    color: white;
+}
+/* -=-=-=-=-=-=-=-=-=-= Very Hacky Thing to do ending =-=-=-=-=-=-=-=-=-=- */
+#passwordContainer {
+    width: 100%;
+    position: relative;
+}
+#eyeIcon {
+    height: 2rem;
+    right: 0;
+    cursor: pointer;
+    position: absolute;
+}
+#password {
+    padding-right: 5rem !important;
+}
+#registerCard form span {
+    margin: 2rem 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+#registerCard form #prompt {
+    font-size: 1.25rem;
+    color: #ff0000;
+    text-align: center;
+    opacity: 0;
+}
+#registerCard form span button {
+    padding: 0.5rem 1.5rem;
+    border: none;
+    border-radius: 10rem;
+    outline: none;
+    color: unset;
+    background-color: #5271FF;
+    cursor: pointer;
+}
