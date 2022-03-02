@@ -9,7 +9,7 @@ module.exports = (req, res, next) => {
     // });
 };
 module.exports = {
-    ailias: ['templates', 'sample'],
+    alias: ['templates', 'sample'],
     execute: (req, res, next) => {
         // res.sendFile(path.join(__dirname,'./static/index.html'));
         res.send({
