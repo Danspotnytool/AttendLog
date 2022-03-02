@@ -54,6 +54,8 @@ eyeIcon.onclick = () => {
 
 
 // Call all move and resize functions
+centerRegisterCard();
+moveEyeIcon();
 setTimeout(() => {
     centerRegisterCard();
     moveEyeIcon();
