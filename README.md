@@ -1,4 +1,5 @@
 <h1 align="center">ATTENDLOG</h1>
+<p align="center"><b>Attendance Monitoring System</b></p>
 
 <h2>Creators:</h2>
 <li>Baynosa, Daniel John</li>
