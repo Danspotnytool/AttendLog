@@ -1,6 +1,10 @@
 <h1 align="center">ATTENDLOG</h1>
 <p align="center"><b>Attendance Monitoring System</b></p>
 
+<p align="center">
+  <img src="./paths/static/assets/images/Logo%20as%20Icon.png" height="200px">
+</p>
+
 <h2>Creators:</h2>
 <li>Baynosa, Daniel John</li>
 <li>Turalde, Rine</li>
