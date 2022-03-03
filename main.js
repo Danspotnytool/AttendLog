@@ -7,6 +7,10 @@ const app = express();
 const http = require('http').createServer(app);
 const fs = require('fs');
 const path = require('path');
+const cors = require('cors');
+
+// Require the API
+const api = require('./api/api.js')(app);
 
 // Require all utilities
 const logger = require('./util/logger.js');
@@ -15,6 +19,13 @@ const logger = require('./util/logger.js');
 const port = process.env.PORT || 8080;
 
 const io = require('socket.io')(http, {});
+
+// Cors restriction
+// Restrict all requests to this domain from other domains
+app.use(cors({
+    origin: `http://localhost:${port}`,
+    credentials: true,
+}));
 
 // Static files
 app.use(express.static(path.join(__dirname, './paths/static/')));
