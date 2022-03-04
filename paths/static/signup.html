@@ -21,6 +21,34 @@
 
         <!-- Preload font -->
         <link rel="preload" href="./assets/fonts/Kollektif.ttf" as="font" crossorigin="anonymous">
+
+        <script>
+            // Check if there's a user logged in
+            // Check the local storage for the user
+            // If there is a user, redirect to the home page
+            if (localStorage.getItem('user')) {
+                const user = JSON.parse(localStorage.getItem('user'));
+                fetch('/api/users/me', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'userID': user.userID,
+                        'token': user.token
+                    }
+                }).then(res => res.json())
+                .then((data) => {
+                    console.log(data);
+                    if (data.code === '200') {
+                        window.location.href = '/';
+                    } else {
+                        localStorage.removeItem('user');
+                        localStorage.removeItem('token');
+                    };
+                }).catch((err) => {
+                    console.log(err);
+                });
+            };
+        </script>
     </head>
     <body>
         <div id="registerCard">
@@ -29,18 +57,21 @@
                     <h1><span>A</span>TTEND<span>L</span>OG</h1>
                     <h2>Sign Up</h2>
                 </header>
-                <form accept="null">
+                <form action="../api/users" method="post" id="signupForm">
                     <div>
-                        <input type="text" name="username" id="username" class="signinInput noselect" placeholder="Username">
+                        <input type="text" name="username" id="username" class="signinInput noselect" required placeholder="Username">
                     </div>
                     <div>
-                        <input type="text" name="name" id="name" class="signinInput noselect" placeholder="Last Name">
+                        <input type="text" name="firstName" id="firstName" class="signinInput noselect" required placeholder="First Name">
                     </div>
                     <div>
-                        <input type="text" name="firstName" id="firstName" class="signinInput noselect" placeholder="First Name">
+                        <input type="text" name="lastName" id="lastName" class="signinInput noselect" required placeholder="Last Name">
+                    </div>
+                    <div>
+                        <input type="email" name="email" id="email" class="signinInput noselect" required placeholder="Email Address">
                     </div>
                     <div id="passwordContainer">
-                        <input type="password" name="password" id="password" class="signinInput noselect" placeholder="Password">
+                        <input type="password" name="password" id="password" class="signinInput noselect" required placeholder="Password">
 
                         <img src="./assets/svg/eye-slash-solid.svg" alt="hidden password" class="noselect" id="eyeIcon">
                     </div>
@@ -49,7 +80,7 @@
                     </div>
                     <span>
                         <a href="./signin">Sign in here</a>
-                        <button type="button" class="noselect">Sign Up</button>
+                        <button type="submit" class="noselect" id="signup">Sign Up</button>
                     </span>
                 </form>
             </div>
