@@ -22,7 +22,7 @@ html {
 body {
     image-rendering: crisp-edges;
     background-color: #ffffff;
-    font-size: 0px;
+    /* font-size: 0px; */
     overflow-y: hidden;
 }
 a {
