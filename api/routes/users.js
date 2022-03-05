@@ -43,10 +43,6 @@ const getAccountArray = async () => {
     users = dbUsers;
     usernames = dbUsernames;
     emails = dbEmails;
-
-    console.log('users', dbUsers);
-    console.log('usernames', dbUsernames);
-    console.log('emails', dbEmails);
 };
 getAccountArray();
 
