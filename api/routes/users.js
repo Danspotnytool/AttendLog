@@ -19,15 +19,22 @@ router.use(bodyParser.json());
 // Get all users and usernames from the database
 let users;
 let usernames;
+let emails;
 const getAccountArray = async () => {
     const dbUsers = await database.ref('/users').once('value').then((snapshot) => {
-        console.log(snapshot.val());
-        return Array.from(snapshot.val());
+        console.log('Users database is loaded');
+        return snapshot.val();
     }).catch((err) => {
         console.log(err);
     });
     const dbUsernames = await database.ref('/usernames').once('value').then((snapshot) => {
-        console.log(snapshot.val());
+        console.log('Usernames database is loaded');
+        return Array.from(snapshot.val());
+    }).catch((err) => {
+        console.log(err);
+    });
+    const dbEmails = await database.ref('/emails').once('value').then((snapshot) => {
+        console.log('Emails database is loaded');
         return Array.from(snapshot.val());
     }).catch((err) => {
         console.log(err);
@@ -35,44 +42,16 @@ const getAccountArray = async () => {
 
     users = dbUsers;
     usernames = dbUsernames;
+    emails = dbEmails;
+
+    console.log('users', dbUsers);
+    console.log('usernames', dbUsernames);
+    console.log('emails', dbEmails);
 };
 getAccountArray();
 
-
-
-// Intex route
-router.get('/me', (req, res, next) => {
-    // Get the user from the request header
-    const userID = req.headers.userid;
-    const token = req.headers.token;
-    console.log(`from header ${userID}`);
-    console.log(`from header ${token}`);
-
-    // Find the user in the users object using the userID
-    database.ref(`/users/${userID}`).once('value').then((snapshot) => {
-        console.log(snapshot.val());
-        const user = snapshot.val();
-        if (!user) {
-            return res.send({
-                message: 'User not found',
-                code: '404'
-            });
-        };
-        // Check if the token is valid
-        if (user.token !== token) {
-            return res.send({
-                message: 'Invalid token',
-                code: '401'
-            });
-        };
-        res.send({
-            message: 'User valid',
-            code: '200'
-        });
-    });
-});
-
-router.post('/',  async (req, res, next) => {
+// Signup route
+router.post('/signup',  async (req, res, next) => {
     // Get the data from the request
     // Username, First name, Last name, Email address, and Password
     let { username, firstName, lastName, email, password } = req.body;
@@ -130,6 +109,35 @@ Password: 6-20 characters)`,
             code: '400'
         });
     };
+    // Usernames can't have special characters, spaces, or start with a number
+    if (/[^a-zA-Z0-9]/.test(username)) {
+        return res.send({
+            message: 'The username can only contain letters and numbers',
+            code: '400'
+        });
+    };
+    if (/^[0-9]/.test(username)) {
+        return res.send({
+            message: `The username can't start with a number`,
+            code: '400'
+        });
+    };
+    if (/\s/.test(username)) {
+        return res.send({
+            message: `The username can't contain spaces`,
+            code: '400'
+        });
+    };
+
+
+    // Check if the email is already taken
+    if (emails.includes(email)) {
+        return res.send({
+            message: 'The email is already taken',
+            code: '400'
+        });
+    };
+
 
     try {
         const hashedPassword = await bycrypt.hash(password, 10);
@@ -155,19 +163,22 @@ Password: 6-20 characters)`,
 
     // Write to the database
     try {
-        await database.ref(`/users/${user.userID}`).set(user);
-        await database.ref(`/usernames/${usernames.length}`).set(username);
-
-        // Push the user to the users array
-        users.push(user);
-        usernames.push(username);
+        await database.ref(`/users/${users.length}`).set(user).then(() => {
+            users.push(user);
+        });
+        await database.ref(`/usernames/${usernames.length}`).set(username).then(() => {
+            usernames.push(username);
+        });
+        await database.ref(`/emails/${emails.length}`).set(user.email).then(() => {
+            emails.push(user.email);
+        });
 
         // Return the user
         res.send({
             message: 'Account created',
             user: {
                 userID: user.userID,
-                token: user.token,
+                token: user.token
             },
             code: '200'
         });
@@ -178,6 +189,62 @@ Password: 6-20 characters)`,
             code: '400'
         });
     };
+});
+
+
+// Signin route
+router.post('/signin', async (req, res, next) => {
+    // Get the data from the request
+    // Username and Password
+    const { username, password } = req.body;
+
+    // Check if username and password is defined
+    if (!username || !password) {
+        return res.send({
+            message: 'Please fill in all the fields',
+            code: '400'
+        });
+    };
+
+    // Check if the username is valid
+    // The usernames is an array of objects
+    // Username: UserID
+    if (!usernames.includes(username)) {
+        return res.send({
+            message: 'Invalid username or password',
+            code: '400'
+        });
+    };
+
+    // Find the username in the database
+    const user = users.find((user) => { return user.username === `${username}`} );
+
+    // Check if the password is valid
+    // The password is hashed
+    try {
+        const isMatch = await bycrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.send({
+                message: 'Invalid username or password',
+                code: '400'
+            });
+        };
+    } catch (err) {
+        console.log(err);
+        return res.send({
+            message: 'Something went wrong',
+            code: '400'
+        });
+    };
+    // Return the user
+    res.send({
+        message: 'Login Successful',
+        user: {
+            userID: user.userID,
+            token: user.token
+        },
+        code: '200'
+    });
 });
 
 module.exports = router;

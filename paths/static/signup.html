@@ -21,34 +21,6 @@
 
         <!-- Preload font -->
         <link rel="preload" href="./assets/fonts/Kollektif.ttf" as="font" crossorigin="anonymous">
-
-        <script>
-            // Check if there's a user logged in
-            // Check the local storage for the user
-            // If there is a user, redirect to the home page
-            if (localStorage.getItem('user')) {
-                const user = JSON.parse(localStorage.getItem('user'));
-                fetch('/api/users/me', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'userID': user.userID,
-                        'token': user.token
-                    }
-                }).then(res => res.json())
-                .then((data) => {
-                    console.log(data);
-                    if (data.code === '200') {
-                        window.location.href = '/';
-                    } else {
-                        localStorage.removeItem('user');
-                        localStorage.removeItem('token');
-                    };
-                }).catch((err) => {
-                    console.log(err);
-                });
-            };
-        </script>
     </head>
     <body>
         <div id="registerCard">

@@ -1,4 +1,8 @@
 
+// Erase cookies
+// Make Cookie uneditable
+document.cookie = '{}';
+
 // Get rem function
 const getRem = (rem) => {
     if (!rem) { return parseFloat(getComputedStyle(document.documentElement).fontSize) };
@@ -120,8 +124,25 @@ signup.onclick = (event) => {
         return signup.disabled = false;;
     };
 
+    // Usernames can't have special characters, spaces, or start with a number
+    if (/[^a-zA-Z0-9]/.test(username)) {
+        prompt.innerHTML = 'The username can only contain letters and numbers';
+        prompt.style.opacity = 1;
+        return signup.disabled = false;;
+    };
+    if (/^[0-9]/.test(username)) {
+        prompt.innerHTML = `The username can't start with a number`;
+        prompt.style.opacity = 1;
+        return signup.disabled = false;;
+    };
+    if (/\s/.test(username)) {
+        prompt.innerHTML = `The username can't contain spaces`;
+        prompt.style.opacity = 1;
+        return signup.disabled = false;
+    };
+
     // Send the data to the server
-    fetch('/api/users', {
+    fetch('/api/users/signup', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -148,9 +169,12 @@ signup.onclick = (event) => {
             } else if (data.code === '200') {
                 prompt.innerHTML = 'You have successfully registered';
                 prompt.style.opacity = 1;
+                prompt.style.color = '#ffffff';
                 // Save the userID and token to local storage
                 const user = data.user;
                 localStorage.setItem('user', JSON.stringify(user));
+                // Set cookies
+                document.cookie = `${JSON.stringify(user)}`;
                 console.log(user);
                 // Redirect to the home page
                 window.location.href = '/';

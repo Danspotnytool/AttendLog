@@ -1,4 +1,8 @@
 
+// Erase cookies
+// Make Cookie uneditable
+document.cookie = '{}';
+
 // Get rem function
 const getRem = (rem) => {
     if (!rem) { return parseFloat(getComputedStyle(document.documentElement).fontSize) };
@@ -63,4 +67,75 @@ setTimeout(() => {
 window.onresize = () => {
     centerLoginCard();
     moveEyeIcon();
+};
+
+// Remove window.prompt
+delete window.prompt;
+
+const signin = document.getElementById('signin');
+const signinForm = document.getElementById('signinForm');
+const prompt = document.getElementById('prompt');
+
+signin.onclick = (event) => {
+    event.preventDefault();
+
+    signin.disabled = true;
+
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    // Check if username and password is defined
+    if (!username || !password) {
+        prompt.innerHTML = 'Please enter a username and password';
+        prompt.style.opacity = 1;
+        return;
+    };
+
+    // Send the data to the server
+    fetch('/api/users/signin', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            username: username,
+            password: password
+        })
+    }).then(res => res.json())
+    .then(data => {
+        if (data.error) {
+            prompt.innerHTML = data.error;
+            prompt.style.opacity = '1';
+
+            // Re-enable the signin button
+            signin.disabled = false;
+        } else {
+            if (data.code === '400') {
+                prompt.innerHTML = data.message;
+                prompt.style.opacity = 1;
+
+                // Re-enable the signin button
+                signin.disabled = false;
+            } else if (data.code === '200') {
+                prompt.innerHTML = 'Sign In successful';
+                prompt.style.opacity = '1';
+                prompt.style.color = '#ffffff';
+                // Save the userID and token to local storage
+                const user = data.user;
+                localStorage.setItem('user', JSON.stringify(user));
+                // Set cookies
+                document.cookie = `${JSON.stringify(user)}`;
+                console.log(user);
+                // Redirect to the home page
+                window.location.href = '/';
+                signinForm.reset();
+            };
+        };
+    }).catch(err => {
+        prompt.innerHTML = 'Something went wrong';
+        prompt.style.opacity = '1';
+
+        // Re-enable the signin button
+        signin.disabled = false;
+    });
 };
