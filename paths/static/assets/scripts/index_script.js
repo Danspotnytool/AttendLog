@@ -28,7 +28,6 @@ const resizeMainPanel = async () => {
         return;
     };
 
-    // Media query
     if (window.innerWidth <= 795) {
         mainPanel.style.width = '100%';
         mainPanel.style.position = 'absolute';
@@ -40,7 +39,7 @@ const resizeMainPanel = async () => {
 };
 
 // Displaying the side panel
-menuButton.onclick =  async () => {
+const displaySidePanel =  async () => {
     // Get the sidePanel display attribute
     const displayAttribute = sidePanel.getAttribute('display');
     if (displayAttribute === 'true') {
@@ -54,9 +53,15 @@ menuButton.onclick =  async () => {
     };
     resizeMainPanel();
 };
+menuButton.onclick = () => { displaySidePanel(); };
 
 
 
+if (window.innerWidth <= 795) {
+    setTimeout(() => {
+        menuButton.click();
+    }, 10);
+};
 resizeMainPanel();
 window.onresize =  async () => {
     resizeMainPanel();
