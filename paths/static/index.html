@@ -24,11 +24,17 @@
         <link rel="preload" href="./assets/fonts/Kollektif.ttf" as="font" crossorigin="anonymous">
     </head>
     <body>
-        Hi World!
-        <div id="time"></div>
-        <script>
-            const time = document.getElementById("time");
-            time.innerText = new Date().toLocaleTimeString();
-        </script>
+        <div id="sidePanel" display="true">
+            <div id="menuButtonContainer">
+                <button id="menuButton">
+                    <img src="./assets/svg/menu-icon.svg" alt="Menu Icon">
+                </button>
+            </div>
+        </div>
+        <div id="mainPanel">
+            <div id="header">
+                <!-- <div id="title">Dashboard</div> -->
+            </div>
+        </div>
     </body>
 </html>
