@@ -18,7 +18,7 @@ router.use(bodyParser.json());
 
 // Get all users and usernames from the database
 let users;
-const getAccountArray = async () => {
+const updateAccountArray = async () => {
     const dbUsers = await database.ref('/users').once('value').then((snapshot) => {
         console.log('Users database is loaded');
         return snapshot.val();
@@ -28,7 +28,7 @@ const getAccountArray = async () => {
 
     users = dbUsers;
 };
-getAccountArray();
+updateAccountArray();
 
 // Signup route
 router.post('/signup',  async (req, res, next) => {
@@ -146,6 +146,7 @@ Password: 6-20 characters)`,
         await database.ref(`/users/${user.userID}`).set(user).then(() => {
             users[user.userID] = user;
         });
+        updateAccountArray();
 
         // Return the user
         res.send({
