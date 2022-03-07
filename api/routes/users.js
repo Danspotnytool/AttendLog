@@ -18,8 +18,6 @@ router.use(bodyParser.json());
 
 // Get all users and usernames from the database
 let users;
-let usernames;
-let emails;
 const getAccountArray = async () => {
     const dbUsers = await database.ref('/users').once('value').then((snapshot) => {
         console.log('Users database is loaded');
