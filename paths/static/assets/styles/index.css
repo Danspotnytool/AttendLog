@@ -50,6 +50,7 @@ a {
     position: relative;
     z-index: 1;
 }
+
 #menuButtonContainer {
     height: 10vh;
     text-align: right;
@@ -62,8 +63,78 @@ a {
     font-size: unset;
     position: relative;
 }
-#menuButton img {
+#menuButton svg {
     height: 100%;
+    width: unset;
+}
+
+#logoContainer {
+    height: 25vh;
+    text-align: center;
+}
+#logoContainer img {
+    height: 100%;
+}
+
+#attendlogContainer {
+    font-family: 'Kollektif', sans-serif;
+    color: #ffffff;
+    text-align: center;
+}
+#attendlogContainer h1 {
+    font-size: 3.5rem;
+}
+#attendlogContainer span {
+    font-size: 3.75rem;
+}
+
+#menuContainer {
+    height: 45vh;
+    padding: 1rem;
+    overflow-y: auto;
+}
+#menuContainer ul {
+    padding: 1rem 0;
+    list-style-type: none;
+}
+#menuContainer ul li {
+    padding: 1rem 0;
+    margin: 0 10%;
+    font-size: 2.25rem;
+    color: #ffffff;
+    cursor: pointer;
+    position: relative;
+}
+#menuContainer ul li::after {
+    content: '';
+    height: 0.5rem;
+    width: 100%;
+    bottom: 0.5rem;
+    left: -200%;
+    position: absolute;
+    background-color: #ffffff;
+    transition: 0.25s;
+}
+#menuContainer ul li:hover::after {
+    left: 0;
+    background-color: #ffffff;
+}
+
+#signOutContainer {
+    height: 15vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#signOutButton {
+    height: unset;
+    padding: 1vh;
+    border: solid 2px #ffffff;
+    border-radius: 10vh;
+    font-size: 1.75rem;
+    cursor: pointer;
+    color: #ffffff;
+    background: unset;
 }
 
 
@@ -74,14 +145,31 @@ a {
 }
 #header {
     height: 10vh;
+    padding: 0 2%;
     background-color: #ffffff;
-}
-#title {
-    height: 100%;
-    width: fit-content;
-    background: green;
-    font-size: 4rem;
     display: flex;
+    justify-content: space-between;
+}
+#dashboardTitle {
+    height: 100%;
+    width: 100%;
+    width: fit-content;
+    font-size: 3.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#calendar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+#date,
+#time {
+    height: 100%;
+    font-size: 2rem;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
 }

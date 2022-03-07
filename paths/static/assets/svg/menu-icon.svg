@@ -1,3 +1,6 @@
-<svg width="1000" height="1000" viewBox="0 0 1000 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H1000V1000H0V0ZM850 550H150V450H850V550ZM850 250H150V150H850V250ZM850 850H150V750H850V850Z" fill="white"/>
+<svg width="998" height="998" viewBox="0 0 998 998" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="998" height="998" />
+    <rect x="153" y="187" width="692" height="152" rx="76" stroke="white" stroke-width="25" />
+    <rect x="153" y="659" width="692" height="152" rx="76" stroke="white" stroke-width="25" />
+    <rect x="153" y="423" width="692" height="152" rx="76" stroke="white" stroke-width="25" />
 </svg>
