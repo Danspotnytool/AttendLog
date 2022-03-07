@@ -27,22 +27,8 @@ const getAccountArray = async () => {
     }).catch((err) => {
         console.log(err);
     });
-    const dbUsernames = await database.ref('/usernames').once('value').then((snapshot) => {
-        console.log('Usernames database is loaded');
-        return Array.from(snapshot.val());
-    }).catch((err) => {
-        console.log(err);
-    });
-    const dbEmails = await database.ref('/emails').once('value').then((snapshot) => {
-        console.log('Emails database is loaded');
-        return Array.from(snapshot.val());
-    }).catch((err) => {
-        console.log(err);
-    });
 
     users = dbUsers;
-    usernames = dbUsernames;
-    emails = dbEmails;
 };
 getAccountArray();
 
@@ -99,7 +85,7 @@ Password: 6-20 characters)`,
     };
 
     // Check if the username is already taken
-    if (usernames.includes(username)) {
+    if (Object.keys(users).find(user => users[user].username == `${username}`)) {
         return res.send({
             message: 'The username is already taken',
             code: '400'
@@ -127,7 +113,7 @@ Password: 6-20 characters)`,
 
 
     // Check if the email is already taken
-    if (emails.includes(email)) {
+    if (Object.keys(users).find(user => users[user].email == `${email}`)) {
         return res.send({
             message: 'The email is already taken',
             code: '400'
@@ -159,14 +145,8 @@ Password: 6-20 characters)`,
 
     // Write to the database
     try {
-        await database.ref(`/users/${users.length}`).set(user).then(() => {
-            users.push(user);
-        });
-        await database.ref(`/usernames/${usernames.length}`).set(username).then(() => {
-            usernames.push(username);
-        });
-        await database.ref(`/emails/${emails.length}`).set(user.email).then(() => {
-            emails.push(user.email);
+        await database.ref(`/users/${user.userID}`).set(user).then(() => {
+            users[user.userID] = user;
         });
 
         // Return the user
@@ -205,26 +185,37 @@ router.post('/signin', async (req, res, next) => {
     // Check if the username is valid
     // The usernames is an array of objects
     // Username: UserID
-    if (!usernames.includes(username)) {
+    if (!(Object.keys(users).find(user => users[user].username == `${username}`))) {
         return res.send({
-            message: 'Invalid username or password',
+            message: 'Invalid User',
             code: '400'
         });
     };
 
-    // Find the username in the database
-    const user = users.find((user) => { return user.username === `${username}`} );
+    const userKey = Object.keys(users).find(user => users[user].username == `${username}`);
+    const user = users[userKey];
 
     // Check if the password is valid
-    // The password is hashed
     try {
-        const isMatch = await bycrypt.compare(password, user.password);
-        if (!isMatch) {
+        const isValid = await bycrypt.compare(password, user.password);
+        if (!isValid) {
+            console.log(isValid);
             return res.send({
-                message: 'Invalid username or password',
+                message: 'Invalid Password',
                 code: '400'
             });
         };
+
+        // Return the user
+        res.send({
+            message: 'Logged in',
+            user: {
+                userID: user.userID,
+                token: user.token
+            },
+            code: '200'
+        });
+
     } catch (err) {
         console.log(err);
         return res.send({
@@ -232,15 +223,6 @@ router.post('/signin', async (req, res, next) => {
             code: '400'
         });
     };
-    // Return the user
-    res.send({
-        message: 'Login Successful',
-        user: {
-            userID: user.userID,
-            token: user.token
-        },
-        code: '200'
-    });
 });
 
 module.exports = router;

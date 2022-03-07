@@ -131,8 +131,8 @@ signin.onclick = (event) => {
                 signinForm.reset();
             };
         };
-    }).catch(err => {
-        prompt.innerHTML = 'Something went wrong';
+    }).catch((err) => {
+        prompt.innerHTML = err;
         prompt.style.opacity = '1';
 
         // Re-enable the signin button
