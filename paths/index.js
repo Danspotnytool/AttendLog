@@ -40,7 +40,6 @@ module.exports = (app) => {
             } catch(err) {
                 return res.sendFile(path.join(__dirname, './static/signup.html'));
             };
-            console.log(user);
             if (user.userID && user.token) {
                 database.ref(`/users/${user.userID}`).once('value').then((snapshot) => {
                     if (snapshot.val() === null) {

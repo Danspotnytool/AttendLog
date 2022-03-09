@@ -4,6 +4,7 @@ require('dotenv').config();
 // Require all dipendencies
 const express = require('express');
 const app = express();
+const favicon = require('serve-favicon');
 const http = require('http').createServer(app);
 const fs = require('fs');
 const path = require('path');
@@ -30,6 +31,8 @@ app.use(cors({
     credentials: true,
 }));
 
+// Change the favicon
+app.use(favicon(path.join(__dirname, './paths/static/assets/images/favicon.png')));
 
 // require all paths
 const paths = require('./paths/index.js')(app);
