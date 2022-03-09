@@ -13,6 +13,7 @@ const port = location.port;
 
 
 const sidePanel = document.getElementById('sidePanel');
+const signOutButton = document.getElementById('signOutButton');
 const mainPanel = document.getElementById('mainPanel');
 const menuButton = document.getElementById('menuButton');
 const menuButtonBarIcons = [];
@@ -111,6 +112,12 @@ const displaySidePanel =  async () => {
 };
 menuButton.onclick = () => { displaySidePanel(); };
 
+
+signOutButton.onclick = () => {
+    localStorage.removeItem('user');
+    document.cookie = '{}';
+    window.location.href = './signin';
+};
 
 
 const onloadFunction = () => {  
