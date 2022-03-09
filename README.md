@@ -25,5 +25,5 @@
 <h2>Contribute</h2>
 <p>
   This project is open source and you can contribute to it by making a pull request on our repository. 
-  <a href="https://github.com/user_name_here/AttendLog/fork">Fork this repository</a>
+  <a href="https://github.com/Danspotnytool/AttendLog/fork">Fork this repository</a>
 </p>
