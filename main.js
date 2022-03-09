@@ -12,6 +12,9 @@ const cors = require('cors');
 // Require the API
 const api = require('./api/api.js')(app);
 
+// Require database
+const { database } = require('./util/databaseConnection.js');
+
 // Require all utilities
 const logger = require('./util/logger.js');
 
@@ -27,41 +30,9 @@ app.use(cors({
     credentials: true,
 }));
 
-// Static files
-app.use(express.static(path.join(__dirname, './paths/static/')));
-
 
 // require all paths
-// Read all files in the paths directory
-const paths = fs.readdirSync(path.join(__dirname, 'paths'));
-// Require each file in the paths directory
-// But ignore folders
-paths.forEach((path) => {
-    if (!path.endsWith('.js')) { return };
-    // const routName = path.split('.')[0];
-    // app.get(`/${routName}`, (req, res, next) => {
-    //     require(`./paths/${path}`)(req, res, next);
-    // });
-    try {
-        const pathObj = require(`./paths/${path}`);
-        if (pathObj.alias && pathObj.alias.length > 0) {
-            pathObj.alias.forEach((alias) => {
-                app.get(`/${alias}`, (req, res, next) => {
-                    pathObj.execute(req, res, next);
-                });
-            });
-        };
-        app.get(`/${path.replace('.js', '')}`, (req, res, next) => {
-            pathObj.execute(req, res, next);
-        });
-    } catch(err) {
-        console.log(err);
-    };
-});
-// Index route
-app.get('/', (req, res, next) => {
-    require('./paths/index.js')(req, res, next);
-});
+const paths = require('./paths/index.js')(app);
 
 
 // Listen to port

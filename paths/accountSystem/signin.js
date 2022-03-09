@@ -1,11 +1,12 @@
 const path = require('path');
 
 // Require database
-const { database } = require('../util/databaseConnection.js');
+const { database } = require('../../util/databaseConnection.js');
 
 
 module.exports = {
-    alias: ['signup', 'register'],
+    direction: 'signin',
+    alias: ['login'],
     execute: (req, res, next) => {
         // Get request cookies
         const cookies = req.headers.cookie;
@@ -13,12 +14,12 @@ module.exports = {
         try {
             user = JSON.parse(cookies);
         } catch(err) {
-            return res.sendFile(path.join(__dirname, './static/signup.html'));
+            return res.sendFile(path.join(__dirname, '../static/signin.html'));
         };
         if (user.userID && user.token) {
 
         } else {
-            return res.sendFile(path.join(__dirname, './static/signup.html'));
+            return res.sendFile(path.join(__dirname, '../static/signin.html'));
         };
         // Check if the user is in the database
         database.ref(`/users/${user.userID}`).once('value').then((snapshot) => {
@@ -27,10 +28,10 @@ module.exports = {
                 if (userFromDB.token === user.token) {
                     res.redirect('/');
                 } else {
-                    res.sendFile(path.join(__dirname, './static/signup.html'));
+                    res.sendFile(path.join(__dirname, '../static/signin.html'));
                 };
             } else {
-                res.sendFile(path.join(__dirname, './static/signup.html'));
+                res.sendFile(path.join(__dirname, '../static/signin.html'));
             };
         });
     }
