@@ -55,3 +55,31 @@ firebase-admin  |     10.0.2
 serve-favicon   |     2.5.0
 socket.io       |     4.4.1
 uuid            |     8.3.2
+
+<h3>Secrets</h3>
+<p>
+  This project uses the following environment variables:
+</p>
+
+Variable Name           | Description
+------------------------| -------------------------
+FIREBASE_API_KEY        | The Firebase API key
+FIREBASE_DATABASE_URL   | The Firebase database URL
+
+<p>To connect to the firebase database:</p>
+<pre>
+root:
+    sdk/
+      admin.json: {
+              "type": ""
+              "project_id": ""
+              "private_key_id": ""
+              "private_key": ""
+              "client_email": ""
+              "client_id": ""
+              "auth_uri": ""
+              "token_uri": ""
+              "auth_provider_x509_cert_url": ""
+              "client_x509_cert_url": ""
+      }
+</pre>
