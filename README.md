@@ -43,7 +43,7 @@
   This project depends on the following libraries:
 </p>
 
-<table>
+<table align="center">
     <thead>
         <tr>
             <th align="left">Name</th>
@@ -95,7 +95,7 @@
   This project uses the following environment variables:
 </p>
 
-<table>
+<table align="center">
     <thead>
         <tr>
             <th align="left">Variable Name</th>
