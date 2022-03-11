@@ -27,3 +27,20 @@
   This project is open source and you can contribute to it by making a pull request on our repository. 
   <a href="https://github.com/Danspotnytool/AttendLog/fork">Fork this repository</a>
 </p>
+<h3>Dependencies</h3>
+<p>
+  This project depends on the following libraries:
+</p>
+
+Name            |     Version
+----------------|---------------
+axios           |     0.26.0
+bcrypt          |     5.0.1
+cors            |     2.8.5
+dotenv          |     16.0.0
+express         |     4.17.3
+firebase        |     9.6.7
+firebase-admin  |     10.0.2
+serve-favicon   |     2.5.0
+socket.io       |     4.4.1
+uuid            |     8.3.2
