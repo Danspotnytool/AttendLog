@@ -29,8 +29,15 @@
 <h2>Contribute</h2>
 <p>
   This project is open source and you can contribute to it by making a pull request on our repository. 
-  <a href="https://github.com/Danspotnytool/AttendLog/fork">Fork this repository</a>
 </p>
+
+[Fork this repository](https://github.com/Danspotnytool/AttendLog/fork)
+
+
+[Watch this repository](https://github.com/user/repository/subscription)
+
+[Create an Issue](https://github.com/user/repository/issues/new)
+
 <h3>Dependencies</h3>
 <p>
   This project depends on the following libraries:
