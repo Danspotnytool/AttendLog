@@ -24,6 +24,7 @@
         <link rel="preload" href="./assets/fonts/Kollektif.ttf" as="font" crossorigin="anonymous">
     </head>
     <body>
+        <!-- Side Panel -->
         <div id="sidePanel" display="true">
             <div id="menuButtonContainer">
                 <button class="noselect" id="menuButton">
@@ -61,9 +62,10 @@
 
 
 
+        <!-- Main Panel -->
         <div id="mainPanel">
             <div id="header">
-                <div id="dashboardTitle">Dashboard</div>
+                <div id="headerTitle">Dashboard</div>
                 <div id="calendar">
                     <div id="date">March 10, 2022</div>
                     <div id="time">4:20AM</div>
@@ -73,18 +75,43 @@
 
 
 
+        <!-- Join or Create Class -->
         <div id="joinOrCreateContainer">
             <div class="noselect" id="joinOrCreate">
                 <img src="./assets/svg/create-or-join-button-icon.svg" alt="Create or Join Button">
             </div>
             <div id="optionsContainer">
-                <div class="noselect">
+                <button class="noselect" id="joinClass">
                     Join a Class
-                </div>
-                <div class="noselect">
+                </button>
+                <button class="noselect" id="createClass">
                     Create a Class
-                </div>
+                </button>
             </div>
         </div>
+
+
+
+        <!--  -->
+        <div id="formsBackground"></div>
+
+        <!-- Create Class Form -->
+        <form id="createClassForm">
+            <div class="noselect" id="createClassIconContainer">
+                <img src="./assets/svg/create-class-icon.svg" alt="Create Class">
+            </div>
+            <div id="createClassHeader">
+                Create A Class
+            </div>
+            <div id="createClassIconInputsContainer">
+                <label for="className">Class Name:</label>
+                <input type="text" name="className" id="className" required placeholder="Class Name">
+                <label for="classColor">Class Color:</label>
+                <input type="color" name="classColor" id="classColor" value="#ffffff">
+            </div>
+            <div id="createClassButtonContainer">
+                <button>Create Class</button>
+            </div>
+        </form>
     </body>
 </html>

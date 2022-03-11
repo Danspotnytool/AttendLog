@@ -18,6 +18,7 @@ const mainPanel = document.getElementById('mainPanel');
 const menuButton = document.getElementById('menuButton');
 const menuButtonBarIcons = [];
 const header = document.getElementById('header');
+const formsBackground = document.getElementById('formsBackground');
 
 // Load the menuButton svg
 fetch('./assets/svg/menu-icon.svg')
@@ -67,18 +68,14 @@ const resizeMainPanel = async () => {
     if (displayAttribute === 'false') {
         mainPanel.style.height = `${sidePanel.offsetHeight}px`;
         mainPanel.style.width = `${window.innerWidth}px`;
-        mainPanel.style.position = 'absolute';
         return;
     };
 
     if (window.innerWidth <= 795) {
         mainPanel.style.width = '100%';
-        mainPanel.style.position = 'absolute';
-        mainPanel.style.left = '0px';
         return;
     };
     mainPanel.style.width = `${window.innerWidth - sidePanel.offsetWidth}px`;
-    mainPanel.style.position = 'relative';
 };
 
 // Displaying the side panel
@@ -89,9 +86,9 @@ const displaySidePanel =  async () => {
         sidePanel.setAttribute('display', 'false');
         sidePanel.style.marginLeft = `-${sidePanel.offsetWidth}px`;
         menuButton.style.right = `-${menuButton.offsetWidth}px`;
-        menuButton.style.backgroundColor = '#ffffff';
 
-        header.style.marginLeft = `${menuButton.offsetWidth}px`;
+        header.style.marginLeft = '0';
+        header.style.paddingLeft = `${menuButton.offsetWidth + (header.offsetWidth * 0.02)}px`;
 
         menuButtonBarIcons.forEach((child) => {
             child.setAttribute('stroke', 'black');
@@ -100,9 +97,9 @@ const displaySidePanel =  async () => {
         sidePanel.setAttribute('display', 'true');
         sidePanel.style.marginLeft = '0px';
         menuButton.style.right = '0px';
-        menuButton.style.backgroundColor = '#01284D';
 
         header.style.marginLeft = '0px';
+        header.style.paddingLeft = '2%';
 
         menuButtonBarIcons.forEach((child) => {
             child.setAttribute('stroke', 'white');
@@ -139,6 +136,27 @@ resizeMainPanel();
 window.onresize =  async () => {
     resizeMainPanel();
 };
+
+
+
+// Displaying the Create Class form
+const createClass = document.getElementById('createClass');
+const createClassForm = document.getElementById('createClassForm');
+const displayCreateClassForm = async () => {
+    createClassForm.style.top = '10%';
+    createClassForm.style.transform = 'scale(100%)';
+    formsBackground.style.display = 'block';
+};
+createClass.onclick = () => { displayCreateClassForm(); };
+
+// Hide the forms
+const hideForms = async () => {
+    createClassForm.style.top = '-100%';
+    createClassForm.style.transform = 'scale(0%)';
+    formsBackground.style.display = 'none';
+};
+formsBackground.onclick = () => { hideForms(); };
+
 
 
 // Updating the Date and time

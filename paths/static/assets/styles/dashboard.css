@@ -49,6 +49,7 @@ a {
     vertical-align: top;
     position: relative;
     z-index: 1;
+    transition: margin-left 0.5s;
 }
 
 #menuButtonContainer {
@@ -58,10 +59,11 @@ a {
 #menuButton {
     height: 100%;
     padding: 1vh;
-    background-color: #01284D;
+    background-color: unset;
     border: unset;
     font-size: unset;
     position: relative;
+    transition: 0.5s;
 }
 #menuButton svg {
     height: 100%;
@@ -99,8 +101,8 @@ a {
 }
 #menuContainer ul li {
     width: min-content;
-    padding: 1rem 0;
     margin: 0 10%;
+    padding: 1rem 0;
     font-size: 2.25rem;
     color: #ffffff;
     cursor: pointer;
@@ -137,12 +139,30 @@ a {
     color: #ffffff;
     background: unset;
 }
+@media screen and (max-width: 650px) {
+    #attendlogContainer h1 {
+        font-size: 3.25rem;
+    }
+    #attendlogContainer span {
+        font-size: 3.75rem;
+    }
+    #menuContainer ul li {
+        margin: 0 10%;
+        font-size: 2rem;
+    }
+    #signOutButton {
+        font-size: 2rem;
+    }
+}
 
 
 
 #mainPanel {
     height: 100vh;
+    right: 0;
     display: inline-block;
+    position: absolute;
+    transition: width 0.5s;
 }
 #header {
     height: 10vh;
@@ -150,8 +170,9 @@ a {
     background-color: #ffffff;
     display: flex;
     justify-content: space-between;
+    transition: padding 0.5s;
 }
-#dashboardTitle {
+#headerTitle {
     height: 100%;
     width: 100%;
     width: fit-content;
@@ -159,6 +180,7 @@ a {
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
 }
 #calendar {
     display: flex;
@@ -173,6 +195,16 @@ a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
+}
+@media screen and (max-width: 650px) {
+    #headerTitle {
+        font-size: 2.5rem;
+    }
+    #date,
+    #time {
+        font-size: 1.5rem;
+    }
 }
 
 
@@ -222,26 +254,96 @@ a {
     overflow: hidden;
     transition: width 0.25s, height 0.25s;
 }
-#optionsContainer div {
+#optionsContainer button {
     height: 6rem;
     width: 17.5rem;
+    background-color: unset;
+    border: unset;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
     transition: 0.25s;
+    cursor: pointer;
 }
-#optionsContainer div:hover::after {
+#optionsContainer button:hover::after {
     content: '';
     height: 5rem;
     width: 17.5rem;
     top: 0.5rem;
     left: 0;
-    background-color: #ffffff;
+    background-color: #dcdcdc;
     position: absolute;
     transition: 0.25s;
     z-index: -1;
 }
-#optionsContainer div:hover::after {
-    background-color: #dcdcdc;
+
+
+
+#formsBackground {
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    display: none;
+    position: absolute;
+    z-index: 5;
+}
+
+#createClassForm {
+    height: 80%;
+    width: 70%;
+    max-width: 70%;
+    top: -100%;
+    left: 15%;
+    background-color: #f8f8ff;
+    filter: drop-shadow(0 0 0.5rem #000000);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    z-index: 10;
+    transform: scale(0%);
+    transition: top 0.25s, transform 0.25s;
+}
+#createClassForm * {
+    margin: 1.5rem 0;
+}
+
+#createClassIconContainer {
+    width: 200px;
+    max-width: 50%;
+}
+#createClassIconContainer img {
+    width: 100%;
+}
+
+#createClassHeader {
+    font-size: 3rem;
+}
+
+#createClassIconInputsContainer {
+    max-width: 90%;
+    font-size: 1.8rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+}
+#createClassIconInputsContainer * {
+    width: 100%;
+}
+#createClassIconInputsContainer input {
+    padding: 0 0.5rem;
+}
+
+
+
+#createClassButtonContainer button {
+    padding: 0.5rem;
+    font-size: 2rem;
+    background-color: unset;
+    border: solid 2px #000000;
+    border-radius: 10vh;
+    cursor: pointer;
 }
