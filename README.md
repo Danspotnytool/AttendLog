@@ -5,6 +5,10 @@
   <img src="./paths/static/assets/images/Logo%20as%20Icon.png" height="200px">
 </p>
 
+<h2>Introduction</h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ever since online classes started, methods of recording attendances became uneasy. School attendance is a baseline factor in determining student success. Attendance is one of the most important because students are more likely to succeed when consistently attending schools. And an attendance record is one of the ways to keep track of a student's progress. So, if there are a lot of students, it would be a lot harder to keep track of students' progress in their academics. In addition to falling behind in academics, a student who is not in school regularly are more relieved to get into difficulties with the low and cause a problem in their communication.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As a solution to this, we created a Web-based application as an Attendance Monitoring System to help teachers and students record their attendance with just a click of a button. Our Attendance Monitoring System, AttendLog, is a Web-based application made to record students' daily attendance at the Asian Institute of Computer Studies Montalban. Using this application would help teachers record students' attendance as it is easy to use. This Web-based application ensures an accurate record of students' attendance data. Using this method will also aid in identifying a student's attendance eligibility criterion. And this could help teachers in distinguishing a student's attendance eligibility criterion.</p>
+
 <h2>Creators:</h2>
 <li>Baynosa, Daniel John</li>
 <li>Turalde, Rine</li>
