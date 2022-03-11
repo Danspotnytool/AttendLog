@@ -43,28 +43,76 @@
   This project depends on the following libraries:
 </p>
 
-Name            |     Version
-----------------|---------------
-axios           |     0.26.0
-bcrypt          |     5.0.1
-cors            |     2.8.5
-dotenv          |     16.0.0
-express         |     4.17.3
-firebase        |     9.6.7
-firebase-admin  |     10.0.2
-serve-favicon   |     2.5.0
-socket.io       |     4.4.1
-uuid            |     8.3.2
+<table>
+    <thead>
+        <tr>
+            <th align="left">Name</th>
+            <th align="center">Version</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td align="left">axios</td>
+            <td align="center">0.26.9</td>
+        </tr>
+        <tr>
+            <td align="left">bcrypt</td>
+            <td align="center">5.0.1</td>
+        </tr>
+        <tr>
+            <td align="left">cors</td>
+            <td align="center">2.8.5</td>
+        </tr>
+        <tr>
+            <td align="left">dotenv</td>
+            <td align="center">16.0.0</td>
+        </tr>
+        <tr>
+            <td align="left">express</td>
+            <td align="center">4.17.3</td>
+        </tr>
+        <tr>
+            <td align="left">firebase</td>
+            <td align="center">9.6.7</td>
+        </tr>
+        <tr>
+            <td align="left">firebase-admin</td>
+            <td align="center">10.0.2</td>
+        </tr>
+        <tr>
+            <td align="left">serve-favicon</td>
+            <td align="center">2.5.0</td>
+        </tr>
+        <tr>
+            <td align="left">socket.io</td>
+            <td align="center">4.4.1</td>
+        </tr>
+    </tbody>
+</table>
 
 <h3>Secrets</h3>
 <p>
   This project uses the following environment variables:
 </p>
 
-Variable Name           | Description
-------------------------| -------------------------
-FIREBASE_API_KEY        | The Firebase API key
-FIREBASE_DATABASE_URL   | The Firebase database URL
+<table>
+    <thead>
+        <tr>
+            <th align="left">Variable Name</th>
+            <th align="center">Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td align="left">FIREBASE_API_KEY</td>
+            <td align="center">The Firebase API key</td>
+        </tr>
+        <tr>
+            <td align="left">FIREBASE_DATABASE_URL</td>
+            <td align="center">The Firebase database URL</td>
+        </tr>
+    </tbody>
+</table>
 
 <p>To connect to the firebase database:</p>
 <pre>
