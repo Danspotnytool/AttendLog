@@ -17,18 +17,13 @@ router.use(bodyParser.json());
 
 
 // Get all users and usernames from the database
-let users;
-const updateAccountArray = async () => {
-    const dbUsers = await database.ref('/users').once('value').then((snapshot) => {
-        console.log('Users database is loaded');
-        return snapshot.val();
-    }).catch((err) => {
-        console.log(err);
+const users = [];
+const getUsers = async () => {
+    database.ref('/users').on('child_added', (snapshot) => {
+        users.push(snapshot.val());
     });
-
-    users = dbUsers;
 };
-updateAccountArray();
+getUsers();
 
 // Signup route
 router.post('/signup',  async (req, res, next) => {
@@ -36,6 +31,8 @@ router.post('/signup',  async (req, res, next) => {
     // Username, First name, Last name, Email address, and Password
     let { username, firstName, lastName, email, password } = req.body;
     res.statusCode = 200;
+    // Get the IP address of the user
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
     // Check if all the fields are filled
     if (!username || !firstName || !lastName || !email || !password) {
@@ -51,7 +48,7 @@ router.post('/signup',  async (req, res, next) => {
             code: '400'
         });
     };
-    
+
     if (username.length < 6 || firstName.length < 3 || lastName.length < 4 || email.length < 6 || password.length < 6) {
         return res.send({
             message: `Please make sure all the fields have the proper length
@@ -138,7 +135,8 @@ Password: 6-20 characters)`,
         lastName: lastName,
         email: email,
         password: password,
-        createdAt: Date.now()
+        dateCreated: Date.now(),
+        ipCreated: ip
     };
 
     // Write to the database
@@ -146,7 +144,6 @@ Password: 6-20 characters)`,
         await database.ref(`/users/${user.userID}`).set(user).then(() => {
             users[user.userID] = user;
         });
-        updateAccountArray();
 
         // Return the user
         res.send({
@@ -165,7 +162,6 @@ Password: 6-20 characters)`,
         });
     };
 });
-
 
 // Signin route
 router.post('/signin', async (req, res, next) => {
@@ -191,14 +187,12 @@ router.post('/signin', async (req, res, next) => {
         });
     };
 
-    const userKey = Object.keys(users).find(user => users[user].username == `${username}`);
-    const user = users[userKey];
+    const user = users.find(user => user.username == `${username}`);
 
     // Check if the password is valid
     try {
         const isValid = await bycrypt.compare(password, user.password);
         if (!isValid) {
-            console.log(isValid);
             return res.send({
                 message: 'Invalid Password',
                 code: '400'
