@@ -19,8 +19,40 @@ router.use(bodyParser.json());
 // Get all users and usernames from the database
 const users = [];
 const getUsers = async () => {
+    await database.ref('/users').once('value', (snapshot) => {
+        const usersArray = Object.values(snapshot.val());
+        usersArray.forEach((user) => {
+            users.push(user);
+        });
+        console.log('Users database is loaded');
+    });
+    // Listen to changes in the database
+    // Child added
     database.ref('/users').on('child_added', (snapshot) => {
-        users.push(snapshot.val());
+        // Check if this user is already in the array
+        // The structure of the array is:
+        // [
+        //     {
+        //         id: '',
+        //         username: '',
+        //         email: '',
+        //         password: '',
+        //         createdAt: '',
+        //     }
+        // ]
+        const user = snapshot.val();
+        const userExists = users.find(userFromArray => userFromArray.userID === user.userID);;
+        if (!userExists) {
+            users.push(user);
+        };
+    });
+    // Child removed
+    database.ref('/users').on('child_removed', (snapshot) => {
+        const user = snapshot.val();
+        const userIndex = users.findIndex(userFromArray => userFromArray.userID === user.userID);
+        if (userIndex > -1) {
+            users.splice(userIndex, 1);
+        };
     });
 };
 getUsers();
