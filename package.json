@@ -1,7 +1,7 @@
 {
-  "name": "capstone-project",
+  "name": "attendlog",
   "version": "1.0.0",
-  "description": "",
+  "description": "Attendance Monitoring System",
   "main": "main.js",
   "scripts": {
     "start": "main.js",
