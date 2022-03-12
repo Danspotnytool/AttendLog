@@ -45,9 +45,6 @@
                     <li dataTitle="Profile">
                         Profile
                     </li>
-                    <li dataTitle="Section">
-                        Section
-                    </li>
                     <li dataTitle="Settings">
                         Settings
                     </li>
@@ -71,6 +68,9 @@
                     <div id="time">4:20AM</div>
                 </div>
             </div>
+            <div id="classContainer">
+
+            </div>
         </div>
 
 
@@ -81,11 +81,11 @@
                 <img src="./assets/svg/create-or-join-button-icon.svg" alt="Create or Join Button">
             </div>
             <div id="optionsContainer">
-                <button class="noselect" id="joinClass">
-                    Join a Class
-                </button>
                 <button class="noselect" id="createClass">
                     Create a Class
+                </button>
+                <button class="noselect" id="joinClass">
+                    Join a Class
                 </button>
             </div>
         </div>
@@ -97,20 +97,49 @@
 
         <!-- Create Class Form -->
         <form id="createClassForm">
+            <div class="closeFormIcon">
+                <img src="./assets/svg/exit-form-icon copy.svg" alt="Exit Form">
+            </div>
             <div class="noselect" id="createClassIconContainer">
                 <img src="./assets/svg/create-class-icon.svg" alt="Create Class">
             </div>
             <div id="createClassHeader">
                 Create A Class
             </div>
-            <div id="createClassIconInputsContainer">
+            <div id="createClassInputsContainer">
                 <label for="className">Class Name:</label>
-                <input type="text" name="className" id="className" required placeholder="Class Name">
+                <input type="text" name="className" class="noselect" id="className" required placeholder="Class Name">
                 <label for="classColor">Class Color:</label>
-                <input type="color" name="classColor" id="classColor" value="#ffffff">
+                <input type="color" name="classColor" class="noselect" id="classColor" value="#ffffff">
+                <label for="classDescription">Class Description:</label>
+                <textarea name="classDescription" class="noselect" id="classDescription" cols="30" rows="3" maxlength="100" placeholder="Class Description"></textarea>
             </div>
-            <div id="createClassButtonContainer">
-                <button>Create Class</button>
+            <div class="classButtonContainer" id="createClassButtonContainer">
+                <button type="button" id="createClassButton">Create Class</button>
+                <button type="button" class="cancel">Cancel</button>
+            </div>
+        </form>
+
+        <!-- Join Class Form -->
+        <form id="joinClassForm">
+            <div class="closeFormIcon">
+                <img src="./assets/svg/exit-form-icon copy.svg" alt="Exit Form">
+            </div>
+            <div id="joinClassIconContainer">
+                <img src="./assets/svg/join-class-icon.svg" alt="Join Class">
+            </div>
+            <div id="joinClassHeader">
+                Join A Class
+            </div>
+            <div id="joinClassInputsContainer">
+                <label for="classID">Class ID:</label>
+                <input type="number" name="classID" class="noselect" id="classID" placeholder="Class ID">
+                <label for="classToken">Class Token:</label>
+                <input type="text" name="classToken" class="noselect" id="classToken" placeholder="Class Token">
+            </div>
+            <div class="classButtonContainer" id="joinClassButonContainer">
+                <button type="button" id="joinClassButton">Join Class</button>
+                <button type="button" class="cancel">Cancel</button>
             </div>
         </form>
     </body>
