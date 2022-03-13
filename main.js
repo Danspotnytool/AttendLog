@@ -40,15 +40,15 @@ const paths = require('./paths/index.js')(app);
 
 // Listen to port
 http.listen((port), () => {
-    console.log(`Server is running on port ${port}`);
+    logger.log(`Server is running on port ${port}`);
 });
 
 io.on('connection', (socket) => {
-    console.log(`User ${socket.id} connected`);
+    logger.log(`User ${socket.id} connected`);
 
 
 
     socket.on('disconnect', () => {
-        console.log(`User ${socket.id} disconnected`);
+        logger.log(`User ${socket.id} disconnected`);
     });
 });

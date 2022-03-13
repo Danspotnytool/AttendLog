@@ -10,6 +10,8 @@ const { v4: uuidv4 } = require('uuid');
 // Require firebase utility
 const { database } = require('../../util/databaseConnection.js');
 
+// Require all utilities
+const logger = require('../../util/logger.js');
 
 
 router.use(bodyParser.json());
@@ -24,7 +26,7 @@ const getUsers = async () => {
         usersArray.forEach((user) => {
             users.push(user);
         });
-        console.log('Users database is loaded');
+        logger.log('Users database loaded');
     });
     // Listen to changes in the database
     // Child added
@@ -152,7 +154,7 @@ Password: 6-20 characters)`,
         const hashedPassword = await bycrypt.hash(password, 10);
         password = hashedPassword;
     } catch (err) {
-        console.log(err);
+        logger.log(err);
         return res.send({
             message: 'Something went wrong',
             code: '400'
@@ -187,7 +189,7 @@ Password: 6-20 characters)`,
             code: '200'
         });
     } catch (err) {
-        console.log(err);
+        logger.log(err);
         return res.send({
             message: 'Something went wrong',
             code: '400'
@@ -242,7 +244,7 @@ router.post('/signin', async (req, res, next) => {
         });
 
     } catch (err) {
-        console.log(err);
+        logger.log(err);
         return res.send({
             message: 'Something went wrong',
             code: '400'

@@ -9,6 +9,8 @@ const { v4: uuidv4 } = require('uuid');
 // Require firebase utility
 const { database } = require('../../util/databaseConnection.js');
 
+// Require all utilities
+const logger = require('../../util/logger.js');
 
 
 router.use(bodyParser.json());
@@ -23,7 +25,7 @@ const getClasses = async () => {
         classesArray.forEach((classs) => {
             classes.push(classs);
         });
-        console.log('Classes database is loaded');
+        logger.log('Classes database loaded');
     });
     // Listen to changes in the database
     // Child added
@@ -67,8 +69,8 @@ router.post('/create', async (req, res) => {
     try {
         user.userID = JSON.parse(req.headers.cookie).userID;
         user.token = JSON.parse(req.headers.cookie).token;
-    } catch (error) {
-        console.log(error);
+    } catch (err) {
+        logger.log(err);
         return res.send({
             message: 'Invalid Authorization',
             code: '400'
@@ -134,8 +136,8 @@ router.get('/get', async (req, res) => {
     try {
         user.userID = JSON.parse(req.headers.cookie).userID;
         user.token = JSON.parse(req.headers.cookie).token;
-    } catch (error) {
-        console.log(error);
+    } catch (err) {
+        logger.log(err);
         return res.send({
             message: 'Invalid Authorization',
             code: '400'
@@ -210,8 +212,8 @@ router.post('/join', async (req, res) => {
     try {
         user.userID = JSON.parse(req.headers.cookie).userID;
         user.token = JSON.parse(req.headers.cookie).token;
-    } catch (error) {
-        console.log(error);
+    } catch (err) {
+        logger.log(err);
         return res.send({
             message: 'Invalid Authorization',
             code: '400'
@@ -252,7 +254,7 @@ router.post('/join', async (req, res) => {
             });
         };
         if (user.classes.includes(classID)) {
-            console.log('Class already joined');
+            logger.error('User already in class');
             return res.send({
                 message: 'User already in the class',
                 code: '400'

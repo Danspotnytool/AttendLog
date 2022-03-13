@@ -7,6 +7,9 @@ const path = require('path');
 // Require database
 const { database } = require('../util/databaseConnection.js');
 
+// Require all Utilites
+const logger = require('../util/logger.js');
+
 // Require all directions
 // Using fs
 const direction = fs.readdirSync(path.join(__dirname, './directions'));
@@ -15,7 +18,7 @@ const direction = fs.readdirSync(path.join(__dirname, './directions'));
 const accountSystems = fs.readdirSync(path.join(__dirname, './accountSystem'));
 
 module.exports = (app) => {
-    console.log(`Paths are now loaded`);
+    logger.log('Loading all routes');
 
     // Static files
     app.use(express.static(path.join(__dirname, './static/')));
