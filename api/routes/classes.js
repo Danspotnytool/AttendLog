@@ -252,10 +252,8 @@ router.post('/join', async (req, res) => {
                 code: '400'
             });
         };
-        // Check if the user is already in the class
-        if (user.classes.length > 0) {
-
-        } else if (user.classes.includes(classID)) {
+        if (user.classes.includes(classID)) {
+            console.log('Class already joined');
             return res.send({
                 message: 'User already in the class',
                 code: '400'
