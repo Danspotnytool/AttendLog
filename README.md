@@ -106,7 +106,7 @@
 <h4>Developer Notes:</h4>
 
 + This application requires Node.js version 12.22.10 or higher. Lower versions may affect its performance.
-+ Miss na kita :( Balik ka na HAHAHAHAHA 
++ If you have trouble starting the app for an unknown developer on MacOS, use <a href="https://support.apple.com/en-ph/guide/mac-help/mh40616/mac#:~:text=Open%20a%20Mac%20app%20from,as%20you%20can%20...">`this`</a> link.
 
 <h3>Secrets</h3>
 <p>
