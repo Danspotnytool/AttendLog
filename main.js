@@ -44,11 +44,11 @@ http.listen((port), () => {
 });
 
 io.on('connection', (socket) => {
-    console.log(`${logger.blue(`${socket.id}`)} has connected`);
+    console.log(`User ${socket.id} connected`);
 
 
 
     socket.on('disconnect', () => {
-        console.log(`${logger.red(`${socket.id}`)} has disconnected`);
+        console.log(`User ${socket.id} disconnected`);
     });
 });
