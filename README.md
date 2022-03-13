@@ -31,13 +31,6 @@
   This project is open source and you can contribute to it by making a pull request on our repository. 
 </p>
 
-[Fork this repository](https://github.com/Danspotnytool/AttendLog/fork)
-
-
-[Watch this repository](https://github.com/user/repository/subscription)
-
-[Create an Issue](https://github.com/user/repository/issues/new)
-
 <h3>Dependencies</h3>
 <p>
   This project depends on the following libraries:
@@ -89,6 +82,29 @@
         </tr>
     </tbody>
 </table>
+
+<h3>Start Contributing</h3>
+
+1. Clone the Repository
+    ```bash
+    git clone https://github.com/Danspotnytool/AttendLog.git
+    cd AttendLog
+    ```
+2. Install Dependencies
+    ```bash
+    npm install
+    ```
+3. Run the Local Server
+    ```bash
+    npm run start
+    ```
+    alternatively, you can run the server with nodemon using the following command:
+    ```bash
+    npm run nodemon
+    ```
+<h4>Developer Notes:</h4>
+<li> This application requires Node.js version 12.22.10 or higher. Lower versions may affect its performance.</li>
+<li> Miss na kita :( Balik ka na HAHAHAHAHA </li>
 
 <h3>Secrets</h3>
 <p>
