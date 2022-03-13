@@ -231,7 +231,6 @@ router.post('/join', async (req, res) => {
             user.classes = snapshot.val().classes;
         };
     });
-    console.log(user);
 
     // Get the request body
     const { classID, classToken } = req.body;
