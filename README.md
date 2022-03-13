@@ -102,9 +102,11 @@
     ```bash
     npm run nodemon
     ```
+
 <h4>Developer Notes:</h4>
-<li> This application requires Node.js version 12.22.10 or higher. Lower versions may affect its performance.</li>
-<li> Miss na kita :( Balik ka na HAHAHAHAHA </li>
+
++ This application requires Node.js version 12.22.10 or higher. Lower versions may affect its performance.
++ Miss na kita :( Balik ka na HAHAHAHAHA 
 
 <h3>Secrets</h3>
 <p>
