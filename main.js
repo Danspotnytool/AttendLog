@@ -41,6 +41,8 @@ const paths = require('./paths/index.js')(app);
 // Listen to port
 http.listen((port), () => {
     logger.log(`Server is running on port ${port}`);
+}).on('error', (err) => {
+    logger.error(err);
 });
 
 io.on('connection', (socket) => {
