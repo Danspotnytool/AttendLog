@@ -70,6 +70,7 @@ router.post('/signup',  async (req, res, next) => {
 
     // Check if all the fields are filled
     if (!username || !firstName || !lastName || !email || !password) {
+        logger.log(`${ip} - ${username} - Signup Attempt - Missing fields`);
         return res.send({
             message: 'Please fill in all the fields',
             code: '400'
@@ -77,6 +78,7 @@ router.post('/signup',  async (req, res, next) => {
     };
     // Check character lengths of the fields
     if (username.length > 20 || firstName.length > 20 || lastName.length > 20 || email.length > 50 || password.length > 20) {
+        logger.log(`${ip} - ${username} - Signup Attempt - Character length exceeded`);
         return res.send({
             message: 'Please make sure all the fields are less than 20 characters',
             code: '400'
@@ -84,6 +86,7 @@ router.post('/signup',  async (req, res, next) => {
     };
 
     if (username.length < 6 || firstName.length < 3 || lastName.length < 4 || email.length < 6 || password.length < 6) {
+        logger.log(`${ip} - ${username} - Signup Attempt - Character length is too short`);
         return res.send({
             message: `Please make sure all the fields have the proper length
 (Username: 6-20 characters
@@ -96,6 +99,7 @@ Password: 6-20 characters)`,
     };
     // Check if the email is valid
     if (!/^[^@]+@[^@.]+\.[a-z]+$/i.test(email)) {
+        logger.log(`${ip} - ${username} - Signup Attempt - Invalid email`);
         return res.send({
             message: 'Please make sure the email is valid',
             code: '400'
@@ -107,6 +111,7 @@ Password: 6-20 characters)`,
     // It should contain at least one uppercase letter
     // It should contain at least one lowercase letter
     if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})/.test(password)) {
+        logger.log(`${ip} - ${username} - Signup Attempt - Invalid password`);
         return res.send({
             message: 'The password should be at least 6 characters long and contain at least one number, one uppercase letter and one lowercase letter',
             code: '400'
@@ -115,6 +120,7 @@ Password: 6-20 characters)`,
 
     // Check if the username is already taken
     if (Object.keys(users).find(user => users[user].username == `${username}`)) {
+        logger.log(`${ip} - ${username} - Signup Attempt - Username already taken`);
         return res.send({
             message: 'The username is already taken',
             code: '400'
@@ -122,18 +128,21 @@ Password: 6-20 characters)`,
     };
     // Usernames can't have special characters, spaces, or start with a number
     if (/[^a-zA-Z0-9]/.test(username)) {
+        logger.log(`${ip} - ${username} - Signup Attempt - Invalid username (special characters)`);
         return res.send({
             message: 'The username can only contain letters and numbers',
             code: '400'
         });
     };
     if (/^[0-9]/.test(username)) {
+        logger.log(`${ip} - ${username} - Signup Attempt - Invalid username (starts with a number)`);
         return res.send({
             message: `The username can't start with a number`,
             code: '400'
         });
     };
     if (/\s/.test(username)) {
+        logger.log(`${ip} - ${username} - Signup Attempt - Invalid username (contains a space)`);
         return res.send({
             message: `The username can't contain spaces`,
             code: '400'
@@ -143,6 +152,7 @@ Password: 6-20 characters)`,
 
     // Check if the email is already taken
     if (Object.keys(users).find(user => users[user].email == `${email}`)) {
+        logger.log(`${ip} - ${username} - Signup Attempt - Email already taken`);
         return res.send({
             message: 'The email is already taken',
             code: '400'
@@ -180,6 +190,7 @@ Password: 6-20 characters)`,
         });
 
         // Return the user
+        logger.log(`${ip} - ${username} - Signup Success`);
         res.send({
             message: 'Account created',
             user: {
@@ -205,6 +216,7 @@ router.post('/signin', async (req, res, next) => {
 
     // Check if username and password is defined
     if (!username || !password) {
+        logger.log(`${ip} - ${username} - Signin Attempt - Missing fields`);
         return res.send({
             message: 'Please fill in all the fields',
             code: '400'
@@ -215,6 +227,7 @@ router.post('/signin', async (req, res, next) => {
     // The usernames is an array of objects
     // Username: UserID
     if (!(Object.keys(users).find(user => users[user].username == `${username}`))) {
+        logger.log(`${ip} - ${username} - Signin Attempt - Invalid username`);
         return res.send({
             message: 'Invalid User',
             code: '400'
@@ -227,6 +240,7 @@ router.post('/signin', async (req, res, next) => {
     try {
         const isValid = await bycrypt.compare(password, user.password);
         if (!isValid) {
+            logger.log(`${ip} - ${username} - Signin Attempt - Invalid password`);
             return res.send({
                 message: 'Invalid Password',
                 code: '400'
@@ -234,6 +248,7 @@ router.post('/signin', async (req, res, next) => {
         };
 
         // Return the user
+        logger.log(`${ip} - ${username} - Signin Success`);
         res.send({
             message: 'Logged in',
             user: {
