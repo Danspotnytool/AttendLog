@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "main.js",
-    "nodemon": "nodemon main.js -l",
+    "nodemon": "nodemon main.js -l --ignore ./paths/static/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
