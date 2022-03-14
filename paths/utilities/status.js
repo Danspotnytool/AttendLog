@@ -20,4 +20,4 @@ module.exports = {
         // });
         res.sendFile(path.join(__dirname,'../static/status.html'));
     }
-}
+};
