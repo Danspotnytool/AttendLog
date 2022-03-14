@@ -45,7 +45,7 @@ logger.log = (message) => {
     console.log(`[${logger.green(`${index}`)}] [${logger.getTime(true)}] ${message}`);
     logger.write(`[${index}] [${logger.getTime(false)}] [LOG] ${message}`);
 
-    logger.emit('log', `[${index}] [${logger.getTime(false)}] [LOG] ${message}`);
+    logger.emit('error', { index: index, time: logger.getTime(false), message: message });
 
     index += 1;
 };
@@ -53,7 +53,7 @@ logger.error = (message) => {
     console.log(`[${logger.red(`${index}`)}] [${logger.getTime(true)}] ${logger.red(message)}`);
     logger.write(`[${index}] [${logger.getTime(false)}] [ERROR] ${message}`);
 
-    logger.emit('error', `[${index}] [${logger.getTime(false)}] [ERROR] ${message}`);
+    logger.emit('error', { index: index, time: logger.getTime(false), message: message });
 
     index += 1;
 };
