@@ -26,6 +26,8 @@ module.exports = (app) => {
     // Static files
     app.use(express.static(path.join(__dirname, './static/')));
 
+
+
     // For each direction
     direction.forEach((dir) => {
         // Require the direction

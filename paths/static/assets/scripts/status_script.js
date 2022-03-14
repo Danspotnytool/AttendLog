@@ -58,3 +58,14 @@ const signInsChart = new Chart(signInsChartElem, getChartConfig('Sign Ins'));
 
 const connectedUsersChartElem = document.getElementById('connectedUsersChartElem');
 const connectedUsersChart = new Chart(connectedUsersChartElem, getChartConfig('Connected Users'));
+
+
+
+const port = location.port;
+
+// Connect to server socket
+// Path: '/status'
+const socket = io.connect(`${window.location.href}`);
+socket.on('connect', () => {
+    console.log('Connected to server');
+});

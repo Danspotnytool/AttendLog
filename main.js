@@ -23,13 +23,14 @@ const global = require('./util/global.js');
 // Port
 const port = process.env.PORT || 8080;
 
-const io = require('socket.io')(http, {});
+const socket = require('socket.io');
+const io = socket(http, {});
 
 // Cors restriction
 // Restrict all requests to this domain from other domains
 app.use(cors({
     origin: `http://localhost:${port}`,
-    credentials: true,
+    credentials: true
 }));
 
 // Change the favicon
@@ -48,6 +49,7 @@ http.listen((port), () => {
     logger.error(err);
 });
 
+// Listen to socket connection
 io.on('connection', (socket) => {
     logger.log(`User ${socket.id} connected`);
     global.connectedUser += 1;
@@ -56,6 +58,18 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         logger.log(`User ${socket.id} disconnected`);
+        global.connectedUser -= 1;
+    });
+});
+
+// Listen to socket connection on status
+io.of('/status').on('connection', (socket) => {
+
+    logger.log(`User ${socket.id} connected on status`);
+    global.connectedUser += 1;
+
+    socket.on('disconnect', () => {
+        logger.log(`User ${socket.id} disconnected on status`);
         global.connectedUser -= 1;
     });
 });
