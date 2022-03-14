@@ -41,19 +41,19 @@ logger.write = (message) => {
         };
     });
 };
-logger.log = (message) => {
+logger.log = async (message) => {
     console.log(`[${logger.green(`${index}`)}] [${logger.getTime(true)}] ${message}`);
     logger.write(`[${index}] [${logger.getTime(false)}] [LOG] ${message}`);
 
-    logger.emit('error', { index: index, time: logger.getTime(false), message: message });
+    logger.emit('log', { index: index, time: Date.now(), message: message });
 
     index += 1;
 };
-logger.error = (message) => {
+logger.error =  async (message) => {
     console.log(`[${logger.red(`${index}`)}] [${logger.getTime(true)}] ${logger.red(message)}`);
     logger.write(`[${index}] [${logger.getTime(false)}] [ERROR] ${message}`);
 
-    logger.emit('error', { index: index, time: logger.getTime(false), message: message });
+    logger.emit('error', { index: index, time: Date.now(), message: message });
 
     index += 1;
 };
