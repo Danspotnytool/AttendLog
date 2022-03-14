@@ -17,6 +17,9 @@ const direction = fs.readdirSync(path.join(__dirname, './directions'));
 // Require accountSystem directions
 const accountSystems = fs.readdirSync(path.join(__dirname, './accountSystem'));
 
+// Require all utilites directions
+const utilities = fs.readdirSync(path.join(__dirname, './utilities'));
+
 module.exports = (app) => {
     logger.log('Loading all routes');
 
@@ -76,6 +79,17 @@ module.exports = (app) => {
         // Add the direction to the app
         app.get(`/${direction}`, (req, res, next) => {
             accountSystemObj.execute(req, res, next);
+        });
+    });
+
+
+
+
+    utilities.forEach((dir) => {
+        // Require the direction
+        const utilitesObj = require(`./utilities/${dir}`);
+        app.get(`/${utilitesObj.direction}`, (req, res, next) => {
+            utilitesObj.execute(req, res, next);
         });
     });
 

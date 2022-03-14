@@ -18,6 +18,7 @@ const { database } = require('./util/databaseConnection.js');
 
 // Require all utilities
 const logger = require('./util/logger.js');
+const global = require('./util/global.js');
 
 // Port
 const port = process.env.PORT || 8080;
@@ -41,6 +42,7 @@ const paths = require('./paths/index.js')(app);
 // Listen to port
 http.listen((port), () => {
     logger.log(`Server is running on port ${port}`);
+    global.timestart = Date.now();
 }).on('error', (err) => {
     logger.error(err);
 });
