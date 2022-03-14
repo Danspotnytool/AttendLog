@@ -16,10 +16,45 @@
 
         <title>Server Status - AttendLog</title>
         <link rel="shortcut icon" href="./assets/images/favicon.png" type="image/x-icon">
-        <!-- <link rel="stylesheet" href="./assets/styles/.css"> -->
-        <!-- <script defer src="./assets/scripts/_script.js"></script> -->
+        <link rel="stylesheet" href="./assets/styles/status.css">
+        <script defer src="./assets/cdn/chart.min.js"></script>
+        <script defer src="./assets/scripts/status_script.js"></script>
     </head>
     <body>
-        Server Status
+        <div id="mainBannerContainer">
+            <div><img src="./assets/images/Logo as Icon.png" alt=""></div>
+            <div><span>A</span>TTEND<span>L</span>OG</div>
+        </div>
+        <div id="statusListContainer">
+            <header id="API_USAGE_REF"><a href="#API_USAGE_REF">API usage</a></header>
+            <div class="graphContainer" id="apiUsageContainer">
+                <canvas id="apiUsageChartElem">
+                    <p>This is probably not working</p>
+                </canvas>
+            </div>
+            <header id="SIGN_UPS_REF"><a href="#SIGN_UPS_REF">Sign Ups</a></header>
+            <div class="graphContainer" id="signUpsContainer">
+                <canvas id="signUpsChartElem">
+                    <p>This is probably not working</p>
+                </canvas>
+            </div>
+            <header id="SIGN_OUTS_REF"><a href="#SIGN_OUTS_REF">Sign Outs</a></header>
+            <div class="graphContainer" id="signInsContainer">
+                <canvas id="signInsChartElem">
+                    <p>This is probably not working</p>
+                </canvas>
+            </div>
+            <header id="CONNECTED_USERS_REF"><a href="#CONNECTED_USERS_REF">Connected Users</a></header>
+            <div class="graphContainer" id="connectedUsersContainer">
+                <canvas id="connectedUsersChartElem">
+                    <p>This is probably not working</p>
+                </canvas>
+            </div>
+        </div>
+        <div id="uptimeContainer">
+            <header id="UPTIME_REF"><a href="#UPTIME_REF">Uptime</a></header>
+            <div id="uptimeSentence">Server is up for: </div>
+            <div id="startupTime">0000000000000</div>
+        </div>
     </body>
 </html>

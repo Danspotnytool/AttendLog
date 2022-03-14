@@ -1,0 +1,154 @@
+
+:root {
+    --font-color: #000000;
+}
+
+@font-face {
+    font-family: 'Kollektif';
+    src: url('../fonts/Kollektif.ttf');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+html {
+    font-size: 62.5%;
+    scroll-behavior: smooth;
+}
+body {
+    image-rendering: crisp-edges;
+    background-color: #dcdcdc;
+    font-size: 0px;
+}
+a {
+    text-decoration: none;
+    color: unset;
+}
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+}
+
+
+
+#mainBannerContainer {
+    height: 40rem;
+    width: 100%;
+    font-size: 10rem;
+    font-family: 'Kollektif';
+    color: #ffffff;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: #01284D;
+}
+#mainBannerContainer div img {
+    height: 20rem;
+}
+#mainBannerContainer div span {
+    font-size: 12rem;
+}
+@media screen and (max-width: 950px) {
+    #mainBannerContainer {
+        height: 30rem;
+        font-size: 8rem;
+    }
+    #mainBannerContainer div img {
+        height: 15rem;
+    }
+    #mainBannerContainer div span {
+        font-size: 10rem;
+    }
+}
+@media screen and (max-width: 700px) {
+    #mainBannerContainer {
+        height: 30rem;
+        font-size: 5rem;
+    }
+    #mainBannerContainer div img {
+        height: 10rem;
+    }
+    #mainBannerContainer div span {
+        font-size: 7rem;
+    }
+}
+@media screen and (max-width: 500px) {
+    #mainBannerContainer {
+        height: 40rem;
+        flex-direction: column;
+    }
+    #mainBannerContainer div img {
+        height: 20rem;
+    }
+    #mainBannerContainer div span {
+        font-size: 7rem;
+    }
+}
+
+
+
+#statusListContainer {
+    width: 700px;
+    max-width: 95%;
+    margin: 5rem auto;
+    padding-top: 2.5rem;
+    font-size: 3rem;
+    background-color: #ffffff;
+}
+
+header {
+    width: 90%;
+    margin: auto;
+    margin-top: 2.5rem;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: solid 1px #dcdcdc;
+    cursor: pointer;
+}
+header:hover {
+    text-decoration: underline;
+}
+
+.graphContainer {
+    width: 70%;
+    margin: unset auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid #dcdcdc;
+    margin: 1rem auto;
+}
+@media screen and (max-width: 700px) {
+    .graphContainer {
+        width: 90%;
+    }
+}
+
+
+
+#uptimeContainer {
+    margin-bottom: 5rem;
+}
+#uptimeContainer header {
+    width: 80%;
+    font-size: 3rem;
+    border-bottom: solid 1px #000000;
+}
+#uptimeContainer div {
+    margin: 1rem auto;
+    font-size: 2rem;
+    text-align: center;
+}

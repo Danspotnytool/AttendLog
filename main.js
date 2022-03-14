@@ -43,16 +43,19 @@ const paths = require('./paths/index.js')(app);
 http.listen((port), () => {
     logger.log(`Server is running on port ${port}`);
     global.timestart = Date.now();
+    global.connectedUser = 0;
 }).on('error', (err) => {
     logger.error(err);
 });
 
 io.on('connection', (socket) => {
     logger.log(`User ${socket.id} connected`);
+    global.connectedUser += 1;
 
 
 
     socket.on('disconnect', () => {
         logger.log(`User ${socket.id} disconnected`);
+        global.connectedUser -= 1;
     });
 });

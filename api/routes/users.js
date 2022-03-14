@@ -12,6 +12,7 @@ const { database } = require('../../util/databaseConnection.js');
 
 // Require all utilities
 const logger = require('../../util/logger.js');
+const global = require('../../util/global.js');
 
 
 router.use(bodyParser.json());
@@ -27,6 +28,7 @@ const getUsers = async () => {
             users.push(user);
         });
         logger.log('Users database loaded');
+        global.classesDBIsLoaded = true;
     });
     // Listen to changes in the database
     // Child added
