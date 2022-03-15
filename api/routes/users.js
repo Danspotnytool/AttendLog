@@ -5,6 +5,7 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const bycrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
+const socketClient = require('socket.io-client');
 
 
 // Require firebase utility
@@ -14,8 +15,23 @@ const { database } = require('../../util/databaseConnection.js');
 const logger = require('../../util/logger.js');
 const global = require('../../util/global.js');
 
+// Port
+const port = process.env.PORT || 8080;
+
 
 router.use(bodyParser.json());
+
+
+
+// Connect to socket.io client
+const io = socketClient(`http://localhost:${port}/apiCalls`);
+io.on('connect', () => {
+    logger.log('Users socket connected');
+});
+// Send a message
+const sendMessage = (message) => {
+    io.emit(`${process.env.APP_API_KEY}`, message);
+};
 
 
 
@@ -63,6 +79,10 @@ getUsers();
 
 // Signup route
 router.post('/signup',  async (req, res, next) => {
+    sendMessage(JSON.stringify({
+        type: 'signup',
+    }));
+
     // Get the data from the request
     // Username, First name, Last name, Email address, and Password
     let { username, firstName, lastName, email, password } = req.body;
@@ -212,9 +232,15 @@ Password: 6-20 characters)`,
 
 // Signin route
 router.post('/signin', async (req, res, next) => {
+    sendMessage(JSON.stringify({
+        type: 'signin',
+    }));
+
     // Get the data from the request
     // Username and Password
     const { username, password } = req.body;
+    // Get the IP address of the user
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
     // Check if username and password is defined
     if (!username || !password) {

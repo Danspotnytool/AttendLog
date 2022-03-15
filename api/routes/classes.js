@@ -4,6 +4,7 @@ const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
 const { v4: uuidv4 } = require('uuid');
+const socketClient = require('socket.io-client');
 
 
 // Require firebase utility
@@ -13,8 +14,23 @@ const { database } = require('../../util/databaseConnection.js');
 const logger = require('../../util/logger.js');
 const global = require('../../util/global.js');
 
+// Port
+const port = process.env.PORT || 8080;
+
 
 router.use(bodyParser.json());
+
+
+
+// Connect to socket.io client
+const io = socketClient(`http://localhost:${port}/apiCalls`);
+io.on('connect', () => {
+    logger.log('Classes socket connected');
+});
+// Send a message
+const sendMessage = (message) => {
+    io.emit(`${process.env.APP_API_KEY}`, message);
+};
 
 
 
@@ -61,7 +77,11 @@ getClasses();
 
 
 // Create a new class
-router.post('/create', async (req, res) => {
+router.post('/create', async (req, res) => {    
+    sendMessage(JSON.stringify({
+        type: 'createClass',
+    }));
+
     const { className, classColor, classDescription } = req.body;
     // Validate the token on the header cookie
     const user = {
@@ -130,6 +150,10 @@ router.post('/create', async (req, res) => {
 
 // Getting user's classes
 router.get('/get', async (req, res) => {
+    sendMessage(JSON.stringify({
+        type: 'getClasses'
+    }));
+
     // Validate the token on the header cookie
     const user = {
         userID: '',
@@ -139,7 +163,7 @@ router.get('/get', async (req, res) => {
         user.userID = JSON.parse(req.headers.cookie).userID;
         user.token = JSON.parse(req.headers.cookie).token;
     } catch (err) {
-        logger.log(err);
+        logger.log(`${ip} - ${username} - Get Class Attempt - Invalid Authorization`);
         return res.send({
             message: 'Invalid Authorization',
             code: '400'
@@ -149,6 +173,7 @@ router.get('/get', async (req, res) => {
     const userRef = database.ref(`/users/${user.userID}`);
     await userRef.once('value', (snapshot) => {
         if (snapshot.val().token !== user.token) {
+            logger.log(`${ip} - ${username} - Get Class Attempt - Invalid Authorization`);
             return res.send({
                 message: 'Invalid Authorization',
                 code: '400'
@@ -195,6 +220,7 @@ router.get('/get', async (req, res) => {
         // Send the response
         return res.send(userClassesWithTeacherMapped); 
     };
+    logger.log(`${ip} - ${username} - Get Class Attempt - No Classes Found`);
     res.send({
         message: 'No classes found',
         code: '404'
@@ -204,7 +230,11 @@ router.get('/get', async (req, res) => {
 
 
 // Join a class
-router.post('/join', async (req, res) => {
+router.post('/join', async (req, res) => {    
+    sendMessage(JSON.stringify({
+        type: 'joinClass',
+    }));
+
     // Validate the token on the header cookie
     const user = {
         userID: '',
@@ -215,7 +245,7 @@ router.post('/join', async (req, res) => {
         user.userID = JSON.parse(req.headers.cookie).userID;
         user.token = JSON.parse(req.headers.cookie).token;
     } catch (err) {
-        logger.log(err);
+        logger.log(`${ip} - ${username} - Join Class Attempt - Invalid Authorization`);
         return res.send({
             message: 'Invalid Authorization',
             code: '400'
@@ -225,6 +255,7 @@ router.post('/join', async (req, res) => {
     const userRef = database.ref(`/users/${user.userID}`);
     await userRef.once('value', (snapshot) => {
         if (snapshot.val().token !== user.token) {
+            logger.log(`${ip} - ${username} - Join Class Attempt - Invalid Authorization`);
             return res.send({
                 message: 'Invalid Authorization',
                 code: '400'
@@ -243,6 +274,7 @@ router.post('/join', async (req, res) => {
     database.ref(`/classes/${classID}`).once('value', async (snapshot) => {
         // Check if the class exist
         if (!snapshot.val()) {
+            logger.log(`${ip} - ${username} - Join Class Attempt - Class Not Found`);
             return res.send({
                 message: 'Class not found',
                 code: '404'
@@ -250,13 +282,14 @@ router.post('/join', async (req, res) => {
         };
         // Check if the classToken is valid
         if (snapshot.val().classToken !== classToken) {
+            logger.log(`${ip} - ${username} - Join Class Attempt - Invalid Class Token`);
             return res.send({
                 message: 'Invalid classToken',
                 code: '400'
             });
         };
         if (user.classes.includes(classID)) {
-            logger.error('User already in class');
+            logger.log(`${ip} - ${username} - Join Class Attempt - Already Joined Class`);
             return res.send({
                 message: 'User already in the class',
                 code: '400'

@@ -29,7 +29,7 @@ module.exports = (app) => {
 
 
     // For each direction
-    direction.forEach((dir) => {
+    direction.forEach((dir, io) => {
         // Require the direction
         const directionObj = require(`./directions/${dir}`);
 
