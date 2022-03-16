@@ -73,12 +73,24 @@
             <td align="center">10.0.2</td>
         </tr>
         <tr>
+            <td align="left">ms</td>
+            <td align="center">2.1.3</td>
+        </tr>
+        <tr>
             <td align="left">serve-favicon</td>
             <td align="center">2.5.0</td>
         </tr>
         <tr>
             <td align="left">socket.io</td>
             <td align="center">4.4.1</td>
+        </tr>
+        <tr>
+            <td align="left">socket.io-client</td>
+            <td align="center">4.4.1</td>
+        </tr>
+        <tr>
+            <td align="left">uuid</td>
+            <td align="center">8.3.2</td>
         </tr>
     </tbody>
 </table>
