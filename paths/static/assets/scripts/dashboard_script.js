@@ -2,22 +2,6 @@
 // Get the port
 const port = location.port;
 
-// // Connect to Socket.IO server
-// const socket = io();
-
-// socket.on('connect', () => {
-//     console.log(`Connected to the server as: ${socket.id}`);
-// });
-// socket.on('disconnect', () => {
-//     console.log('Disconnected from the server');
-//     // Distroy the socket
-//     socket.destroy();
-// });
-// socket.on('error', (error) => {
-//     console.log(error);
-//     socket.destroy();
-// });
-
 
 
 const sidePanel = document.getElementById('sidePanel');
@@ -401,3 +385,21 @@ joinClassButton.onclick = async (event) => {
         console.log(err);
     });
 };
+
+
+
+// Connect to Socket.IO server
+const socket = io();
+
+socket.on('connect', () => {
+    console.log(`Connected to the server as: ${socket.id}`);
+});
+socket.on('disconnect', () => {
+    console.log('Disconnected from the server');
+    // Distroy the socket
+    socket.destroy();
+});
+socket.on('error', (error) => {
+    console.log(error);
+    socket.destroy();
+});
