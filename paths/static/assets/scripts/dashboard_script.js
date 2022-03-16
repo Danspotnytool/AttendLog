@@ -111,7 +111,7 @@ menuButton.onclick = () => { displaySidePanel(); };
 signOutButton.onclick = () => {
     localStorage.removeItem('user');
     document.cookie = '{}';
-    window.location.href = './signin';
+    window.location.href = `http://localhost:${port}/signin`;
 };
 
 
