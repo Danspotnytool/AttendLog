@@ -84,51 +84,52 @@ const connectedUsersChart = new Chart(connectedUsersChartElem, getChartConfig('C
 
 
 const port = location.port;
-
-// Path: '/status'
-const statusSocket = io.connect(`${window.location.href}`);
-statusSocket.on('connect', () => {
-    console.log(`Connected to server as ${statusSocket.id}`);
-});
-statusSocket.on('disconnect', () => {
-    console.log(`Disconnected from server as ${statusSocket.id}`);
-});
-statusSocket.on('connectedUsers', (data) => {
-    connectedUsersChart.data.datasets[0].data = data;
-    connectedUsersChart.update();
-});
-statusSocket.on('apiCalls', (data) => {
-    data.forEach((data, index) => {
-        apiCallsChart.data.labels[index] = '';
+if (window.location.origin != 'http://127.0.0.1:5500') {
+    // Path: '/status'
+    const statusSocket = io.connect(`${window.location.href}`);
+    statusSocket.on('connect', () => {
+        console.log(`Connected to server as ${statusSocket.id}`);
     });
-    apiCallsChart.data.datasets[0].data = data;
-
-    apiCallsChart.update();
-});
-statusSocket.on('signups', (data) => {
-    data.forEach((data, index) => {
-        signUpsChart.data.labels[index] = '';
+    statusSocket.on('disconnect', () => {
+        console.log(`Disconnected from server as ${statusSocket.id}`);
     });
-    signUpsChart.data.datasets[0].data = data;
-
-    signUpsChart.update();
-});
-statusSocket.on('signins', (data) => {
-    data.forEach((data, index) => {
-        signInsChart.data.labels[index] = '';
+    statusSocket.on('connectedUsers', (data) => {
+        connectedUsersChart.data.datasets[0].data = data;
+        connectedUsersChart.update();
     });
-    signInsChart.data.datasets[0].data = data;
-
-    signInsChart.update();
-});
-
-
-
-statusSocket.on('uptime', (data) => {
-    const uptimeSentence = document.getElementById('uptimeSentence');
-    uptimeSentence.innerText = `Server has been up for: ${data}`;
-});
-statusSocket.on('startupTime', (data) => {
-    const startupTime = document.getElementById('startupTime');
-    startupTime.innerText = `${data}`;
-});
+    statusSocket.on('apiCalls', (data) => {
+        data.forEach((data, index) => {
+            apiCallsChart.data.labels[index] = '';
+        });
+        apiCallsChart.data.datasets[0].data = data;
+    
+        apiCallsChart.update();
+    });
+    statusSocket.on('signups', (data) => {
+        data.forEach((data, index) => {
+            signUpsChart.data.labels[index] = '';
+        });
+        signUpsChart.data.datasets[0].data = data;
+    
+        signUpsChart.update();
+    });
+    statusSocket.on('signins', (data) => {
+        data.forEach((data, index) => {
+            signInsChart.data.labels[index] = '';
+        });
+        signInsChart.data.datasets[0].data = data;
+    
+        signInsChart.update();
+    });
+    
+    
+    
+    statusSocket.on('uptime', (data) => {
+        const uptimeSentence = document.getElementById('uptimeSentence');
+        uptimeSentence.innerText = `Server has been up for: ${data}`;
+    });
+    statusSocket.on('startupTime', (data) => {
+        const startupTime = document.getElementById('startupTime');
+        startupTime.innerText = `${data}`;
+    });
+};

@@ -389,17 +389,16 @@ joinClassButton.onclick = async (event) => {
 
 
 // Connect to Socket.IO server
-const socket = io();
+if (window.location.origin != 'http://127.0.0.1:5500') {
+    const socket = io();
 
-socket.on('connect', () => {
-    console.log(`Connected to the server as: ${socket.id}`);
-});
-socket.on('disconnect', () => {
-    console.log('Disconnected from the server');
-    // Distroy the socket
-    socket.destroy();
-});
-socket.on('error', (error) => {
-    console.log(error);
-    socket.destroy();
-});
+    socket.on('connect', () => {
+        console.log(`Connected to the server as: ${socket.id}`);
+    });
+    socket.on('disconnect', () => {
+        console.log('Disconnected from the server');
+    });
+    socket.on('error', (error) => {
+        socket.destroy();
+    });
+};
