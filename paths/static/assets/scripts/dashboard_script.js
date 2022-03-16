@@ -221,95 +221,41 @@ setInterval(() => {
 }, 1000);
 
 
-// Get user's classes
-const getUserClasses = async () => {
-    // Errase the classes
-    const classContainer = document.getElementById('classContainer');
-    if (classContainer.children.length > 0) {
-        while (classContainer.firstChild) {
-            classContainer.removeChild(classContainer.firstChild);
-        };
-    };
 
-    fetch('/api/classes/get', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }).then(response => response.json())
-    .then(data => {
-        if (data.code === '400') {
-            return console.log(data.message);
-        } else {
-            const classes = Array.from(data);
-            const classContainer = document.getElementById('classContainer');
-            classes.forEach((classData) => {
-                const classCard = document.createElement('div');
-                classCard.className = 'classCard';
-                classCard.style.backgroundColor = `${classData.classColor}`;
+// Checking what page we are on
+const checkPage = async () => {
+    // Get the pathname
+    const pathname = window.location.pathname;
+    switch (pathname) {
+        case '/dashboard':
+            // Get the Main Panel Header
+            const headerTitle = document.getElementById('headerTitle');
+            headerTitle.innerHTML = 'Dashboard';
 
-                // Check if the class color is dark or light
-                const color = classData.classColor;
-                let r = parseInt(color.substring(1, 3), 16);
-                let g = parseInt(color.substring(3, 5), 16);
-                let b = parseInt(color.substring(5, 7), 16);
-                const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+            fetch('./dashboard/classes', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then((response) => {
+                return response.text();
+            }).then((data) => {
+                const mainContainer = document.getElementById('mainContainer');
+                mainContainer.innerHTML = data;
 
-                const titleCard = document.createElement('div');
-                if (brightness < 125) {
-                    titleCard.style.color = 'white';
-                    const newR = Math.round(r * 0.8).toString(16);
-                    const newG = Math.round(g * 0.8).toString(16);
-                    const newB = Math.round(b * 0.8).toString(16);
-                    const newColor = `#${newR}${newG}${newB}`;
-                    classCard.style.backgroundColor = `${newColor}`;
-                } else {
-                    titleCard.style.color = 'black';
-                    const newR = Math.round(r * 1.2).toString(16);
-                    const newG = Math.round(g * 1.2).toString(16);
-                    const newB = Math.round(b * 1.2).toString(16);
-                    const newColor = `#${newR}${newG}${newB}`;
-                    classCard.style.backgroundColor = `${newColor}`;
-                };
-                titleCard.className = 'titleCard';
-
-                classCard.appendChild(titleCard);
-
-                const title = document.createElement('h3');
-                title.innerHTML = `${classData.className}`;
-                titleCard.appendChild(title);
-
-                const infoCard = document.createElement('div');
-                infoCard.className = 'infoCard';
-                titleCard.appendChild(infoCard);
-
-                const teacherName = document.createElement('h4');
-                teacherName.innerText = `${classData.teacherName}`;
-                infoCard.appendChild(teacherName);
-
-                const studentsNumber = document.createElement('h4');
-                studentsNumber.innerText = `${classData.numberOfStudents || 0}`;
-                infoCard.appendChild(studentsNumber);
-
-                const description = document.createElement('p');
-                description.className = 'description';
-                description.innerText = `${classData.classDescription}`;
-                if (brightness < 125) {
-                    description.style.color = 'white';
-                } else {
-                    description.style.color = 'black';
-                };
-                classCard.appendChild(description);
-
-
-                classContainer.appendChild(classCard);
+                // Get script tags inside the mainContainer
+                const scriptTags = Array.from(document.getElementById('mainContainer').getElementsByTagName('script'));
+                scriptTags.forEach((script) => {
+                    eval(script.innerHTML);
+                });
             });
-        };
-    }).catch((err) => {
-        console.log(err);
-    });
+            break;
+    
+        default:
+            break;
+    };
 };
-getUserClasses();
+checkPage();
 
 
 
@@ -340,9 +286,20 @@ createClassButton.onclick = async (event) => {
         if (data.code === '400') {
             return console.log(data.message);
         } else {
-            getUserClasses();
             formsBackground.click();
             createClassForm.reset();
+            // Check if the user is on the dashboard page
+            const pathname = window.location.pathname;
+            if (pathname === '/dashboard') {
+                // Get the script tags inside the mainContainer
+                const scriptTags = Array.from(document.getElementById('mainContainer').getElementsByTagName('script'));
+                scriptTags.forEach((script) => {
+                    eval(script.innerHTML);
+                });
+            } else {
+                // Redirect to the dashboard page
+                window.location.href = '/dashboard';
+            };
         };
     }).catch(err => {
         console.log(err);
@@ -375,11 +332,20 @@ joinClassButton.onclick = async (event) => {
         if (data.code === '400') {
             // If the class is not found
         } else {
-            getUserClasses();
             formsBackground.click();
             joinClassForm.reset();
-            // Click the forms background to close the forms
-            formsBackground.click();
+            // Check if the user is on the dashboard page
+            const pathname = window.location.pathname;
+            if (pathname === '/dashboard') {
+                // Get the script tags inside the mainContainer
+                const scriptTags = Array.from(document.getElementById('mainContainer').getElementsByTagName('script'));
+                scriptTags.forEach((script) => {
+                    eval(script.innerHTML);
+                });
+            } else {
+                // Redirect to the dashboard page
+                window.location.href = '/dashboard';
+            };
         };
     }).catch(err => {
         console.log(err);

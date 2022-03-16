@@ -12,7 +12,12 @@ const logger = require('../util/logger.js');
 
 // Require all directions
 // Using fs
-const direction = fs.readdirSync(path.join(__dirname, './directions'));
+// Ignore folders
+const direction = fs.readdirSync(path.join(__dirname, './directions')).filter((file) => {
+    return file.endsWith('.js');
+});
+// Require all dashboardDirections
+const dashboardDirections = fs.readdirSync(path.join(__dirname, './directions/dashboardDirections'));
 
 // Require accountSystem directions
 const accountSystems = fs.readdirSync(path.join(__dirname, './accountSystem'));
@@ -29,7 +34,7 @@ module.exports = (app) => {
 
 
     // For each direction
-    direction.forEach((dir, io) => {
+    direction.forEach((dir) => {
         // Require the direction
         const directionObj = require(`./directions/${dir}`);
 
@@ -66,6 +71,14 @@ module.exports = (app) => {
         });
     });
 
+    dashboardDirections.forEach((dir) => {
+        // Require the direction
+        const dashboardDirectionObj = require(`./directions/dashboardDirections/${dir}`);
+        app.get(`/dashboard/${dashboardDirectionObj.direction}`, (req, res, next) => {
+            dashboardDirectionObj.execute(req, res, next);
+        });
+    });
+
 
 
     accountSystems.forEach((dir) => {
@@ -83,7 +96,6 @@ module.exports = (app) => {
             accountSystemObj.execute(req, res, next);
         });
     });
-
 
 
 

@@ -207,7 +207,7 @@ a {
     }
 }
 
-#classContainer {
+#mainContainer {
     height: 90vh;
     text-align: center;
     overflow-y: auto;
