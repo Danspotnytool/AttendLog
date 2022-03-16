@@ -226,13 +226,13 @@ setInterval(() => {
 const checkPage = async () => {
     // Get the pathname
     const pathname = window.location.pathname;
+    const headerTitle = document.getElementById('headerTitle');
+
     switch (pathname) {
         case '/dashboard':
-            // Get the Main Panel Header
-            const headerTitle = document.getElementById('headerTitle');
             headerTitle.innerHTML = 'Dashboard';
 
-            fetch('./dashboard/classes', {
+            fetch(`${window.location.origin}/dashboardPanels/classes`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -250,12 +250,88 @@ const checkPage = async () => {
                 });
             });
             break;
-    
+
+        case '/dashboard/classes':
+            headerTitle.innerHTML = 'Dashboard';
+
+            fetch(`${window.location.origin}/dashboardPanels/classes`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then((response) => {
+                return response.text();
+            }).then((data) => {
+                const mainContainer = document.getElementById('mainContainer');
+                mainContainer.innerHTML = data;
+
+                // Get script tags inside the mainContainer
+                const scriptTags = Array.from(document.getElementById('mainContainer').getElementsByTagName('script'));
+                scriptTags.forEach((script) => {
+                    eval(script.innerHTML);
+                });
+            });
+            break;
+
+        case '/dashboard/profile':
+            // Get the Main Panel Header
+            headerTitle.innerHTML = 'Profile';
+
+            fetch(`${window.location.origin}/dashboardPanels/profile`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then((response) => {
+                return response.text();
+            }).then((data) => {
+                const mainContainer = document.getElementById('mainContainer');
+                mainContainer.innerHTML = data;
+            });
+            break;
+
         default:
             break;
     };
 };
 checkPage();
+
+
+
+// Get all side panel links
+const sidePanelLinks = Array.from(document.querySelectorAll('#menuContainer ul li'));
+sidePanelLinks.forEach((link) => {
+    link.onclick = () => {
+        // Get its href
+        const href = link.getAttribute('href');
+
+        // Push the href to the history
+        switch (href.toLowerCase()) {
+            case 'dashboard':
+                window.history.pushState({}, '', `${window.location.origin}/dashboard/classes`);
+                break;
+
+            case 'profile':
+                window.history.pushState({}, '', `${window.location.origin}/dashboard/profile`);
+                break;
+
+            case 'settings':
+                window.history.pushState({}, '', `${window.location.origin}/dashboard/settings`);
+                break;
+
+            default:
+                break;
+        };
+        checkPage();
+    };
+});
+
+
+
+// Listen to go back button
+window.onpopstate = () => {
+    checkPage();
+};
 
 
 

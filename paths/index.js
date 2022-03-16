@@ -74,8 +74,14 @@ module.exports = (app) => {
     dashboardDirections.forEach((dir) => {
         // Require the direction
         const dashboardDirectionObj = require(`./directions/dashboardDirections/${dir}`);
-        app.get(`/dashboard/${dashboardDirectionObj.direction}`, (req, res, next) => {
+        // Add the direction to the main app
+        app.get(`/dashboardPanels/${dashboardDirectionObj.direction}`, (req, res, next) => {
             dashboardDirectionObj.execute(req, res, next);
+        });
+
+        // Add the direction to the main panel
+        app.get(`/dashboard/${dashboardDirectionObj.direction}`, (req, res, next) => {
+            res.redirect('/dashboard');
         });
     });
 
