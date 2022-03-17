@@ -82,6 +82,8 @@ router.post('/create', async (req, res) => {
         type: 'createClass',
     }));
 
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
     const { className, classColor, classDescription } = req.body;
     // Validate the token on the header cookie
     const user = {
@@ -92,7 +94,7 @@ router.post('/create', async (req, res) => {
         user.userID = JSON.parse(req.headers.cookie).userID;
         user.token = JSON.parse(req.headers.cookie).token;
     } catch (err) {
-        logger.log(err);
+        logger.log(`${ip} - ${user.userID} - Create class Attempt - Invalid Authorization`);
         return res.send({
             message: 'Invalid Authorization',
             code: '400'
@@ -102,6 +104,7 @@ router.post('/create', async (req, res) => {
     const userRef = database.ref(`/users/${user.userID}`);
     await userRef.once('value', (snapshot) => {
         if (snapshot.val().token !== user.token) {
+            logger.log(`${ip} - ${user.userID} - Create class Attempt - Invalid Authorization`);
             return res.send({
                 message: 'Invalid Authorization',
                 code: '400'
@@ -153,6 +156,8 @@ router.get('/get', async (req, res) => {
     sendMessage(JSON.stringify({
         type: 'getClasses'
     }));
+
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
     // Validate the token on the header cookie
     const user = {
@@ -234,6 +239,8 @@ router.post('/join', async (req, res) => {
     sendMessage(JSON.stringify({
         type: 'joinClass',
     }));
+
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
     // Validate the token on the header cookie
     const user = {
