@@ -335,6 +335,7 @@ a {
     width: 17.5rem;
     background-color: unset;
     border: unset;
+    font-size: 1.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
