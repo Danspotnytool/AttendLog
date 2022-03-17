@@ -66,7 +66,7 @@
         </tr>
         <tr>
             <td align="left">firebase</td>
-            <td align="center">9.6.7</td>
+            <td align="center">9.6.8</td>
         </tr>
         <tr>
             <td align="left">firebase-admin</td>
