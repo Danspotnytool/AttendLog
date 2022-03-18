@@ -34,45 +34,12 @@ const sendMessage = (message) => {
 
 
 
-// Get all classes and classnames from the database
-const classes = [];
-const getClasses = async () => {
-    await database.ref('/classes').once('value', (snapshot) => {
-        const classesArray = Object.values(snapshot.val());
-        classesArray.forEach((classs) => {
-            classes.push(classs);
-        });
-        logger.log('Classes database loaded');
-        global.classesDBIsLoaded = true;
-    });
-    // Listen to changes in the database
-    // Child added
-    database.ref('/classes').on('child_added', (snapshot) => {
-        // Check if this class is already in the array
-        // The structure of the array is:
-        // [
-        //     {
-        //         id: '',
-        //         className: '',
-        //         createdAt: '',
-        //     }
-        // ]
-        const classs = snapshot.val();
-        const classExists = classes.find(classFromArray => classFromArray.classID === classs.classID);;
-        if (!classExists) {
-            classes.push(classs);
-        };
-    });
-    // Child removed
-    database.ref('/classes').on('child_removed', (snapshot) => {
-        const classs = snapshot.val();
-        const classIndex = classes.findIndex(classFromArray => classFromArray.classID === classs.classID);
-        if (classIndex > -1) {
-            classes.splice(classIndex, 1);
-        };
-    });
-};
-getClasses();
+// Test if connection to database is possible
+database.ref('/').once('value').then(() => {
+    logger.log('Classes database connected');
+}).catch((error) => {
+    logger.log(error);
+});
 
 
 

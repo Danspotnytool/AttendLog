@@ -35,47 +35,14 @@ const sendMessage = (message) => {
 
 
 
-// Get all users and usernames from the database
-const users = [];
-const getUsers = async () => {
-    await database.ref('/users').once('value', (snapshot) => {
-        const usersArray = Object.values(snapshot.val());
-        usersArray.forEach((user) => {
-            users.push(user);
-        });
-        logger.log('Users database loaded');
-        global.classesDBIsLoaded = true;
-    });
-    // Listen to changes in the database
-    // Child added
-    database.ref('/users').on('child_added', (snapshot) => {
-        // Check if this user is already in the array
-        // The structure of the array is:
-        // [
-        //     {
-        //         id: '',
-        //         username: '',
-        //         email: '',
-        //         password: '',
-        //         createdAt: '',
-        //     }
-        // ]
-        const user = snapshot.val();
-        const userExists = users.find(userFromArray => userFromArray.userID === user.userID);;
-        if (!userExists) {
-            users.push(user);
-        };
-    });
-    // Child removed
-    database.ref('/users').on('child_removed', (snapshot) => {
-        const user = snapshot.val();
-        const userIndex = users.findIndex(userFromArray => userFromArray.userID === user.userID);
-        if (userIndex > -1) {
-            users.splice(userIndex, 1);
-        };
-    });
-};
-getUsers();
+// Test if connection to database is possible
+database.ref('/').once('value').then(() => {
+    logger.log('Users database connected');
+}).catch((error) => {
+    logger.log(error);
+});
+
+
 
 // Signup route
 router.post('/signup',  async (req, res, next) => {
