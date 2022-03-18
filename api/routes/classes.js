@@ -158,46 +158,75 @@ router.get('/get', async (req, res) => {
 
     // Get the user's classes
     const userClasses = [];
+    await database.ref(`/users/${user.userID}/classes`).once('value', (snapshot) => {
+        // Check if the user has any classes
+        if (snapshot.val()) {
+            const userClassesArray = Object.values(snapshot.val());
+            userClassesArray.forEach((userClass) => {
+                userClasses.push(userClass);
+            });
+        };
+        // But if the user has no classes, return an empty array
+        if (userClasses.length === 0) {
+            userClasses.push('');
+        };
+    });
+
     // Check if the user has any classes
-    if (user.classes) {
-        user.classes.forEach((userClass) => {
-            // Get the class from the database
-            database.ref(`/classes/${userClass}`).once('value', (snapshot) => {
-                userClasses.push(snapshot.val());
-            });
+    if (userClasses.length <= 0 || userClasses[0] === '') {
+        logger.log(`${ip} - ${user.userID} - Get Class Attempt - No Classes`);
+        return res.send({
+            message: 'No Classes',
+            code: '400'
         });
-        // Get the name of the teacher and number of students for each class
-        const userClassesWithTeacher = [];
-        for (const classs of userClasses) {
-            let teacherName = '';
-            let numberOfStudents = 0;
-            await database.ref(`/users/${classs.classTeacher}`).once('value', (snapshot) => {
-                teacherName = snapshot.val().username;
-            });
-            await database.ref(`/classes/${classs.classID}/students`).once('value', (snapshot) => {
-                // Check if the class has any students
-                if (snapshot.val()) {
-                    const studentsArray = Object.values(snapshot.val());
-                    numberOfStudents = studentsArray.length;
+    };
+
+    // Get the classes
+    var classes = [];
+    // Get the contents of the user's classes array as a promise
+    const userClassesPromise = new Promise((resolve, reject) => {
+        userClasses.forEach((userClass) => {
+            database.ref(`/classes/${userClass}`).once('value', async (snapshot) => {
+                const thisClass = snapshot.val();
+                // Get the teacher's name
+                await database.ref(`/users/${thisClass.classTeacher}`).once('value', (snapshot) => {
+                    thisClass['teacherName'] = snapshot.val().username;
+                });
+                // Get the number of students in the class
+                await database.ref(`/classes/${userClass}/students`).once('value', (snapshot) => {
+                    // Check if the class has any students
+                    if (snapshot.val()) {
+                        thisClass['numberOfStudents'] = snapshot.val().length;
+                    } else {
+                        thisClass['numberOfStudents'] = 0;
+                    };
+                });
+                classes.push(thisClass);
+                if (classes.length === userClasses.length) {
+                    resolve(classes);
                 };
             });
-            classs['teacherName'] = teacherName;
-            classs['numberOfStudents'] = numberOfStudents;
-            userClassesWithTeacher.push(classs);
-        };
-        // Map the userClassesWithTeacher and remove the classToken
-        const userClassesWithTeacherMapped = userClassesWithTeacher.map(classs => {
-            delete classs.classToken;
-            return classs;
         });
-        // Send the response
-        return res.send(userClassesWithTeacherMapped); 
-    };
-    logger.log(`${ip} - ${user.userID} - Get Class Attempt - No Classes Found`);
-    res.send({
-        message: 'No classes found',
-        code: '404'
     });
+    
+    // Map the response to remove the token and teacher's id
+    const classesPromise = await userClassesPromise.then((classes) => {
+        return classes.map((classs) => {
+            return {
+                classColor: classs.classColor,
+                classDescription: classs.classDescription,
+                classID: classs.classID,
+                className: classs.className,
+                teacherName: classs.teacherName,
+                createdAt: classs.createdAt,
+                numberOfStudents: classs.numberOfStudents
+            };
+        });
+    });
+
+    logger.log(`${ip} - ${user.userID} - Get Class Success`);
+    // Send the response
+    return res.send(classesPromise);
 });
 
 
@@ -245,57 +274,71 @@ router.post('/join', async (req, res) => {
     // Get the request body
     const { classID, classToken } = req.body;
 
-    // Validate the classID and classToken
-    database.ref(`/classes/${classID}`).once('value', async (snapshot) => {
-        // Check if the class exist
-        if (!snapshot.val()) {
-            logger.log(`${ip} - ${username} - Join Class Attempt - Class Not Found`);
-            return res.send({
-                message: 'Class not found',
-                code: '404'
-            });
-        };
-        // Check if the classToken is valid
-        if (snapshot.val().classToken !== classToken) {
-            logger.log(`${ip} - ${username} - Join Class Attempt - Invalid Class Token`);
-            return res.send({
-                message: 'Invalid classToken',
-                code: '400'
-            });
-        };
-        if (user.classes.includes(classID)) {
-            logger.log(`${ip} - ${username} - Join Class Attempt - Already Joined Class`);
-            return res.send({
-                message: 'User already in the class',
-                code: '400'
-            });
-        };
-        // Add the user to the class
-        // The class's students array
-        const students = [];
-        // Get the class's students array
-        await database.ref(`/classes/${classID}/students`).once('value', (snapshot) => {
-            // Check if the class has any students
-            if (snapshot.val()) {
-                const studentsArray = Object.values(snapshot.val());
-                studentsArray.forEach((student) => {
-                    students.push(student);
-                });
-            };
-        });
-        // Add the user to the class's students array
-        students.push(user.userID);
-        // Update the class's students array
-        await database.ref(`/classes/${classID}/students`).set(students);
-
-        // Add the class to the user's classes array
-        user['classes'].push(classID);
-        // Update the user's classes array
-        await database.ref(`/users/${user.userID}/classes`).set(user['classes']);
-
-        // Send the response
+    // Check if the feilds are empty
+    if (!classID || !classToken) {
+        logger.log(`${ip} - ${user.userID} - Join Class Attempt - Empty Fields`);
         return res.send({
-            message: 'User added to class',
+            message: 'Empty Fields',
+            code: '400'
+        });
+    };
+
+    // Check if the class exists
+    const classRef = database.ref(`/classes/${classID}`);
+    await classRef.once('value', async (snapshot) => {
+        if (!snapshot.val()) {
+            logger.log(`${ip} - ${user.userID} - Join Class Attempt - Class Not Found`);
+            return res.send({
+                message: 'Class Not Found',
+                code: '400'
+            });
+        };
+        // Check if the token is valid
+        if (classToken != snapshot.val().classToken) {
+            logger.log(`${ip} - ${user.userID} - Join Class Attempt - Invalid Token`);
+            return res.send({
+                message: 'Invalid Token',
+                code: '400'
+            });
+        };
+
+        // Check if the user is already in the class
+        if (user.classes.includes(classID)) {
+            logger.log(`${ip} - ${user.userID} - Join Class Attempt - Already in Class`);
+            return res.send({
+                message: 'Already in Class',
+                code: '400'
+            });
+        };
+
+        // Add the user to the class
+        // Check if the class has any students
+        if (snapshot.val().students) {
+            // Get the students array length
+            const studentsLength = Object.keys(snapshot.val().students).length;
+            // Add the user to the students array
+            await database.ref(`/classes/${classID}/students/${studentsLength}`).set(user.userID);
+        } else {
+            // Add the user to the students array
+            await database.ref(`/classes/${classID}/students/0`).set(user.userID);
+        };
+        // Add the class to the user's classes array
+        user.classes.push(classID);
+        // Update the user's classes array
+        // Check if the user has any classes
+        if (user.classes.length > 0) {
+            // Update the user's classes array
+            await database.ref(`/users/${user.userID}/classes/0`).set(classID);
+        } else {
+            // Update the user's classes array
+            // Get the classes array length
+            const classesLength = Object.keys(user.classes).length;
+            await database.ref(`/users/${user.userID}/classes/${classesLength}`).set(classID);
+        };
+        // Send the response
+        logger.log(`${ip} - ${user.userID} - Join Class Success`);
+        return res.send({
+            message: 'Join Class Success',
             code: '200'
         });
     });
