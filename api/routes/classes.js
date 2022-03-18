@@ -143,6 +143,7 @@ router.post('/create', async (req, res) => {
     // Update the user's classes array
     await database.ref(`/users/${user.userID}/classes`).set(userClasses);
 
+    logger.log(`${ip} - ${user.userID} - Create class - ${classs.classID}`);
     // Send the response
     return res.send({
         message: 'Class created',
@@ -225,7 +226,7 @@ router.get('/get', async (req, res) => {
         // Send the response
         return res.send(userClassesWithTeacherMapped); 
     };
-    logger.log(`${ip} - ${username} - Get Class Attempt - No Classes Found`);
+    logger.log(`${ip} - ${user.userID} - Get Class Attempt - No Classes Found`);
     res.send({
         message: 'No classes found',
         code: '404'

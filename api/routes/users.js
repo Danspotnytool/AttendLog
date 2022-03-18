@@ -141,13 +141,15 @@ Password: 6-20 characters)`,
     };
 
     // Check if the username is already taken
-    if (Object.keys(users).find(user => users[user].username == `${username}`)) {
-        logger.log(`${ip} - ${username} - Signup Attempt - Username already taken`);
-        return res.send({
-            message: 'The username is already taken',
-            code: '400'
-        });
-    };
+    database.ref(`/usernames/${username}`).once('value', (snapshot) => {
+        if (snapshot.val()) {
+            logger.log(`${ip} - ${username} - Signup Attempt - Username already taken`);
+            return res.send({
+                message: 'The username is already taken',
+                code: '400'
+            });
+        };
+    });
     // Usernames can't have special characters, spaces, or start with a number
     if (/[^a-zA-Z0-9]/.test(username)) {
         logger.log(`${ip} - ${username} - Signup Attempt - Invalid username (special characters)`);
@@ -173,61 +175,66 @@ Password: 6-20 characters)`,
 
 
     // Check if the email is already taken
-    if (Object.keys(users).find(user => users[user].email == `${email}`)) {
-        logger.log(`${ip} - ${username} - Signup Attempt - Email already taken`);
-        return res.send({
-            message: 'The email is already taken',
-            code: '400'
-        });
-    };
+    database.ref(`/emails/${encodeURIComponent(email).replace('.', '%2E')}`).once('value', async (snapshot) => {
+        if (snapshot.val()) {
+            logger.log(`${ip} - ${username} - Signup Attempt - Email already taken`);
+            return res.send({
+                message: 'The email is already taken',
+                code: '400'
+            });
+        };
 
 
-    try {
-        const hashedPassword = await bycrypt.hash(password, 10);
-        password = hashedPassword;
-    } catch (err) {
-        logger.log(err);
-        return res.send({
-            message: 'Something went wrong',
-            code: '400'
-        });
-    };
 
-    const user = {
-        username: username,
-        userID: `${Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}`,
-        token: uuidv4(),
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        password: password,
-        dateCreated: Date.now(),
-        ipCreated: ip
-    };
+        try {
+            const hashedPassword = await bycrypt.hash(password, 10);
+            password = hashedPassword;
+        } catch(err) {
+            logger.log(err);
+            return res.send({
+                message: 'Something went wrong',
+                code: '400'
+            });
+        };
 
-    // Write to the database
-    try {
-        await database.ref(`/users/${user.userID}`).set(user).then(() => {
-            users[user.userID] = user;
-        });
+        const user = {
+            username: username,
+            userID: `${Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}`,
+            token: uuidv4(),
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            password: password,
+            dateCreated: Date.now(),
+            ipCreated: ip
+        };
 
-        // Return the user
-        logger.log(`${ip} - ${username} - Signup Success`);
-        res.send({
-            message: 'Account created',
-            user: {
-                userID: user.userID,
-                token: user.token
-            },
-            code: '200'
-        });
-    } catch (err) {
-        logger.log(err);
-        return res.send({
-            message: 'Something went wrong',
-            code: '400'
-        });
-    };
+        // Write to the database
+        try {
+            await database.ref(`/users/${user.userID}`).set(user);
+
+            // Write the username and email to the database
+            await database.ref(`/usernames/${user.username}`).set(user.userID);
+            await database.ref(`/emails/${encodeURIComponent(user.email).replace('.', '%2E')}`).set(user.userID);
+
+            // Return the user
+            logger.log(`${ip} - ${username} - Signup Success`);
+            res.send({
+                message: 'Account created',
+                user: {
+                    userID: user.userID,
+                    token: user.token
+                },
+                code: '200'
+            });
+        } catch(err) {
+            logger.log(err);
+            return res.send({
+                message: 'Something went wrong',
+                code: '400'
+            });
+        };
+    });
 });
 
 // Signin route
@@ -251,48 +258,53 @@ router.post('/signin', async (req, res, next) => {
         });
     };
 
-    // Check if the username is valid
-    // The usernames is an array of objects
-    // Username: UserID
-    if (!(Object.keys(users).find(user => users[user].username == `${username}`))) {
-        logger.log(`${ip} - ${username} - Signin Attempt - Invalid username`);
-        return res.send({
-            message: 'Invalid User',
-            code: '400'
-        });
-    };
+    
 
-    const user = users.find(user => user.username == `${username}`);
-
-    // Check if the password is valid
-    try {
-        const isValid = await bycrypt.compare(password, user.password);
-        if (!isValid) {
-            logger.log(`${ip} - ${username} - Signin Attempt - Invalid password`);
+    // Check if the username exists
+    database.ref(`/usernames/${username}`).once('value', (snapshot) => {
+        if (!snapshot.val()) {
+            logger.log(`${ip} - ${username} - Signin Attempt - Invalid username`);
             return res.send({
-                message: 'Invalid Password',
+                message: 'Invalid username or password',
                 code: '400'
             });
         };
 
-        // Return the user
-        logger.log(`${ip} - ${username} - Signin Success`);
-        res.send({
-            message: 'Logged in',
-            user: {
-                userID: user.userID,
-                token: user.token
-            },
-            code: '200'
-        });
+        const userID = snapshot.val();
 
-    } catch (err) {
-        logger.log(err);
-        return res.send({
-            message: 'Something went wrong',
-            code: '400'
+        // Get the user from the database
+        database.ref(`/users/${userID}`).once('value', (snapshot) => {
+            const user = snapshot.val();
+
+            // Check if the password is correct
+            try {
+                if (!bycrypt.compareSync(password, user.password)) {
+                    logger.log(`${ip} - ${username} - Signin Attempt - Invalid password`);
+                    return res.send({
+                        message: 'Invalid username or password',
+                        code: '400'
+                    });
+                };
+            } catch (err) {
+                logger.log(err);
+                return res.send({
+                    message: 'Something went wrong',
+                    code: '400'
+                });
+            };
+
+            // Return the user
+            logger.log(`${ip} - ${username} - Signin Success`);
+            res.send({
+                message: 'Success',
+                user: {
+                    userID: user.userID,
+                    token: user.token
+                },
+                code: '200'
+            });
         });
-    };
+    });
 });
 
 module.exports = router;
