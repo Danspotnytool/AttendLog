@@ -4,40 +4,67 @@
             width: 90%;
             margin: 2rem auto;
             display: flex;
-            gap: 1rem;
-            background-color: green;
+            gap: 2.5rem;
         }
 
         #profilePictureContainer {
-            width: 25%;
             height: 100%;
+            width: 25%;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            gap: 1rem;
         }
         #profilePictureContainer img {
             width: 100%;
+        }
+        #profilePictureContainer button {
+            padding: 1.5rem 4rem;
+            border: unset;
+            border-radius: 1.5rem;
+            background-color: #c7d0d8;
+            font-size: 1.75rem;
+            cursor: pointer;
         }
 
         #profileInfoContainer {
             width: 75%;
         }
-        #profileInfoContainer table {
-            width: 70%;
+        #profileDescriptionCard {
+            height: 100%;
             margin: auto;
-            font-size: 2rem;
+            border-radius: 2rem;
+            background-color: #c7d0d8;
+        }
+        #profileDescriptionHeader {
+            padding: 1.5rem 3rem;
+            font-size: 3rem;
+            text-align: left;
+        }
+        #profileInfoContainer table {
+            height: 100%;
+            width: 100%;
+            margin: auto;
+            border-radius: 2rem;
+            background-color: #8c97a6;
+            font-size: 1.75rem;
             text-align: left;
         }
         #profileInfoContainer table tr td {
-            padding: 1rem;
+            padding: 0 3rem;
         }
     </style>
     <div id="profileContainer">
         <div id="profilePictureContainer">
             <img src="../assets/svg/profile-picture-icon.svg" alt="">
+            <button>Edit Profile</button>
         </div>
         <div id="profileInfoContainer">
             <div id="profileDescriptionCard">
+                <div class="noselect" id="profileDescriptionHeader">
+                    Profile
+                </div>
                 <table>
                     <tr>
                         <td>
@@ -69,6 +96,14 @@
                         </td>
                         <td>
                             69420
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Current Reference ID:
+                        </td>
+                        <td>
+                            69420694206942069420
                         </td>
                     </tr>
                 </table>

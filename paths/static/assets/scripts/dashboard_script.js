@@ -228,6 +228,8 @@ const checkPage = async () => {
     const pathname = window.location.pathname;
     const headerTitle = document.getElementById('headerTitle');
 
+    const sidePanelLinks = Array.from(document.querySelectorAll('#menuContainer ul li'));
+
     switch (pathname) {
         case '/dashboard':
             headerTitle.innerHTML = 'Dashboard';
