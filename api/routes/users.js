@@ -274,4 +274,76 @@ router.post('/signin', async (req, res, next) => {
     });
 });
 
+// Getting someones profile
+router.get('/profile/:userID', async (req, res, next) => {
+    sendMessage(JSON.stringify({
+        type: 'profile',
+    }));
+
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+    // Validate the token on the header cookie
+    const user = {
+        userID: '',
+        token: ''
+    };
+    try {
+        user.userID = JSON.parse(req.headers.cookie).userID;
+        user.token = JSON.parse(req.headers.cookie).token;
+    } catch (err) {
+        logger.log(`${ip} - Get Profile Attempt - Invalid Authorization`);
+        return res.send({
+            message: 'Invalid Authorization',
+            code: '400'
+        });
+    };
+    // Validate the token on the database
+    const userRef = database.ref(`/users/${user.userID}`);
+    await userRef.once('value', (snapshot) => {
+        if (snapshot.val().token !== user.token) {
+            logger.log(`${ip} - Get Profile Attempt - Invalid Authorization`);
+            return res.send({
+                message: 'Invalid Authorization',
+                code: '400'
+            });
+        };
+        // Assign the user's classes to the response
+        if (snapshot.val().classes) {
+            user.classes = snapshot.val().classes;
+        };
+    });
+
+    // Get the user from the database
+    const userID = req.params.userID;
+    database.ref(`/users/${userID}`).once('value', (snapshot) => {
+        const user = snapshot.val();
+
+        if (!user) {
+            logger.log(`${ip} - Get Profile Attempt - Invalid userID`);
+            return res.send({
+                message: 'Invalid userID',
+                code: '400'
+            });
+        };
+
+        // Return the user
+        logger.log(`${ip} - Get Profile Success`);
+        res.send({
+            message: 'Success',
+            user: {
+                username: user.username,
+                firstName: user.firstName,
+                middleName: user.middleName,
+                lastName: user.lastName,
+                suffix: user.suffix || '',
+                email: user.email,
+                userID: user.userID,
+                referenceID: user.referenceID || 'N/A'
+            },
+            code: '200'
+        });
+    });
+});
+
+
 module.exports = router;

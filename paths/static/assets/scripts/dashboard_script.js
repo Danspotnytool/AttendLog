@@ -289,6 +289,12 @@ const checkPage = async () => {
             }).then((data) => {
                 const mainContainer = document.getElementById('mainContainer');
                 mainContainer.innerHTML = data;
+
+                // Get script tags inside the mainContainer
+                const scriptTags = Array.from(document.getElementById('mainContainer').getElementsByTagName('script'));
+                scriptTags.forEach((script) => {
+                    eval(script.innerHTML);
+                });
             });
             break;
 

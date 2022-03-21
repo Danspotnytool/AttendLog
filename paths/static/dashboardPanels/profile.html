@@ -70,44 +70,74 @@
                         <td>
                             Username:
                         </td>
-                        <td>
-                            johnDoeNut
+                        <td id="username">
+
                         </td>
                     </tr>
                     <tr>
                         <td>
                             Full Name:
                         </td>
-                        <td>
-                            John Doe Jr.
+                        <td id="fullname">
+
                         </td>
                     </tr>
                     <tr>
                         <td>
                             Email:
                         </td>
-                        <td>
-                            johnDoeNut@gmail.com
+                        <td id="email">
+
                         </td>
                     </tr>
                     <tr>
                         <td>
                             User ID:
                         </td>
-                        <td>
-                            69420
+                        <td id="userID">
+
                         </td>
                     </tr>
                     <tr>
                         <td>
                             Current Reference ID:
                         </td>
-                        <td>
-                            69420694206942069420
+                        <td id="referenceID">
+
                         </td>
                     </tr>
                 </table>
             </div>
         </div>
     </div>
+    <script>
+        (async () => {
+            // Get user id
+            const userID = JSON.parse(localStorage.getItem("user")).userID;
+            // fetch the user's profile
+            fetch(`${window.location.origin}/api/users/profile/${userID}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => response.json())
+            .then((res) => {
+                const usernameElement = document.getElementById('username');
+                const fullnameElement = document.getElementById('fullname');
+                const emailElement = document.getElementById('email');
+                const userIDElement = document.getElementById('userID');
+                const referenceIDElement = document.getElementById('referenceID');
+
+                const { username, firstName, middleName, lastName, suffix, email, userID, referenceID } = res.user;
+
+                usernameElement.innerText = username;
+                fullnameElement.innerText = middleName ? `${firstName} ${middleName} ${lastName} ${suffix}` : `${firstName} ${lastName} ${suffix}`;
+                emailElement.innerText = email;
+                userIDElement.innerText = userID;
+                referenceIDElement.innerText = referenceID;
+            }).catch((err) => {
+                console.log(err);
+            });
+        })();
+    </script>
 </body>
