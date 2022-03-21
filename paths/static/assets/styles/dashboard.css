@@ -126,6 +126,21 @@ input, textarea {
     left: 0;
     background-color: #ffffff;
 }
+#menuContainer ul li::before {
+    content: '';
+    height: 80%;
+    width: 0.5rem;
+    top: 10%;
+    left: -10rem;
+    background-color: #ffffff;
+    display: block;
+    position: absolute;
+    transition: 0.25s;
+}
+#menuContainer ul li[active="true"]::before {
+    left: -1rem;
+    transition: 0.25s;
+}
 
 #signOutContainer {
     height: 15vh;

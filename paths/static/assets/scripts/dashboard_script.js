@@ -250,6 +250,9 @@ const checkPage = async () => {
                 scriptTags.forEach((script) => {
                     eval(script.innerHTML);
                 });
+
+                sidePanelLinks.find(link => link.getAttribute('active') === 'true').setAttribute('active', 'false');
+                sidePanelLinks.find(link => link.getAttribute('href') === 'Dashboard').setAttribute('active', 'true');
             });
             break;
 
@@ -272,6 +275,9 @@ const checkPage = async () => {
                 scriptTags.forEach((script) => {
                     eval(script.innerHTML);
                 });
+
+                sidePanelLinks.find(link => link.getAttribute('active') === 'true').setAttribute('active', 'false');
+                sidePanelLinks.find(link => link.getAttribute('href') === 'Dashboard').setAttribute('active', 'true');
             });
             break;
 
@@ -295,6 +301,9 @@ const checkPage = async () => {
                 scriptTags.forEach((script) => {
                     eval(script.innerHTML);
                 });
+
+                sidePanelLinks.find(link => link.getAttribute('active') === 'true').setAttribute('active', 'false');
+                sidePanelLinks.find(link => link.getAttribute('href') === 'Profile').setAttribute('active', 'true');
             });
             break;
 
