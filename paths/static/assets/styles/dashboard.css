@@ -176,6 +176,76 @@ input, textarea {
 
 
 
+#notificationPanel {
+    max-height: 80vh;
+    width: 500px;
+    max-width: 100%;
+    top: 1rem;
+    right: 1rem;
+    display: none;
+    position: absolute;
+    z-index: 2;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.notification {
+    min-height: 10vh;
+    max-height: 30vh;
+    width: 100%;
+    padding: 1rem 2rem;
+    margin-bottom: 1rem;
+    border: solid 2px #000000;
+    border-radius: 1rem;
+    display: inline-block;
+    font-size: 1.5rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+    transition: margin 0.5s;
+    position: relative;
+}
+.notification.error {
+    background-color: #ff0000;
+}
+.notification.log {
+    background-color: #f8f8ff;
+}
+.notification .button {
+    height: 5rem;
+    width: 5rem;
+    top: 1rem;
+    left: 1rem;
+    border: unset;
+    background-color: #01284D;
+    color: #ffffff;
+    border-radius: 50%;
+    position: absolute;
+    cursor: pointer;
+}
+.notification .close {
+    height: 2rem;
+    width: 2rem;
+    top: 1rem;
+    right: 1rem;
+    position: absolute;
+    cursor: pointer;
+}
+.notification .close img {
+    height: 100%;
+}
+.notification .header {
+    margin-bottom: 0.25rem;
+    font-size: 2rem;
+}
+.notification .body {
+    font-size: 1.5rem;
+}
+.notification .footer {
+    font-size: 1rem;
+}
+
+
+
 #mainPanel {
     height: 100vh;
     right: 0;

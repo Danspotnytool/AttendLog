@@ -6,6 +6,7 @@ const port = location.port;
 
 const sidePanel = document.getElementById('sidePanel');
 const signOutButton = document.getElementById('signOutButton');
+const notificationPanel = document.getElementById('notificationPanel');
 const mainPanel = document.getElementById('mainPanel');
 const menuButton = document.getElementById('menuButton');
 const menuButtonBarIcons = [];
@@ -220,6 +221,25 @@ setInterval(() => {
     updateTime();
 }, 1000);
 
+
+//  ---------------------- Navigation Function  ----------------------
+/**
+ * @param {object} detail
+ * @param {string} detail.type
+ * @param {string} detail.header
+ * @param {string} detail.body
+ * @param {string} detail.footer
+ * @param {intiger} detail.timeout
+ * @param {string} detail.button
+ * @param {function} detail.onclick
+ */
+const notify = (detail) => {
+    const notification = new CustomEvent('notification', {
+        detail: detail
+    });
+    window.dispatchEvent(notification);
+};
+//  ---------------------- Navigation Function  ----------------------
 
 
 // Checking what page we are on
@@ -461,3 +481,93 @@ if (window.location.origin != 'http://127.0.0.1:5500') {
         socket.destroy();
     });
 };
+
+
+
+// Listen to the event
+window.addEventListener('notification', (event) => {
+    notificationPanel.style.display = 'block';
+
+    // Create the notification
+    const notification = document.createElement('div');
+    notification.classList.add('notification');
+    notification.style.marginLeft = '1000rem';
+    notification.classList.add(event.detail.type);
+    notification.innerHTML = `
+        <div class="close">
+            <img src="./assets/svg/exit-form-icon copy.svg" alt="Close Notification">
+        </div>
+        <div class="header">${event.detail.header}</div>
+        <div class="body">${event.detail.body}</div>
+        <div class="footer">${event.detail.footer}</div>
+    `;
+
+    // Check if there's a button
+    if (event.detail.button) {
+        notification.style.paddingLeft = '7.5rem';
+
+        const button = document.createElement('button');
+        button.classList.add('button');
+        button.innerHTML = event.detail.button;
+        button.onclick = () => {
+            event.detail.buttonAction();
+        };
+        notification.appendChild(button);
+    };
+
+    // Append the notification to the notificationPanel
+    notificationPanel.appendChild(notification);
+
+    setTimeout(() => {
+        notification.style.marginLeft = '0';
+    }, 10);
+
+    // Listen to the close button
+    notification.querySelector('.close').onclick = () => {
+        notification.style.marginLeft = '100rem';
+        setTimeout(() => {
+            notification.remove();
+        }, 500);
+    };
+
+    // Add timeout bar
+    if (event.detail.timeout) {
+        const timeoutBar = document.createElement('div');
+        timeoutBar.style.width = '100%';
+        timeoutBar.style.height = '5px';
+        timeoutBar.style.left = '-100%';
+        timeoutBar.style.bottom = '0';
+        timeoutBar.style.backgroundColor = '#01284D';
+        timeoutBar.style.position = 'absolute';
+        timeoutBar.style.transition = 'left 0.5s linear';
+        timeoutBar.style.transitionDelay = '0.5s';
+        timeoutBar.style.transitionDuration = `${event.detail.timeout / 1000}s`;
+
+        notification.appendChild(timeoutBar);
+
+        // move the timeout bar
+        setTimeout(() => {
+            timeoutBar.style.left = '0';
+        }, 500);
+
+        // Remove the notification after timeout
+        setTimeout(() => {
+            // Click the close button
+            notification.querySelector('.close').click();
+        }, event.detail.timeout);
+    };
+});
+
+
+
+notify({
+    type: 'log',
+    header: 'Welcome to the Dashboard',
+    body: 'You can create a class or join a class to start chatting.',
+    footer: 'Click on the "?" button to learn more about the Dashboard.',
+    timeout: 5000,
+    button: '<p style="font-size: 3rem;">?</p>',
+    buttonAction: () => {
+        console.log('Button clicked');
+    }
+});
