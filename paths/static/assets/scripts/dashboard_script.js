@@ -271,6 +271,8 @@ const checkPage = async () => {
                     eval(script.innerHTML);
                 });
 
+                document.title = 'Dashboard - AttendLog';
+
                 sidePanelLinks.find(link => link.getAttribute('active') === 'true').setAttribute('active', 'false');
                 sidePanelLinks.find(link => link.getAttribute('href') === 'Dashboard').setAttribute('active', 'true');
             });
@@ -295,6 +297,8 @@ const checkPage = async () => {
                 scriptTags.forEach((script) => {
                     eval(script.innerHTML);
                 });
+
+                document.title = 'Dashboard - AttendLog';
 
                 sidePanelLinks.find(link => link.getAttribute('active') === 'true').setAttribute('active', 'false');
                 sidePanelLinks.find(link => link.getAttribute('href') === 'Dashboard').setAttribute('active', 'true');
@@ -321,6 +325,8 @@ const checkPage = async () => {
                 scriptTags.forEach((script) => {
                     eval(script.innerHTML);
                 });
+
+                document.title = 'Profile - AttendLog';
 
                 sidePanelLinks.find(link => link.getAttribute('active') === 'true').setAttribute('active', 'false');
                 sidePanelLinks.find(link => link.getAttribute('href') === 'Profile').setAttribute('active', 'true');
