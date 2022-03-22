@@ -563,7 +563,7 @@ window.addEventListener('notification', (event) => {
 notify({
     type: 'log',
     header: 'Welcome to the Dashboard',
-    body: 'You can create a class or join a class to start chatting.',
+    body: 'You can create a class or join a class to log attendance',
     footer: 'Click on the "?" button to learn more about the Dashboard.',
     timeout: 5000,
     button: '<p style="font-size: 3rem;">?</p>',
