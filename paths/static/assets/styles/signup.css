@@ -230,7 +230,7 @@ button {
     #signinCard .title {
         display: none;
     }
-    #content a[href="./signup"] {
+    #content a[href="./signin"] {
         display: none;
     }
 }
