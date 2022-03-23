@@ -23,29 +23,59 @@
         <link rel="preload" href="./assets/fonts/Kollektif.ttf" as="font" crossorigin="anonymous">
     </head>
     <body>
-        <div id="loginCard">
-            <div class="content">
-                <header>
-                    <h1><span>A</span>TTEND<span>L</span>OG</h1>
-                    <h2>Sign In</h2>
-                </header>
-                <form accept="null">
+        <div id="welcomeCard">
+            <div id="welcome">
+                <div class="title">
+                    WELCOME TO <span>A</span>TTEND<span>L</span>OG
+                </div>
+                <div class="subtitle">
+                    Student Attendance Monitoring System
+                </div>
+                <div>
+                    <img src="./assets/images/Logo Transparent.png" alt="AttendLog Icon">
+                </div>
+                <div id="newHere">
+                    Are you new here? Create an account now!
+                    <br>
+                    <br>
+                    <button>
+                        Sign Up
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="signinCard">
+            <div id="content">
+                <div id="header">
+                    <div class="title">
+                        <img src="./assets/images/Logo Transparent.png" alt="AttendLog Icon">
+                        <span>A</span>TTEND<span>L</span>OG
+                    </div>
+                    <div>Sign In</div>
+                </div>
+                <form id="signinForm" accept="null">
                     <div>
-                        <input type="text" name="username" id="username" class="signinInput noselect" placeholder="Username">
+                        <input type="text" name="username" id="username" class="signinInput noselect" placeholder="Username" autocomplete="off">
                     </div>
                     <div id="passwordContainer">
-                        <input type="password" name="password" id="password" class="signinInput noselect" placeholder="Password">
+                        <span>
+                            <input type="password" name="password" id="password" class="signinInput noselect" placeholder="Password">
+                        </span>
 
                         <img src="./assets/svg/eye-slash-solid.svg" alt="hidden password" class="noselect" id="eyeIcon">
                     </div>
-                    <div>
+                    <div id="promptContainer">
                         <p id="prompt">Hi Hello Bye</p>
                     </div>
-                    <span>
-                        <a href="./signup">Create Account</a>
+                    <div>
                         <button type="button" class="noselect" id="signin">Sign In</button>
-                    </span>
+                        <a href="./forgot">Forgot Password?</a>
+                    </div>
                 </form>
+                <div>
+                    <a href="./signup">Are you new here? Create an account now!</a>
+                </div>
             </div>
         </div>
     </body>
