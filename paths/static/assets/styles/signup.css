@@ -21,12 +21,15 @@ html {
 }
 body {
     image-rendering: crisp-edges;
-    background-color: #024F99;
+    background-color: #024f97;
     font-size: 0px;
 }
 a {
     text-decoration: none;
     color: unset;
+}
+a:hover {
+    text-decoration: underline;
 }
 .noselect {
     -webkit-touch-callout: none; /* iOS Safari */
@@ -39,95 +42,210 @@ a {
 }
 
 
-#registerCard {
-    width: 450px;
-    max-width: 100%;
-    font-size: 1.5rem;
-    color: #ffffff;
-    background-color: #01284D;
-    display: inline-block;
-}
-#registerCard header {
-    margin: 3rem 0px;
+
+.title {
+    margin-top: 1rem;
+    font-family: 'Kollektif', sans-serif;
     text-align: center;
-}
-#registerCard header * {
-    margin: 2rem 0px;
-    font-size: unset;
-}
-#registerCard header h1 {
-    font-size: 3.5rem;
-    font-family: 'Kollektif';
-}
-#registerCard header span {
     font-size: 4rem;
+    color: #ffffff;
 }
-#registerCard header h2 {
-    font-size: 3rem;
+.title span {
+    font-size: 4.5rem;
 }
-#registerCard .content {
-    margin: 4rem;
+.subtitle {
+    margin-top: 1rem;
+    font-family: 'Kollektif', sans-serif;
+    text-align: center;
+    font-size: 2rem;
+    color: #ffffff;
 }
-#registerCard form {
+
+button {
+    padding: 0.75rem 4rem;
+    border: unset;
+    border-radius: 10rem;
+    font-size: 1.75rem;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+
+#welcomeCard {
+    height: 100vh;
+    top: 0;
+    left: 0;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: absolute;
 }
-#registerCard form input {
-    outline: none;
+#welcomeCard div img {
+    width: 30rem;
 }
-#registerCard form .signinInput {
+#newHere {
+    color: #ffffff;
+    font-size: 2rem;
+}
+#newHere button {
+    background-color: #ffffff;
+    color: #000000;
+}
+#newHere button a {
+    text-decoration: none;
+}
+
+
+
+#signinCard {
+    height: 100vh;
+    width: 600px;
+    max-width: 100%;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    background-color: #01284D;
+    z-index: 2;
+}
+#content {
+    height: min-content;
     width: 100%;
-    margin: 0.5rem 0px;
+}
+#header {
+    margin-bottom: 4rem;
+    font-size: 4rem;
+    color: #ffffff;
+    text-align: center;
+}
+#header div {
+    margin: 1rem 0;
+}
+#signinCard .title img {
+    vertical-align: middle;
+    width: 10rem;
+}
+
+#content form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+#content form div {
+    width: 70%;
+    margin: 1rem 0;
+    position: relative;
+}
+#content form input {
+    width: 100%;
     padding: 1rem 2rem;
     border: none;
     border-radius: 10rem;
-    font-size: unset;
-    background-color: #99A9B8;
+    outline: none;
+    font-size: 1.75rem;
 }
-/* -=-=-=-=-=-=-=-=-=-= Very Hacky Thing to do starts =-=-=-=-=-=-=-=-=-=- */
-#registerCard form .signinInput::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: white;
-    opacity: 1; /* Firefox */
+
+#promptContainer {
+    margin: 0 0 !important;
 }
-#registerCard form .signinInput:-ms-input-placeholder { /* Internet Explorer 10-11 */
-    color: white;
-}
-#registerCard form .signinInput::-ms-input-placeholder { /* Microsoft Edge */
-    color: white;
-}
-/* -=-=-=-=-=-=-=-=-=-= Very Hacky Thing to do ending =-=-=-=-=-=-=-=-=-=- */
+
 #passwordContainer {
-    width: 100%;
-    position: relative;
+    text-align: left;
 }
-#eyeIcon {
-    height: 2rem;
-    right: 0;
-    cursor: pointer;
-    position: absolute;
+#passwordContainer span {
+    height: min-content;
+    border-radius: 10rem;
+    display: block;
+    background-color: #ffffff;
 }
 #password {
     padding-right: 5rem !important;
 }
-#registerCard form span {
-    margin: 2rem 1rem;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-}
-#registerCard form #prompt {
-    font-size: 1.25rem;
-    color: #ff0000;
-    text-align: center;
-    opacity: 0;
-}
-#registerCard form span button {
-    padding: 0.5rem 1.5rem;
-    border: solid 1px #ffffff;
-    border-radius: 10rem;
-    outline: none;
-    color: unset;
-    background-color: unset;
+#eyeIcon {
+    display: none;
     cursor: pointer;
 }
+#passwordContainer img {
+    width: 3rem;
+    top: 0;
+    right: 0;
+    position: absolute;
+}
+#prompt {
+    margin-bottom: 2rem;
+    font-size: 1.75rem;
+    color: #ff0000;
+    opacity: 0;
+    text-align: center;
+}
+
+#content form div button {
+    background-color: #024f97;
+    color: #ffffff;
+}
+
+#content a {
+    width: 100%;
+    font-size: 1.5rem;
+    display: block;
+    color: #ffffff;
+    text-align: center;
+}
+#content a[href="./forgot"] {
+    margin-top: 1rem;
+}
+#content a[href="./signup"] {
+    margin-top: 1rem;
+}
+
+@media screen and (max-width: 1000px) {
+    #signinCard {
+        width: 450px;
+    }
+}
+@media screen and (max-width: 750px) {
+    #signinCard {
+        width: 350px;
+    }
+}
+@media screen and (max-width: 700px) {
+    #content form div {
+        width: 80%;
+        margin: 0.5rem 0;
+    }
+    #signinCard {
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 700px) {
+    #signinCard .title {
+        display: none;
+    }
+    #content a[href="./signup"] {
+        display: none;
+    }
+}
+
+
+
+/* -=-=-=-=-=-=-=-=-=-= Very Hacky Thing to do starts =-=-=-=-=-=-=-=-=-=- */
+#signinCard form .signinInput::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #00000080;
+    opacity: 1; /* Firefox */
+}
+#signinCard form .signinInput:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #00000080;
+}
+#signinCard form .signinInput::-ms-input-placeholder { /* Microsoft Edge */
+    color: #00000080;
+}
+/* -=-=-=-=-=-=-=-=-=-= Very Hacky Thing to do ending =-=-=-=-=-=-=-=-=-=- */

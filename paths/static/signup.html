@@ -23,15 +23,42 @@
         <link rel="preload" href="./assets/fonts/Kollektif.ttf" as="font" crossorigin="anonymous">
     </head>
     <body>
-        <div id="registerCard">
-            <div class="content">
-                <header>
-                    <h1><span>A</span>TTEND<span>L</span>OG</h1>
-                    <h2>Sign Up</h2>
-                </header>
-                <form action="../api/users" method="post" id="signupForm">
+        <div id="welcomeCard">
+            <div id="welcome">
+                <div class="title">
+                    WELCOME TO <span>A</span>TTEND<span>L</span>OG
+                </div>
+                <div class="subtitle">
+                    Student Attendance Monitoring System
+                </div>
+                <div>
+                    <img src="./assets/images/Logo Transparent.png" alt="AttendLog Icon">
+                </div>
+                <div id="newHere">
+                    Already have an account?
+                    <br>
+                    <br>
+                    <a href="./signin">
+                        <button>
+                            Sign In
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="signinCard">
+            <div id="content">
+                <div id="header">
+                    <div class="title">
+                        <img src="./assets/images/Logo Transparent.png" alt="AttendLog Icon">
+                        <span>A</span>TTEND<span>L</span>OG
+                    </div>
+                    <div>Sign Up</div>
+                </div>
+                <form id="signinForm" accept="null">
                     <div>
-                        <input type="text" name="username" id="username" class="signinInput noselect" required placeholder="Username">
+                        <input type="text" name="username" id="username" class="signinInput noselect" placeholder="Username" autocomplete="off">
                     </div>
                     <div>
                         <input type="text" name="firstName" id="firstName" class="signinInput noselect" required placeholder="First Name">
@@ -43,18 +70,23 @@
                         <input type="email" name="email" id="email" class="signinInput noselect" required placeholder="Email Address">
                     </div>
                     <div id="passwordContainer">
-                        <input type="password" name="password" id="password" class="signinInput noselect" required placeholder="Password">
+                        <span>
+                            <input type="password" name="password" id="password" class="signinInput noselect" placeholder="Password">
+                        </span>
 
                         <img src="./assets/svg/eye-slash-solid.svg" alt="hidden password" class="noselect" id="eyeIcon">
                     </div>
-                    <div>
+                    <div id="promptContainer">
                         <p id="prompt">Hi Hello Bye</p>
                     </div>
-                    <span>
-                        <a href="./signin">Sign in here</a>
-                        <button type="submit" class="noselect" id="signup">Sign Up</button>
-                    </span>
+                    <div>
+                        <button type="button" class="noselect" id="signup">Sign Up</button>
+                        <a href="./forgot">Forgot Password?</a>
+                    </div>
                 </form>
+                <div>
+                    <a href="./signin">Already Have an account? Sign In here</a>
+                </div>
             </div>
         </div>
     </body>
