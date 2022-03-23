@@ -24,7 +24,7 @@ closedEyeIcon.src = './assets/svg/eye-slash-solid.svg';
 
 
 const welcomeCard = document.getElementById('welcomeCard');
-const signinCard = document.getElementById('signinCard');
+const signupCard = document.getElementById('signupCard');
 const passwordContainer = document.getElementById('passwordContainer');
 const passwordInput = document.getElementById('password');
 const eyeIcon = document.getElementById('eyeIcon');
@@ -33,7 +33,7 @@ const eyeIcon = document.getElementById('eyeIcon');
 
 // Resize welcome card
 const resizeWelcomeCard = () => {
-    welcomeCard.style.width = `${signinCard.offsetLeft}px`;
+    welcomeCard.style.width = `${signupCard.offsetLeft}px`;
 };
 
 // Move eye icon

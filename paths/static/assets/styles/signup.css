@@ -99,7 +99,7 @@ button {
 
 
 
-#signinCard {
+#signupCard {
     height: 100vh;
     width: 600px;
     max-width: 100%;
@@ -126,7 +126,7 @@ button {
 #header div {
     margin: 1rem 0;
 }
-#signinCard .title img {
+#signupCard .title img {
     vertical-align: middle;
     width: 10rem;
 }
@@ -207,12 +207,12 @@ button {
 }
 
 @media screen and (max-width: 1000px) {
-    #signinCard {
+    #signupCard {
         width: 450px;
     }
 }
 @media screen and (max-width: 750px) {
-    #signinCard {
+    #signupCard {
         width: 350px;
     }
 }
@@ -221,16 +221,16 @@ button {
         width: 80%;
         margin: 0.5rem 0;
     }
-    #signinCard {
+    #signupCard {
         width: 100%;
     }
 }
 
 @media screen and (min-width: 700px) {
-    #signinCard .title {
+    #signupCard .title {
         display: none;
     }
-    #content a[href="./signin"] {
+    #content a[href="./signup"] {
         display: none;
     }
 }
@@ -238,14 +238,14 @@ button {
 
 
 /* -=-=-=-=-=-=-=-=-=-= Very Hacky Thing to do starts =-=-=-=-=-=-=-=-=-=- */
-#signinCard form .signinInput::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+#signupCard form .signupInput::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: #00000080;
     opacity: 1; /* Firefox */
 }
-#signinCard form .signinInput:-ms-input-placeholder { /* Internet Explorer 10-11 */
+#signupCard form .signupInput:-ms-input-placeholder { /* Internet Explorer 10-11 */
     color: #00000080;
 }
-#signinCard form .signinInput::-ms-input-placeholder { /* Microsoft Edge */
+#signupCard form .signupInput::-ms-input-placeholder { /* Microsoft Edge */
     color: #00000080;
 }
 /* -=-=-=-=-=-=-=-=-=-= Very Hacky Thing to do ending =-=-=-=-=-=-=-=-=-=- */
