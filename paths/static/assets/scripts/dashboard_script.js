@@ -116,7 +116,7 @@ signOutButton.onclick = () => {
 };
 
 
-const onloadFunction = () => {  
+const onloadFunction = () => {
     if (window.innerWidth <= 795) {
         // Get the sidePanel display attribute
         const displayAttribute = sidePanel.getAttribute('display');
