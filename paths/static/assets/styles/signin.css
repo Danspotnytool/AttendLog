@@ -93,6 +93,9 @@ button {
     background-color: #ffffff;
     color: #000000;
 }
+#newHere button a {
+    text-decoration: none;
+}
 
 
 
