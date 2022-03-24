@@ -14,6 +14,9 @@ const ms = require('ms');
 // Require database
 const { database } = require('./util/databaseConnection.js');
 
+// Require Gmail API
+const { sendMail } = require('./util/gmailAPI.js');
+
 // Require all utilities
 const logger = require('./util/logger.js');
 const global = require('./util/global.js');
