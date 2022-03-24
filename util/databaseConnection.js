@@ -19,5 +19,5 @@ const database = admin.database();
 
 module.exports = {
     database: database,
-    admin: admin,
+    admin: admin
 };
