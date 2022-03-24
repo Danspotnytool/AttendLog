@@ -41,7 +41,7 @@ const sendMail = async (to, subject, {text, html}, from) => {
             service: 'gmail',
             auth: {
                 type: 'OAuth2',
-                user: 'firedantsm@gmail.com',
+                user: `${process.env.GMAIL_USER}`,
                 clientId: clientID,
                 clientSecret: clientSecret,
                 refreshToken: refreshToken,
