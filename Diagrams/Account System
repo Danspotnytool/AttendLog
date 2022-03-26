@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2022-03-26T07:56:19.638Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.109 Safari/537.36 OPR/84.0.4316.50" etag="3KSkgEJ8i_L3iNEaUNzW" version="17.2.4" type="github">
+<mxfile host="app.diagrams.net" modified="2022-03-26T07:59:41.940Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.109 Safari/537.36 OPR/84.0.4316.50" etag="Yy7MFvgpYtaI7-7rKniZ" version="17.2.4" type="github">
   <diagram id="dDh4Ov0H8J2IVwUEkxBK" name="Page-1">
-    <mxGraphModel dx="689" dy="411" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1034" dy="616" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -105,7 +105,7 @@
           <mxGeometry x="360" y="730" width="40" height="20" as="geometry" />
         </mxCell>
         <mxCell id="wRUVqhruT3ch42jcybPa-69" value="Valid Strings" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;strokeColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="75" y="630" width="170" height="120" as="geometry" />
+          <mxGeometry x="75" y="660" width="170" height="120" as="geometry" />
         </mxCell>
         <mxCell id="wRUVqhruT3ch42jcybPa-70" value="Doesn&#39;t start with a number" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;rounded=0;" vertex="1" parent="wRUVqhruT3ch42jcybPa-69">
           <mxGeometry y="30" width="170" height="30" as="geometry" />
@@ -118,6 +118,9 @@
         </mxCell>
         <mxCell id="wRUVqhruT3ch42jcybPa-82" value="" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.annotation_2;align=left;labelPosition=right;pointerEvents=1;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="260" y="640" width="50" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="wRUVqhruT3ch42jcybPa-84" value="API endpoint&lt;br&gt;&#39;/users/signup&#39;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=50;" vertex="1" parent="1">
+          <mxGeometry x="830" y="60" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
