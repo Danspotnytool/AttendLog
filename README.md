@@ -148,7 +148,7 @@
 <pre>
 root:
     sdk/
-      admin.json: {
+      admin.js: {
               "type": ""
               "project_id": ""
               "private_key_id": ""
