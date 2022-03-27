@@ -53,7 +53,7 @@ const sendMail = async (to, subject, {text, html}, from) => {
         });
 
         const mailOptions = {
-            from: `${from || 'AttendLog <firedantsm@gmail.com>'}`,
+            from: `${from || `AttendLog <${process.env.GMAIL_USER}>`}`,
             to: `${to}`,
             subject: `${subject}`,
             text: `${text}`,
