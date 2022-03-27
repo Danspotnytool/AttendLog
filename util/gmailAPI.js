@@ -21,6 +21,17 @@ oAuth2Client.setCredentials({
     refresh_token: refreshToken
 });
 
+var accessToken = oAuth2Client.getAccessToken();
+// refresh access token every hour
+setInterval(() => {
+    oAuth2Client.refreshAccessToken((err, token) => {
+        if (err) {
+            console.log(err);
+        } else {
+            accessToken = token;
+        };
+    });
+}, 3600000);
 
 
 /**
@@ -35,8 +46,6 @@ oAuth2Client.setCredentials({
  */
 const sendMail = async (to, subject, {text, html}, from) => {
     try {
-        const accessToken = await oAuth2Client.getAccessToken();
-
         const transport = nodemailer.createTransport({
             service: 'gmail',
             auth: {
