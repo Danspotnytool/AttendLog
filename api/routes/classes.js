@@ -44,7 +44,7 @@ database.ref('/').once('value').then(() => {
 
 
 // Create a new class
-router.post('/create', async (req, res) => {    
+router.post('/create', async (req, res) => {
     sendMessage(JSON.stringify({
         type: 'createClass',
     }));

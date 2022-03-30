@@ -13,4 +13,11 @@ module.exports = (app) => {
     app.use('/api/users', users);
     app.use('/api/classes', classes);
     app.use('/api/verifications', verifications);
+
+    app.get('/api/*', (req, res) => {
+        res.status(404).send({
+            message: 'API route not found',
+            status: '400'
+        });
+    })
 };

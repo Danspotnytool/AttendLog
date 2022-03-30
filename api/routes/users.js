@@ -6,6 +6,8 @@ const bodyParser = require('body-parser');
 const bycrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 const socketClient = require('socket.io-client');
+const fs = require('fs');
+const path = require('path');
 
 
 // Require firebase utility
@@ -20,6 +22,10 @@ const global = require('../../util/global.js');
 
 // Port
 const port = process.env.PORT || 8080;
+
+
+// Require verification.txt
+const verificationText = fs.readFileSync(path.join(__dirname, '../../emailTemplates/verification.txt'), 'utf8');
 
 
 router.use(bodyParser.json());
@@ -168,6 +174,9 @@ Password: 6-20 characters)`,
         };
 
 
+        // Generate userID
+        const userID = `${Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}`;
+
 
         // Generate verification link
         let verifcationString = 'hi';
@@ -179,10 +188,15 @@ Password: 6-20 characters)`,
         // If the request is from localhost, then the verification link will be localhost/verify/:verificationString
         // If the request is from the server, then the verification link will be https://www.attendlog.ga/verify/:verificationString
         const verificationLink = `${req.protocol}://${req.get('host')}/api/verifications/verify/${verifcationString}`;
+        // Verification message
+        const verificationMessageText = verificationText.replace('{verification_link}', `${verificationLink}`).replace('{username}', username);
+        const verificationMessageHTML = verificationText.replace('{verification_link}', `<a href="${verificationLink}">${verificationLink}</a>`)
+            .replace('{username}', username)
+            .replace(/\n/g, '<br>');
         // Send the verification link to the user's email
         const sendMailResult = await sendMail(`${email}`, 'Verify your account', {
-            text: `Please click the following link to verify your account: ${verificationLink}`,
-            html: `<p>Please click the following link to verify your account: <a href="${verificationLink}">${verificationLink}</a></p>`
+            text: `${verificationMessageText}`,
+            html: `${verificationMessageHTML}`
         });
 
         // Check if the email was sent successfully
@@ -194,13 +208,13 @@ Password: 6-20 characters)`,
             });
         };
         // Write the verification link to the database
-        database.ref(`/verifications/${verifcationString}`).set(`${username}`);
+        database.ref(`/verifications/${verifcationString}`).set(`${userID}`);
 
 
 
         const user = {
             username: username,
-            userID: `${Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}`,
+            userID: userID,
             token: uuidv4(),
             firstName: firstName,
             lastName: lastName,

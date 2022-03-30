@@ -97,12 +97,37 @@ class verifications {
                 };
 
 
+                // Validate the verification string on the database
+                database.ref(`/verifications/${this.verificationString}`).once('value', (snapshot) => {
+                    if (snapshot.val() === null) {
+                        logger.log(`${ip} - Verify Account Attempt - Invalid Verification String`);
+                        return res.send({
+                            message: 'Invalid Verification String',
+                            code: '400'
+                        });
+                    };
 
-                // Verify the account
-                database.ref(`/users/${user.userID}/verified`).set(true).then(() => {
-                    logger.log(`${ip} - Verify Account - Success`);
-                    this.destroy();
-                    return res.redirect(`${req.protocol}://${req.get('host')}/dashboard`);
+                    // Check if this verification string is for the same user
+                    if (snapshot.val() !== user.userID) {
+                        logger.log(`${ip} - Verify Account Attempt - Invalid Verification String`);
+                        return res.send({
+                            message: 'Invalid Verification String',
+                            code: '400'
+                        });
+                    };
+
+                    // Verify the user
+                    database.ref(`/users/${user.userID}/verified`).set(true).then(() => {
+                        logger.log(`${ip} - Verify Account - Success`);
+                        this.destroy();
+                        res.redirect('/dashboard');
+                    }).catch((error) => {
+                        logger.log(error);
+                        return res.send({
+                            message: 'Internal Server Error',
+                            code: '400'
+                        });
+                    });
                 });
             });
         });

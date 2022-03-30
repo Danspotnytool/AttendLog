@@ -1,0 +1,9 @@
+Dear {username},
+    I would like to inform you that your email address has been used to register an account on a Web application, AttendLog. Please click on the link below to verify your email address.
+
+{verification_link}
+
+However, if you did not register an account on AttendLog, please kindly ignore this email.
+
+Thank you,
+AttendLog Team
