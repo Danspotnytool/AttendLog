@@ -11,6 +11,9 @@ const socketClient = require('socket.io-client');
 // Require firebase utility
 const { database } = require('../../util/databaseConnection.js');
 
+// Require gmail utility
+const { sendMail } = require('../../util/gmailAPI.js');
+
 // Require all utilities
 const logger = require('../../util/logger.js');
 const global = require('../../util/global.js');
@@ -164,6 +167,37 @@ Password: 6-20 characters)`,
             });
         };
 
+
+
+        // Generate verification link
+        let verifcationString = 'hi';
+        for (let i = 0; i < 20; i++) {
+            verifcationString += Math.random().toString(36).substring(2, 3);
+            verifcationString += Math.random().toString(36).substring(2, 3);
+            verifcationString += Math.random().toString(36).substring(2, 3);
+        };
+        // If the request is from localhost, then the verification link will be localhost/verify/:verificationString
+        // If the request is from the server, then the verification link will be https://www.attendlog.ga/verify/:verificationString
+        const verificationLink = `${req.protocol}://${req.get('host')}/api/verifications/verify/${verifcationString}`;
+        // Send the verification link to the user's email
+        const sendMailResult = await sendMail(`${email}`, 'Verify your account', {
+            text: `Please click the following link to verify your account: ${verificationLink}`,
+            html: `<p>Please click the following link to verify your account: <a href="${verificationLink}">${verificationLink}</a></p>`
+        });
+
+        // Check if the email was sent successfully
+        if (sendMailResult.statusCode !== 200) {
+            logger.log(`${ip} - ${username} - Signup Attempt - Failed to send email`);
+            return res.send({
+                message: 'Failed to send email',
+                code: '400'
+            });
+        };
+        // Write the verification link to the database
+        database.ref(`/verifications/${verifcationString}`).set(`${username}`);
+
+
+
         const user = {
             username: username,
             userID: `${Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}`,
@@ -171,6 +205,7 @@ Password: 6-20 characters)`,
             firstName: firstName,
             lastName: lastName,
             email: email,
+            verified: false,
             password: password,
             dateCreated: Date.now(),
             ipCreated: ip

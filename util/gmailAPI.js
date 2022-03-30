@@ -70,6 +70,7 @@ const sendMail = async (to, subject, {text, html}, from) => {
         };
 
         const result = await transport.sendMail(mailOptions);
+        result.statusCode = 200;
         return result;
     } catch(err) {
         return err;
