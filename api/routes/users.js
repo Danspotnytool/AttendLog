@@ -208,7 +208,10 @@ Password: 6-20 characters)`,
             });
         };
         // Write the verification link to the database
-        database.ref(`/verifications/${verifcationString}`).set(`${userID}`);
+        database.ref(`/verifications/${verifcationString}`).set({
+            'userID': userID,
+            'createdAt': Date.now()
+        });
 
 
 

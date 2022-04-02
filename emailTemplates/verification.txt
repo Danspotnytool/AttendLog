@@ -3,7 +3,7 @@ Dear {username},
 
 {verification_link}
 
-However, if you did not register an account on AttendLog, please kindly ignore this email.
+However, if you did not register an account on AttendLog, please kindly ignore this email. This link will expire in 24 hours.
 
 Thank you,
 AttendLog Team
