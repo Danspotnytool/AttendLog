@@ -79,7 +79,7 @@ const prompt = document.getElementById('prompt');
 
 signin.onclick = (event) => {
     event.preventDefault();
-    
+
     signin.disabled = true;
 
     const username = document.getElementById('username').value;
@@ -89,7 +89,7 @@ signin.onclick = (event) => {
     if (!username || !password) {
         prompt.innerHTML = 'Please enter a username and password';
         prompt.style.opacity = 1;
-        return;
+        return signin.disabled = false;
     };
 
     // Send the data to the server

@@ -94,24 +94,24 @@ signup.onclick = (event) => {
     if (!username || !firstName || !lastName || !email || !password) {
         prompt.innerHTML = 'Please fill in all the fields';
         prompt.style.opacity = 1;
-        return signup.disabled = false;;
+        return signup.disabled = false;
     };
     // Check character lengths of the fields
     if (username.length > 20 || firstName.length > 20 || lastName.length > 20 || email.length > 50 || password.length > 20) {
         prompt.innerHTML = 'Please make sure all the fields are less than 20 characters';
         prompt.style.opacity = 1;
-        return signup.disabled = false;;
+        return signup.disabled = false;
     };
     if (username.length < 6 || firstName.length < 3 || lastName.length < 4 || email.length < 6 || password.length < 6) {
         prompt.innerHTML = 'Please make sure all the fields have the proper length\n(Username: 6-20 characters\n First Name: 3-20 characters\n Last Name: 4-20 characters\n Email: 6-50 characters\n Password: 6-20 characters)';
         prompt.style.opacity = 1;
-        return signup.disabled = false;;
+        return signup.disabled = false;
     };
     // Check if the email is valid
     if (!/^[^@]+@[^@.]+\.[a-z]+$/i.test(email)) {
         prompt.innerHTML = 'Please make sure the email is valid';
         prompt.style.opacity = 1;
-        return signup.disabled = false;;
+        return signup.disabled = false;
     };
     // Check if the password is valid
     // It should be at least 8 characters long
@@ -121,19 +121,19 @@ signup.onclick = (event) => {
     if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})/.test(password)) {
         prompt.innerHTML = 'The password should be at least 6 characters long and contain at least one number, one uppercase letter and one lowercase letter';
         prompt.style.opacity = 1;
-        return signup.disabled = false;;
+        return signup.disabled = false;
     };
 
     // Usernames can't have special characters, spaces, or start with a number
     if (/[^a-zA-Z0-9]/.test(username)) {
         prompt.innerHTML = 'The username can only contain letters and numbers';
         prompt.style.opacity = 1;
-        return signup.disabled = false;;
+        return signup.disabled = false;
     };
     if (/^[0-9]/.test(username)) {
         prompt.innerHTML = `The username can't start with a number`;
         prompt.style.opacity = 1;
-        return signup.disabled = false;;
+        return signup.disabled = false;
     };
     if (/\s/.test(username)) {
         prompt.innerHTML = `The username can't contain spaces`;
@@ -156,6 +156,8 @@ signup.onclick = (event) => {
         })
     }).then(res => res.json())
     .then(data => {
+        // Re-enable the signup button
+        signup.disabled = false;
         if (data.error) {
             prompt.innerHTML = data.error;
             prompt.style.opacity = 1;
@@ -184,6 +186,7 @@ signup.onclick = (event) => {
     }).catch((err) => {
         prompt.innerHTML = 'An error has occured';
         prompt.style.opacity = 1;
+        signup.disabled = false;
         console.log(err);
     });
 };

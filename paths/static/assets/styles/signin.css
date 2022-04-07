@@ -190,6 +190,7 @@ button {
 #content form div button {
     background-color: #024f97;
     color: #ffffff;
+    position: relative;
 }
 
 #content a {
@@ -228,6 +229,38 @@ button {
     }
     #content a[href="./signup"] {
         display: none;
+    }
+}
+
+
+
+#content form div button[disabled]::before, #content form div button[disabled]::after  {
+    content: "";
+    height: 3rem;
+    width: 3rem;
+    top: 0.3rem;
+    left: 0.3rem;
+    border: solid 2px #ffffff;
+    border-bottom: solid 2px transparent;
+    border-left: solid 2px transparent;
+    border-radius: 50%;
+    box-sizing: border-box;
+    display: inline-block;
+    position: absolute;
+}
+#content form div button[disabled]::before {
+    animation: loading 0.75s linear infinite;
+}
+#content form div button[disabled]::after {
+    animation: loading 1.25s linear infinite;
+}
+
+@keyframes loading {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
     }
 }
 
