@@ -222,7 +222,7 @@ setInterval(() => {
 }, 1000);
 
 
-//  ---------------------- Navigation Function  ----------------------
+//  ---------------------- Notification Function  ----------------------
 /**
  * @param {object} detail
  * @param {string} detail.type
@@ -239,7 +239,7 @@ const notify = (detail) => {
     });
     window.dispatchEvent(notification);
 };
-//  ---------------------- Navigation Function  ----------------------
+//  ---------------------- Notification Function  ----------------------
 
 
 // Checking what page we are on
