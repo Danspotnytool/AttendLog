@@ -77,8 +77,7 @@
 
         .noClassesButtons {
             width: 100%;
-            margin: 0.5rem;
-            padding: 0.5rem 1rem;
+            padding: 1rem 1.5rem;
             border: unset;
             background-color: unset;
             display: block;
@@ -118,17 +117,16 @@
                     if (data.code === '400') {
                         switch (data.message) {
                             case 'No Classes':
-
                                 const noClassesCard = document.createElement('div');
                                 noClassesCard.classList.add('classCard');
-                                noClassesCard.style.backgroundColor = '#f5f5f5';
+                                noClassesCard.style.backgroundColor = '#ffffff';
                                 noClassesCard.style.display = 'inline-flex';
                                 noClassesCard.style.flexDirection = 'column';
                                 noClassesCard.style.alignItems = 'center';
                                 noClassesCard.style.justifyContent = 'center';
 
                                 const noClassesTitle = document.createElement('div');
-                                noClassesTitle.style.marginBottom = '2rem';
+                                noClassesTitle.style.marginBottom = '1.5rem';
                                 noClassesTitle.style.textAlign = 'center';
                                 noClassesTitle.style.display = 'inline-block';
                                 noClassesTitle.style.fontSize = '3rem';

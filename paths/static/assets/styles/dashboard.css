@@ -346,6 +346,7 @@ input, textarea {
     width: 17.5rem;
     right: 6rem;
     bottom: 1rem;
+    border-radius: 1rem;
     background-color: #ffffff;
     font-size: 2rem;
     filter: drop-shadow(0 0 0.5rem #000000);
