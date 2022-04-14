@@ -310,77 +310,6 @@ input, textarea {
 }
 
 
-.classCard {
-    height: 20rem;
-    width: 35rem;
-    margin: 1rem;
-    border-radius: 1rem;
-    display: inline-block;
-    position: relative;
-    filter: drop-shadow(0 0 0.5rem #000000);
-    overflow: hidden;
-}
-.description {
-    height: 12.5rem;
-    width: 100%;
-    top: -100%;
-    left: 0;
-    padding: 2%;
-    font-size: 1.5rem;
-    position: absolute;
-    transition: top 0.25s;
-}
-.classCard:hover .description {
-    top: 0;
-}
-.titleCard {
-    height: 7.5rem;
-    width: 100%;
-    padding: 1rem;
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-}
-.titleCard h3 {
-    font-size: 2.5rem;
-    text-align: left;
-}
-.infoCard {
-    height: 100%;
-    width: 100%;
-    bottom: 0;
-    font-size: 1.75rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-@media screen and (max-width: 650px) {
-    .classCard {
-        height: 15rem;
-        width: 25rem;
-    }
-    .titleCard h3 {
-        font-size: 1.5rem;
-    }
-    .infoCard {
-        font-size: 1.25rem;
-    }    
-}
-@media screen and (max-width: 550px) {
-    .classCard {
-        height: 20rem;
-        width: 30rem;
-    }
-    .titleCard h3 {
-        font-size: 1.5rem;
-    }
-    .infoCard {
-        font-size: 1.25rem;
-    }    
-}
-
-
 
 #joinOrCreateContainer {
     height: 5rem;
@@ -437,19 +366,11 @@ input, textarea {
     justify-content: center;
     align-items: center;
     position: relative;
-    transition: 0.25s;
     cursor: pointer;
-}
-#optionsContainer button:hover::after {
-    content: '';
-    height: 5rem;
-    width: 17.5rem;
-    top: 0.5rem;
-    left: 0;
-    background-color: rgb(245, 245, 245);
-    position: absolute;
     transition: 0.25s;
-    z-index: -1;
+}
+#optionsContainer button:hover {
+    background-color: #d4d4d4;
 }
 
 
