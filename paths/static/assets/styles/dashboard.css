@@ -210,11 +210,12 @@ input, textarea {
     transition: margin 0.5s;
     position: relative;
 }
-.notification.error {
-    background-color: #ff0000;
-}
 .notification.log {
     background-color: #f8f8ff;
+}
+.notification.error {
+    background-color: rgb(92, 0, 0);
+    color: #ffffff;
 }
 .notification .button {
     height: 5rem;
@@ -227,6 +228,16 @@ input, textarea {
     border-radius: 50%;
     position: absolute;
     cursor: pointer;
+}
+.notification.error .button {
+    background-color: #ffffff;
+    color: #000000;
+}
+.notification.log .timeoutBar {
+    background-color: #01284D;
+}
+.notification.error .timeoutBar {
+    background-color: #ffffff;
 }
 .notification .close {
     height: 2rem;

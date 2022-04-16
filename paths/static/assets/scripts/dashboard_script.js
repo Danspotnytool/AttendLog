@@ -225,7 +225,7 @@ setInterval(() => {
 //  ---------------------- Notification Function  ----------------------
 /**
  * @param {object} detail
- * @param {string} detail.type
+ * @param {string} detail.type log, error
  * @param {string} detail.header
  * @param {string} detail.body
  * @param {string} detail.footer
@@ -388,7 +388,7 @@ createClassButton.onclick = async (event) => {
     const className = formData.get('className');
     const classColor = formData.get('classColor');
     const classDescription = formData.get('classDescription');
-    
+
     // Create the class
     fetch('/api/classes/create', {
         method: 'POST',
@@ -421,6 +421,7 @@ createClassButton.onclick = async (event) => {
             };
         };
     }).catch(err => {
+        createClassButton.disabled = false;
         console.log(err);
     });
 };
@@ -467,6 +468,7 @@ joinClassButton.onclick = async (event) => {
             };
         };
     }).catch(err => {
+        joinClassButton.disabled = false;
         console.log(err);
     });
 };
@@ -539,14 +541,13 @@ window.addEventListener('notification', (event) => {
     // Add timeout bar
     if (event.detail.timeout) {
         const timeoutBar = document.createElement('div');
+        timeoutBar.classList.add('timeoutBar');
         timeoutBar.style.width = '100%';
         timeoutBar.style.height = '5px';
         timeoutBar.style.left = '-100%';
         timeoutBar.style.bottom = '0';
-        timeoutBar.style.backgroundColor = '#01284D';
         timeoutBar.style.position = 'absolute';
         timeoutBar.style.transition = 'left 0.5s linear';
-        timeoutBar.style.transitionDelay = '0.5s';
         timeoutBar.style.transitionDuration = `${event.detail.timeout / 1000}s`;
 
         notification.appendChild(timeoutBar);
@@ -554,7 +555,7 @@ window.addEventListener('notification', (event) => {
         // move the timeout bar
         setTimeout(() => {
             timeoutBar.style.left = '0';
-        }, 500);
+        }, 10);
 
         // Remove the notification after timeout
         setTimeout(() => {
