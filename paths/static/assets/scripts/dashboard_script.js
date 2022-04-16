@@ -260,6 +260,17 @@ const checkPage = async () => {
                     'Content-Type': 'application/json',
                 }
             }).then((response) => {
+                console.log(response);
+                if (response.status != 200) {
+                    notify({
+                        type: 'error',
+                        header: 'Error: Unable to fetch the dashboard panel',
+                        body: 'Try reloading the page',
+                        footer: `${new Date()}`,
+                        timeout: 5000
+                    });
+                    return;
+                };
                 return response.text();
             }).then((data) => {
                 const mainContainer = document.getElementById('mainContainer');
@@ -287,6 +298,17 @@ const checkPage = async () => {
                     'Content-Type': 'application/json',
                 }
             }).then((response) => {
+                console.log(response);
+                if (response.status != 200) {
+                    notify({
+                        type: 'error',
+                        header: 'Error: Unable to fetch the dashboard panel',
+                        body: 'Try reloading the page',
+                        footer: `${new Date()}`,
+                        timeout: 5000
+                    });
+                    return;
+                };
                 return response.text();
             }).then((data) => {
                 const mainContainer = document.getElementById('mainContainer');
@@ -315,6 +337,17 @@ const checkPage = async () => {
                     'Content-Type': 'application/json',
                 }
             }).then((response) => {
+                console.log(response);
+                if (response.status != 200) {
+                    notify({
+                        type: 'error',
+                        header: 'Error: Unable to fetch the profile panel',
+                        body: 'Try reloading the page',
+                        footer: `${new Date()}`,
+                        timeout: 5000
+                    });
+                    return;
+                };
                 return response.text();
             }).then((data) => {
                 const mainContainer = document.getElementById('mainContainer');
@@ -334,6 +367,41 @@ const checkPage = async () => {
             break;
 
         default:
+            headerTitle.innerHTML = 'Dashboard';
+
+            fetch(`${window.location.origin}/dashboardPanels/classes`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then((response) => {
+                console.log(response);
+                if (response.status != 200) {
+                    notify({
+                        type: 'error',
+                        header: 'Error: Unable to fetch the dashboard panel',
+                        body: 'Try reloading the page',
+                        footer: `${new Date()}`,
+                        timeout: 5000
+                    });
+                    return;
+                };
+                return response.text();
+            }).then((data) => {
+                const mainContainer = document.getElementById('mainContainer');
+                mainContainer.innerHTML = data;
+
+                // Get script tags inside the mainContainer
+                const scriptTags = Array.from(document.getElementById('mainContainer').getElementsByTagName('script'));
+                scriptTags.forEach((script) => {
+                    eval(script.innerHTML);
+                });
+
+                document.title = 'Dashboard - AttendLog';
+
+                sidePanelLinks.find(link => link.getAttribute('active') === 'true').setAttribute('active', 'false');
+                sidePanelLinks.find(link => link.getAttribute('href') === 'Dashboard').setAttribute('active', 'true');
+            });
             break;
     };
 };
