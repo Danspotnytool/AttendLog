@@ -70,6 +70,13 @@ router.post('/create', async (req, res) => {
     // Validate the token on the database
     const userRef = database.ref(`/users/${user.userID}`);
     await userRef.once('value', (snapshot) => {
+        if (!snapshot.val()) {
+            logger.log(`${ip} - Create Class Attempt - Invalid User`);
+            return res.send({
+                message: 'Invalid User',
+                code: '400'
+            });
+        };
         if (snapshot.val().token !== user.token) {
             logger.log(`${ip} - ${user.userID} - Create class Attempt - Invalid Authorization`);
             return res.send({
@@ -145,6 +152,13 @@ router.get('/get', async (req, res) => {
     // Validate the token on the database
     const userRef = database.ref(`/users/${user.userID}`);
     await userRef.once('value', (snapshot) => {
+        if (!snapshot.val()) {
+            logger.log(`${ip} - Get Class Attempt - Invalid User`);
+            return res.send({
+                message: 'Invalid User',
+                code: '400'
+            });
+        };
         if (snapshot.val().token !== user.token) {
             logger.log(`${ip} - ${username} - Get Class Attempt - Invalid Authorization`);
             return res.send({
@@ -258,6 +272,13 @@ router.post('/join', async (req, res) => {
     // Validate the token on the database
     const userRef = database.ref(`/users/${user.userID}`);
     await userRef.once('value', (snapshot) => {
+        if (!snapshot.val()) {
+            logger.log(`${ip} - Join Class Attempt - Invalid User`);
+            return res.send({
+                message: 'Invalid User',
+                code: '400'
+            });
+        };
         if (snapshot.val().token !== user.token) {
             logger.log(`${ip} - ${username} - Join Class Attempt - Invalid Authorization`);
             return res.send({

@@ -17,7 +17,7 @@ module.exports = (app) => {
     app.get('/api/*', (req, res) => {
         res.status(404).send({
             message: 'API route not found',
-            status: '400'
+            code: '404'
         });
-    })
+    });
 };

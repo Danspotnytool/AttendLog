@@ -179,15 +179,15 @@ Password: 6-20 characters)`,
 
 
         // Generate verification link
-        let verifcationString = 'hi';
+        let verificationString = 'hi';
         for (let i = 0; i < 20; i++) {
-            verifcationString += Math.random().toString(36).substring(2, 3);
-            verifcationString += Math.random().toString(36).substring(2, 3);
-            verifcationString += Math.random().toString(36).substring(2, 3);
+            verificationString += Math.random().toString(36).substring(2, 3);
+            verificationString += Math.random().toString(36).substring(2, 3);
+            verificationString += Math.random().toString(36).substring(2, 3);
         };
         // If the request is from localhost, then the verification link will be localhost/verify/:verificationString
         // If the request is from the server, then the verification link will be https://www.attendlog.ga/verify/:verificationString
-        const verificationLink = `${req.protocol}://${req.get('host')}/api/verifications/verify/${verifcationString}`;
+        const verificationLink = `${req.protocol}://${req.get('host')}/api/verifications/verify/${verificationString}`;
         // Verification message
         const verificationMessageText = verificationText.replace('{verification_link}', `${verificationLink}`).replace('{username}', username);
         const verificationMessageHTML = verificationText.replace('{verification_link}', `<a href="${verificationLink}">${verificationLink}</a>`)
@@ -208,7 +208,7 @@ Password: 6-20 characters)`,
             });
         };
         // Write the verification link to the database
-        database.ref(`/verifications/${verifcationString}`).set({
+        database.ref(`/verifications/${verificationString}`).set({
             'userID': userID,
             'createdAt': Date.now()
         });
@@ -223,6 +223,7 @@ Password: 6-20 characters)`,
             lastName: lastName,
             email: email,
             verified: false,
+            verificationString: verificationString,
             password: password,
             dateCreated: Date.now(),
             ipCreated: ip
@@ -352,6 +353,13 @@ router.get('/profile/:userID', async (req, res, next) => {
     // Validate the token on the database
     const userRef = database.ref(`/users/${user.userID}`);
     await userRef.once('value', (snapshot) => {
+        if (!snapshot.val()) {
+            logger.log(`${ip} - Get Profile Attempt - Invalid User`);
+            return res.send({
+                message: 'Invalid User',
+                code: '400'
+            });
+        };
         if (snapshot.val().token !== user.token) {
             logger.log(`${ip} - Get Profile Attempt - Invalid Authorization`);
             return res.send({

@@ -38,6 +38,10 @@ const sendMessage = (message) => {
 
 
 
+const verifications = [];
+
+
+
 // Test if connection to database is possible
 database.ref('/').once('value').then(() => {
     logger.log('Verifications database connected');
@@ -48,125 +52,41 @@ database.ref('/').once('value').then(() => {
 
 
 // Verification Class
-class verifications {
+class Verification {
     constructor(verificationString, userID, createdAt) {
         this.verificationString = verificationString;
         this.userID = userID;
         this.createdAt = createdAt;
 
         // Create a timer to delete the verification string using the createdAt timestamp
-        // The expiration time is set to 24 hours
+        // The expiration time is set to 24 hours from when it was created
         this.expirationTimeout = setTimeout(() => {
             this.destroy();
-        }, 1000 * 60 * 60 * 24);
-    };
-    // Create a new route
-    create() {
-        // Create a route for the verification string
-        router.get(`/verify/${this.verificationString}`, async (req, res) => {
-            console.log(`/verify/${this.verificationString}`);
-            // Check if the user is logged in
-            const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-
-            // Validate the token on the header cookie
-            const user = {
-                userID: '',
-                token: ''
-            };
-            try {
-                user.userID = JSON.parse(req.headers.cookie).userID;
-                user.token = JSON.parse(req.headers.cookie).token;
-            } catch (err) {
-                logger.log(`${ip} - Get Profile Attempt - Invalid Authorization`);
-                return res.send({
-                    message: 'Invalid Authorization',
-                    code: '400'
-                });
-            };
-            // Validate the token on the database
-            const userRef = database.ref(`/users/${user.userID}`);
-            await userRef.once('value', (snapshot) => {
-                if (snapshot.val() === null) {
-                    logger.log(`${ip} - Verify Account Attempt - Invalid UserID`);
-                    return res.send({
-                        message: 'Invalid UserID',
-                        code: '400'
-                    });
-                };
-
-                if (snapshot.val().token !== user.token) {
-                    logger.log(`${ip} - Get Profile Attempt - Invalid Authorization`);
-                    return res.send({
-                        message: 'Invalid Authorization',
-                        code: '400'
-                    });
-                };
-            });
-
-            // Find the verification string on the database
-            const verificationStringRef = database.ref(`/verifications/${this.verificationString}`);
-            verificationStringRef.once('value', (snapshot) => {
-                if (snapshot.val() === null) {
-                    res.send({
-                        message: 'Invalid Verification String',
-                        code: '400'
-                    });
-                    return;
-                };
-
-                // Check if this verification string is for the user
-                if (snapshot.val().userID !== user.userID) {
-                    res.send({
-                        message: 'Invalid Verification String',
-                        code: '400'
-                    });
-                    return;
-                };
-
-                // Verify the user
-                userRef.update({
-                    verified: true
-                });
-
-                // Clear the timeout
-                clearTimeout(this.expirationTimeout);
-
-                // Delete the verification string from the database
-                verificationStringRef.remove();
-
-                // Redirect the user to the dashboard
-                res.redirect(`${req.protocol}://${req.get('host')}/dashboard`);
-            });
-
-        });
+        }, (createdAt + (24 * 60 * 60 * 1000)) - Date.now());
     };
 
-    destroy() {
-        console.log(`/verify/${this.verificationString}`);
-        // Delete the verification string from the database
-        database.ref(`/verifications/${this.verificationString}`).remove();
+    async deleteVerification() {
+        clearTimeout(this.expirationTimeout);
+
+        await database.ref(`/verifications/${this.verificationString}`).remove();
+        // Remove the verification string from the verifications array
+        verifications.splice(verifications.indexOf(this), 1);
+    };
+
+    async verify() {
+        // Verify the user
+        await database.ref(`/users/${this.userID}/verified/`).set(true);
+        // Remove the verification string from user
+        await database.ref(`/users/${this.userID}/verificationString`).remove();
+
+        this.deleteVerification();
+    };
+
+    async destroy() {
         // Delete the user from the database
-        // Get it's username and email
-        const userRef = database.ref(`/users/${this.userID}`);
-        userRef.once('value', (snapshot) => {
-            const username = snapshot.val().username;
-            const email = snapshot.val().email;
+        await database.ref(`/users/${this.userID}`).remove();
 
-            // Delete the user from the database
-            database.ref(`/usernames/${username}`).remove();
-            database.ref(`/emails/${encodeURIComponent(email).replace('.', '%2E')}`).remove();
-
-            // Delete the user from the database
-            database.ref(`/users/${this.userID}`).remove();
-
-            // Delete the route
-            router.get(`/verify/${this.verificationString}`, (req, res) => {
-                res.send({
-                    message: 'Invalid Verification String',
-                    code: '400'
-                });
-            });
-        });
+        this.deleteVerification();
     };
 };
 
@@ -183,15 +103,86 @@ database.ref('/verifications').on('child_added', async (snapshot) => {
     const userID = snapshot.val().userID;
     const createdAt = snapshot.val().createdAt;
 
-    // Check if the createdAt timestamp is older than 24 hours
-    const now = Date.now();
     // Create a new verification object
-    const verification = new verifications(verificationString, userID, createdAt);
-    if (now - createdAt > 1000 * 60 * 60 * 24) {
-        // Delete the verification string from the database
-        try { verification.destroy() } catch (err) {};
+    const verification = new Verification(verificationString, userID, createdAt);
+    // Add the verification object to the verifications array
+    verifications.push(verification);
+});
+
+
+
+// Listen to '/verify' route
+router.get('/verify/:verificationString', async (req, res) => {
+    sendMessage(JSON.stringify({
+        type: 'verify',
+    }));
+
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+    // Validate the token on the header cookie
+    const user = {
+        userID: '',
+        token: ''
     };
-    verification.create();
+    try {
+        user.userID = JSON.parse(req.headers.cookie).userID;
+        user.token = JSON.parse(req.headers.cookie).token;
+    } catch (err) {
+        logger.log(`${ip} - Verification Attempt - Invalid Authorization`);
+        return res.send({
+            message: 'Invalid Authorization',
+            code: '400'
+        });
+    };
+    // Validate the token on the database
+    const userRef = database.ref(`/users/${user.userID}`);
+    await userRef.once('value', (snapshot) => {
+        if (!snapshot.val()) {
+            logger.log(`${ip} - Verification Attempt - Invalid User`);
+            return res.send({
+                message: 'Invalid User',
+                code: '400'
+            });
+        };
+        if (snapshot.val().token !== user.token) {
+            logger.log(`${ip} - Verification Attempt - Invalid Authorization`);
+            return res.send({
+                message: 'Invalid Authorization',
+                code: '400'
+            });
+        };
+        Object.keys(snapshot.val()).forEach((key) => {
+            if (key !== 'token') {
+                user[key] = snapshot.val()[key];
+            };
+        });
+        
+        // Check if the user is already verified
+        if (user.verified) {
+            logger.log(`${ip} - Verification Attempt - User already verified`);
+            return res.send({
+                message: 'User already verified',
+                code: '400'
+            });
+        };
+
+        // Check if the verification string is valid
+        const verification = verifications.find((verification) => {
+            return verification.verificationString === req.params.verificationString;
+        });
+        if (!verification) {
+            logger.log(`${ip} - Verification Attempt - Invalid verification string`);
+            return res.send({
+                message: 'Invalid verification string',
+                code: '400'
+            });
+        };
+
+        // Verify the user
+        verification.verify().then(() => {
+            res.redirect('/dashboard');
+        });
+    });
 });
 
 
