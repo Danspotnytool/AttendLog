@@ -156,7 +156,7 @@ router.get('/verify/:verificationString', async (req, res) => {
                 user[key] = snapshot.val()[key];
             };
         });
-        
+
         // Check if the user is already verified
         if (user.verified) {
             logger.log(`${ip} - Verification Attempt - User already verified`);
