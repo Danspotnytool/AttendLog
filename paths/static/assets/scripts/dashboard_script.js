@@ -502,6 +502,7 @@ createClassButton.onclick = async (event) => {
 };
 
 
+
 // Join Class
 joinClassButton.onclick = async (event) => {
     event.preventDefault();
