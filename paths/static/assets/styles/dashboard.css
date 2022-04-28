@@ -189,7 +189,7 @@ input, textarea {
     right: 1rem;
     display: none;
     position: absolute;
-    z-index: 2;
+    z-index: 20;
     scroll-behavior: smooth;
     overflow-x: hidden;
     overflow-y: auto;
@@ -258,6 +258,7 @@ input, textarea {
     font-size: 1.5rem;
 }
 .notification .footer {
+    margin-top: 0.5rem;
     font-size: 1rem;
 }
 
