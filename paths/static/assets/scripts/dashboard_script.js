@@ -470,9 +470,7 @@ createClassButton.onclick = async (event) => {
         })
     }).then(response => response.json())
     .then(data => {
-        if (data.code === '400') {
-            return console.log(data.message);
-        } else {
+        if (data.code === '200') {
             formsBackground.click();
             createClassForm.reset();
             // Check if the user is on the dashboard page
@@ -487,6 +485,15 @@ createClassButton.onclick = async (event) => {
                 // Redirect to the dashboard page
                 window.location.href = '/dashboard';
             };
+        } else {
+            createClassButton.disabled = false;
+            notify({
+                type: 'error',
+                header: 'Error: Unable to create the class',
+                body: `${data.message}`,
+                footer: `${new Date()}`,
+                timeout: 5000
+            });
         };
     }).catch(err => {
         createClassButton.disabled = false;
@@ -517,9 +524,7 @@ joinClassButton.onclick = async (event) => {
         })
     }).then(response => response.json())
     .then(data => {
-        if (data.code === '400') {
-            // If the class is not found
-        } else {
+        if (data.code === '200') {
             formsBackground.click();
             joinClassForm.reset();
             // Check if the user is on the dashboard page
@@ -534,6 +539,15 @@ joinClassButton.onclick = async (event) => {
                 // Redirect to the dashboard page
                 window.location.href = '/dashboard';
             };
+        } else {
+            createClassButton.disabled = false;
+            notify({
+                type: 'error',
+                header: 'Error: Unable to create the class',
+                body: `${data.message}`,
+                footer: `${new Date()}`,
+                timeout: 5000
+            });
         };
     }).catch(err => {
         joinClassButton.disabled = false;

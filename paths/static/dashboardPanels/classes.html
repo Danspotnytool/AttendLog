@@ -159,7 +159,109 @@
                                 noClassesCard.appendChild(noClassesTitle);
                                 noClassesCard.appendChild(noClassessButtons);
                                 classesContainer.appendChild(noClassesCard);
-                                console.log('No Classes');
+                                break;
+
+                            case 'User not verified':
+                                const notVerifiedCard = document.createElement('div');
+                                notVerifiedCard.classList.add('classCard');
+                                notVerifiedCard.style.backgroundColor = '#ffffff';
+                                notVerifiedCard.style.display = 'inline-flex';
+                                notVerifiedCard.style.flexDirection = 'column';
+                                notVerifiedCard.style.alignItems = 'center';
+                                notVerifiedCard.style.justifyContent = 'center';
+
+                                const notVerifiedTitle = document.createElement('div');
+                                notVerifiedTitle.style.marginBottom = '1.5rem';
+                                notVerifiedTitle.style.textAlign = 'center';
+                                notVerifiedTitle.style.display = 'inline-block';
+                                notVerifiedTitle.style.fontSize = '3rem';
+                                notVerifiedTitle.innerHTML = 'Not Verified';
+
+                                const notVerifiedButtons = document.createElement('div');
+                                notVerifiedButtons.style.display = 'inline-flex';
+                                notVerifiedButtons.style.flexDirection = 'column';
+                                notVerifiedButtons.style.justifyContent = 'center';
+                                notVerifiedButtons.style.alignItems = 'center';
+
+                                const resendVerificationButton = document.createElement('button');
+                                resendVerificationButton.classList.add('noClassesButtons');
+                                resendVerificationButton.innerHTML = 'Resend Verification Email';
+                                notVerifiedButtons.appendChild(resendVerificationButton);
+                                
+                                resendVerificationButton.onclick = () => {
+                                    resendVerificationButton.innerHTML = 'Resending...';
+                                    resendVerificationButton.disabled = true;
+                                    try {
+                                        fetch('/api/verifications/resend', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json'
+                                            }
+                                        }).then(response => {
+                                            if (response.status != 200) {
+                                                resendVerificationButton.innerHTML = 'Resend Verification Email';
+                                                resendVerificationButton.disabled = false;
+                                                notify({
+                                                    type: 'error',
+                                                    header: 'Failed to send verification email',
+                                                    body: 'Please try again later',
+                                                    timeout: 5000
+                                                });
+                                                return;
+                                            };
+                                            return response.json();
+                                        }).then(data => {
+                                            if (data.code === '200') {
+                                                resendVerificationButton.innerHTML = 'Verification Email Sent';
+                                                resendVerificationButton.disabled = false;
+                                                notify({
+                                                    type: 'log',
+                                                    header: 'Verification email sent',
+                                                    body: 'Please check your email',
+                                                    footer: 'You will be able to join or create classes after verification',
+                                                    timeout: 5000
+                                                });
+                                            } else {
+                                                resendVerificationButton.innerHTML = 'Resend Verification Email';
+                                                resendVerificationButton.disabled = false;
+                                                switch (data.message) {
+                                                    case 'User already verified':
+                                                        window.location.reload();
+                                                        break;
+                                                    case 'User not found':
+                                                        notify({
+                                                            type: 'error',
+                                                            header: 'User not found',
+                                                            body: 'Please try again later',
+                                                            timeout: 5000
+                                                        });
+                                                        break;
+                                                    default:
+                                                        notify({
+                                                            type: 'error',
+                                                            header: 'Failed to send verification email',
+                                                            body: 'Please try again later',
+                                                            timeout: 5000
+                                                        });
+                                                        break;
+                                                };
+                                            };
+                                        });
+                                    } catch(err) {
+                                        resendVerificationButton.innerHTML = 'Resend Verification Email';
+                                        resendVerificationButton.disabled = false;
+                                        notify({
+                                            type: 'error',
+                                            header: 'Failed to send verification email',
+                                            body: 'Please try again later',
+                                            timeout: 5000
+                                        });
+                                    };
+                                };
+
+                                notVerifiedCard.appendChild(notVerifiedTitle);
+                                notVerifiedCard.appendChild(notVerifiedButtons);
+                                classesContainer.appendChild(notVerifiedCard);
                                 break;
                             default:
                                 console.log(data.message);

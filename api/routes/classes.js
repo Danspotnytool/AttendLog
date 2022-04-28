@@ -84,7 +84,18 @@ router.post('/create', async (req, res) => {
                 code: '400'
             });
         };
+
+        // Assign the user's verified status to the response
+        user['verified'] = snapshot.val().verified;
     });
+    // Check if the user is verified
+    if (!user.verified) {
+        logger.log(`${ip} - ${user.userID} - Create class Attempt - Unverified User`);
+        return res.send({
+            message: 'Unverified User',
+            code: '400'
+        });
+    };
 
     // Create the class
     const classs = {
@@ -168,7 +179,17 @@ router.get('/get', async (req, res) => {
         };
         // Assign the user's classes to the response
         user['classes'] = snapshot.val().classes;
+        // Assign the user's verified status to the response
+        user['verified'] = snapshot.val().verified;
     });
+    // Check if the user is verified
+    if (!user.verified) {
+        logger.log(`${ip} - ${user.userID} - Get Class Attempt - User not verified`);
+        return res.send({
+            message: 'User not verified',
+            code: '400'
+        });
+    };
 
     // Get the user's classes
     const userClasses = [];
@@ -290,7 +311,18 @@ router.post('/join', async (req, res) => {
         if (snapshot.val().classes) {
             user.classes = snapshot.val().classes;
         };
+
+        // Assign the user's verified status to the response
+        user['verified'] = snapshot.val().verified;
     });
+    // Check if the user is verified
+    if (!user.verified) {
+        logger.log(`${ip} - ${user.userID} - Join class Attempt - Unverified User`);
+        return res.send({
+            message: 'Unverified User',
+            code: '400'
+        });
+    };
 
     // Get the request body
     const { classID, classToken } = req.body;

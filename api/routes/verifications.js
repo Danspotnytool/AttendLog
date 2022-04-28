@@ -6,7 +6,11 @@ const bodyParser = require('body-parser');
 const bycrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 const socketClient = require('socket.io-client');
+const fs = require('fs');
+const path = require('path');
 
+// Require verification.txt
+const verificationText = fs.readFileSync(path.join(__dirname, '../../emailTemplates/verification.txt'), 'utf8');
 
 // Require firebase utility
 const { database } = require('../../util/databaseConnection.js');
@@ -87,6 +91,18 @@ class Verification {
         await database.ref(`/users/${this.userID}`).remove();
 
         this.deleteVerification();
+    };
+
+    async resetTimer() {
+        const newCreatedAt = Date.now();
+        this.createdAt = newCreatedAt;
+        
+        clearTimeout(this.expirationTimeout);
+        this.expirationTimeout = setTimeout(() => {
+            this.destroy();
+        }, (this.createdAt + (24 * 60 * 60 * 1000)) - Date.now());
+
+        await database.ref(`/verifications/${this.verificationString}/createdAt`).set(newCreatedAt);
     };
 };
 
@@ -182,6 +198,101 @@ router.get('/verify/:verificationString', async (req, res) => {
         verification.verify().then(() => {
             res.redirect('/dashboard');
         });
+    });
+});
+
+
+
+// Listen to '/resend' route
+router.post('/resend/', async (req, res) => {
+    sendMessage(JSON.stringify({
+        type: 'resend',
+    }));
+
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+    // Validate the token on the header cookie
+    const user = {
+        userID: '',
+        token: ''
+    };
+    try {
+        user.userID = JSON.parse(req.headers.cookie).userID;
+        user.token = JSON.parse(req.headers.cookie).token;
+    } catch (err) {
+        logger.log(`${ip} - Resend Attempt - Invalid Authorization`);
+        return res.send({
+            message: 'Invalid Authorization',
+            code: '400'
+        });
+    };
+    // Validate the token on the database
+    const userRef = database.ref(`/users/${user.userID}`);
+    await userRef.once('value', (snapshot) => {
+        if (!snapshot.val()) {
+            logger.log(`${ip} - Resend Attempt - Invalid User`);
+            return res.send({
+                message: 'Invalid User',
+                code: '400'
+            });
+        };
+        if (snapshot.val().token !== user.token) {
+            logger.log(`${ip} - Resend Attempt - Invalid Authorization`);
+            return res.send({
+                message: 'Invalid Authorization',
+                code: '400'
+            });
+        };
+        Object.keys(snapshot.val()).forEach((key) => {
+            if (key !== 'token') {
+                user[key] = snapshot.val()[key];
+            };
+        });
+
+        // Check if the user is already verified
+        if (user.verified) {
+            logger.log(`${ip} - Resend Attempt - User already verified`);
+            return res.send({
+                message: 'User already verified',
+                code: '400'
+            });
+        } else {
+            // Resend the verification email
+            // Get the verification string
+            const verificationString = user.verificationString;
+            // If the request is from localhost, then the verification link will be localhost/verify/:verificationString
+            // If the request is from the server, then the verification link will be https://www.attendlog.ga/verify/:verificationString
+            const verificationLink = `${req.protocol}://${req.get('host')}/api/verifications/verify/${verificationString}`;
+            // Verification message
+            const verificationMessageText = verificationText.replace('{verification_link}', `${verificationLink}`).replace('{username}', user.username);
+            const verificationMessageHTML = verificationText.replace('{verification_link}', `<a href="${verificationLink}">${verificationLink}</a>`)
+                .replace('{username}', user.username)
+                .replace(/\n/g, '<br>');
+
+            // Send the verification email
+            sendMail(user.email, 'Verification Email Resend', {
+                text: verificationMessageText,
+                html: verificationMessageHTML
+            }).then(() => {
+                // Reset the verification timer
+                // Find the verification object
+                const verification = verifications.find((verification) => {
+                    return verification.verificationString === verificationString;
+                });
+                // Reset the verification timer
+                verification.resetTimer();
+                res.send({
+                    message: 'Verification email sent',
+                    code: '200'
+                });
+            }).catch((err) => {
+                logger.log(`${ip} - Resend Attempt - ${err}`);
+                res.send({
+                    message: 'Verification email failed',
+                    code: '400'
+                });
+            });
+        };
     });
 });
 
