@@ -81,7 +81,30 @@ module.exports = (app) => {
 
         // Add the direction to the main panel
         app.get(`/dashboard/${dashboardDirectionObj.direction}`, (req, res, next) => {
-            res.redirect('/dashboard');
+            // res.redirect('/dashboard');
+            // Get the cookies
+            const cookies = req.headers.cookie;
+            let user = {};
+            try {
+                user = JSON.parse(cookies);
+            } catch(err) {
+                return res.redirect('/signup');
+            };
+            if (user.userID && user.token) {
+                database.ref(`/users/${user.userID}`).once('value').then((snapshot) => {
+                    if (snapshot.val() === null) {
+                        return res.redirect('/signup');
+                    };
+                    const userFromDB = snapshot.val();
+                    if (userFromDB.token === user.token) {
+                        require('./directions/dashboard.js').execute(req, res, next);
+                    } else {
+                        return res.redirect('/signup');
+                    };
+                });
+            } else {
+                return res.redirect(`/signup`);
+            };
         });
     });
 

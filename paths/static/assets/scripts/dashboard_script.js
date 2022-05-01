@@ -20,7 +20,7 @@ const joinClassForm = document.getElementById('joinClassForm');
 const joinClassButton = document.getElementById('joinClassButton');
 
 // Load the menuButton svg
-fetch('./assets/svg/menu-icon.svg')
+fetch('/assets/svg/menu-icon.svg')
     .then(response => response.text())
     .then(data => {
         // convert into svg element
@@ -586,7 +586,7 @@ window.addEventListener('notification', (event) => {
     notification.classList.add(event.detail.type);
     notification.innerHTML = `
         <div class="close">
-            <img src="./assets/svg/exit-form-icon copy.svg" alt="Close Notification">
+            <img src="/assets/svg/exit-form-icon copy.svg" alt="Close Notification">
         </div>
         <div class="header">${event.detail.header}</div>
         <div class="body">${event.detail.body}</div>
