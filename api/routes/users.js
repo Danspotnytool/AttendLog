@@ -117,15 +117,15 @@ Password: 6-20 characters)`,
     };
 
     // Check if the username is already taken
-    database.ref(`/usernames/${username}`).once('value', (snapshot) => {
-        if (snapshot.val()) {
-            logger.log(`${ip} - ${username} - Signup Attempt - Username already taken`);
-            return res.send({
-                message: 'The username is already taken',
-                code: '400'
-            });
-        };
-    });
+    const userExists = await database.ref(`/usernames/${username}`).once('value');
+    if (userExists.val()) {
+        logger.log(`${ip} - ${username} - Signup Attempt - Username already taken`);
+        return res.send({
+            message: 'The username is already taken',
+            code: '400'
+        });
+    };
+
     // Usernames can't have special characters, spaces, or start with a number
     if (/[^a-zA-Z0-9]/.test(username)) {
         logger.log(`${ip} - ${username} - Signup Attempt - Invalid username (special characters)`);
