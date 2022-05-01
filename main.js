@@ -65,6 +65,7 @@ const connectedToSocketArray = [
 ];
 
 
+
 // This array will be the ammount of api calls every minute
 const apiCallsArray = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
