@@ -42,6 +42,12 @@ const paths = require('./paths/index.js')(app);
 
 // Require the API
 const api = require('./api/api.js')(app);
+app.get('*', (req, res) => {
+    res.send({
+        message: 'Page not found',
+        code: '404'
+    });
+});
 
 
 // Listen to port
