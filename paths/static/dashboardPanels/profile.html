@@ -4,7 +4,16 @@
             width: 90%;
             margin: 2rem auto;
             display: flex;
+            flex-direction: row;
             gap: 2.5rem;
+        }
+        @media screen and (max-width: 650px) {
+            #profileContainer {
+                margin: 1rem auto;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
         }
 
         #profilePictureContainer {
@@ -27,6 +36,17 @@
             font-size: 1.75rem;
             cursor: pointer;
         }
+        @media screen and (max-width: 650px) {
+            #profilePictureContainer {
+                width: 50%;
+                gap: 0.5rem;
+            }
+            #profilePictureContainer button {
+                padding: 1rem 3rem;
+                border-radius: 1rem;
+                font-size: 1.5rem;
+            }
+        }
 
         #profileInfoContainer {
             width: 75%;
@@ -48,11 +68,35 @@
             margin: auto;
             border-radius: 2rem;
             background-color: #8c97a6;
-            font-size: 1.75rem;
+            font-size: 2rem;
             text-align: left;
         }
         #profileInfoContainer table tr td {
             padding: 0 3rem;
+        }
+        @media screen and (max-width: 650px) {
+            #profileInfoContainer {
+                width: 100%;
+            }
+            #profileDescriptionHeader {
+                display: none;
+            }
+            #profileInfoContainer table {
+                border-radius: 1rem;
+                font-size: 1.5rem;
+                background-color: #c7d0d8;
+            }
+            #profileInfoContainer table td {
+                display: block;
+                text-align: center;
+            }
+            .infoName {
+                font-size: 1.5rem;
+            }
+            .infoValue {
+                font-size: 2rem;
+                margin-bottom: 2rem;
+            }
         }
     </style>
     <div id="profileContainer">
@@ -67,42 +111,42 @@
                 </div>
                 <table>
                     <tr>
-                        <td>
+                        <td class="infoName">
                             Username:
                         </td>
-                        <td id="username">
+                        <td class="infoValue" id="username">
 
                         </td>
                     </tr>
                     <tr>
-                        <td>
+                        <td class="infoName">
                             Full Name:
                         </td>
-                        <td id="fullname">
+                        <td class="infoValue" id="fullname">
 
                         </td>
                     </tr>
                     <tr>
-                        <td>
+                        <td class="infoName">
                             Email:
                         </td>
-                        <td id="email">
+                        <td class="infoValue" id="email">
 
                         </td>
                     </tr>
                     <tr>
-                        <td>
+                        <td class="infoName">
                             User ID:
                         </td>
-                        <td id="userID">
+                        <td class="infoValue" id="userID">
 
                         </td>
                     </tr>
                     <tr>
-                        <td>
+                        <td class="infoName">
                             Current Reference ID:
                         </td>
-                        <td id="referenceID">
+                        <td class="infoValue" id="referenceID">
 
                         </td>
                     </tr>
