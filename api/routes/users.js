@@ -3,6 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
+const expressFileUpload = require('express-fileupload');
 const bycrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 const socketClient = require('socket.io-client');
@@ -29,6 +30,7 @@ const verificationText = fs.readFileSync(path.join(__dirname, '../../emailTempla
 
 
 router.use(bodyParser.json());
+router.use(expressFileUpload());
 
 
 
@@ -381,39 +383,101 @@ router.get('/profile/:userID', async (req, res, next) => {
         if (snapshot.val().classes) {
             user.classes = snapshot.val().classes;
         };
-    });
 
-    // Get the user from the database
-    const userID = req.params.userID;
-    database.ref(`/users/${userID}/profile`).once('value', (snapshot) => {
-        const user = snapshot.val();
-
-        if (!user) {
-            logger.log(`${ip} - Get Profile Attempt - Invalid userID`);
-            return res.send({
-                message: 'Invalid userID',
-                code: '400'
+        // Get the user from the database
+        const userID = req.params.userID;
+        database.ref(`/users/${userID}/profile`).once('value', (snapshot) => {
+            const user = snapshot.val();
+    
+            if (!user) {
+                logger.log(`${ip} - Get Profile Attempt - Invalid userID`);
+                return res.send({
+                    message: 'Invalid userID',
+                    code: '400'
+                });
+            };
+    
+            // Return the user
+            logger.log(`${ip} - Get Profile Success`);
+            res.send({
+                message: 'Success',
+                user: {
+                    userID: user.userID,
+                    username: user.username,
+                    firstName: user.name.firstName,
+                    middleName: user.name.middleName,
+                    lastName: user.name.lastName,
+                    suffix: user.suffix || '',
+                    email: user.email,
+                    userID: user.userID,
+                    referenceID: user.referenceID || 'N/A'
+                },
+                code: '200'
             });
-        };
-
-        // Return the user
-        logger.log(`${ip} - Get Profile Success`);
-        res.send({
-            message: 'Success',
-            user: {
-                username: user.username,
-                firstName: user.name.firstName,
-                middleName: user.name.middleName,
-                lastName: user.name.lastName,
-                suffix: user.suffix || '',
-                email: user.email,
-                userID: user.userID,
-                referenceID: user.referenceID || 'N/A'
-            },
-            code: '200'
         });
     });
 });
 
+// Editing Profile
+router.post('/profile/:userID/edit', async (req, res, next) => {
+    sendMessage(JSON.stringify({
+        type: 'editProfile',
+    }));
+
+    // Get file from the request
+    const file = req.files;
+
+    // Get All the data from the request
+    const { username, firstName, middleName, lastName, suffix, email, password, referenceID } = req.body;
+
+    // Check if all of those data are empty
+    if (!username && !firstName && !middleName && !lastName && !suffix && !email && !password && !referenceID && !file) {
+        return res.send({
+            message: 'Please fill in all the fields',
+            code: '400'
+        });
+    };
+
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+    // Validate the token on the header cookie
+    const user = {
+        userID: '',
+        token: ''
+    };
+    try {
+        user.userID = JSON.parse(req.headers.cookie).userID;
+        user.token = JSON.parse(req.headers.cookie).token;
+    } catch (err) {
+        logger.log(`${ip} - Get Profile Attempt - Invalid Authorization`);
+        return res.send({
+            message: 'Invalid Authorization',
+            code: '400'
+        });
+    };
+    // Validate the token on the database
+    const userRef = database.ref(`/users/${user.userID}`);
+    await userRef.once('value', (snapshot) => {
+        if (!snapshot.val()) {
+            logger.log(`${ip} - Get Profile Attempt - Invalid User`);
+            return res.send({
+                message: 'Invalid User',
+                code: '400'
+            });
+        };
+        if (snapshot.val().token !== user.token) {
+            logger.log(`${ip} - Get Profile Attempt - Invalid Authorization`);
+            return res.send({
+                message: 'Invalid Authorization',
+                code: '400'
+            });
+        };
+        // Assign the user's classes to the response
+        if (snapshot.val().classes) {
+            user.classes = snapshot.val().classes;
+        };
+
+    });
+});
 
 module.exports = router;
