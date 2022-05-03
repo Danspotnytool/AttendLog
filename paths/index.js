@@ -54,22 +54,22 @@ module.exports = (app) => {
             try {
                 user = JSON.parse(cookies);
             } catch(err) {
-                return res.sendFile(path.join(__dirname, './static/signup.html'));
+                return res.redirect('/signin');
             };
             if (user.userID && user.token) {
                 database.ref(`/users/${user.userID}`).once('value').then((snapshot) => {
                     if (snapshot.val() === null) {
-                        return res.redirect('/signup');
+                        return res.redirect('/signin');
                     };
                     const userFromDB = snapshot.val();
                     if (userFromDB.token === user.token) {
                         directionObj.execute(req, res, next);
                     } else {
-                        return res.redirect('/signup');
+                        return res.redirect('/signin');
                     };
                 });
             } else {
-                return res.redirect(`/signup`);
+                return res.redirect(`/signin`);
             };
         });
     });

@@ -218,10 +218,20 @@ Password: 6-20 characters)`,
         const user = {
             username: username,
             userID: userID,
-            token: uuidv4(),
-            firstName: firstName,
-            lastName: lastName,
             email: email,
+            token: uuidv4(),
+            profile: {
+                username: username,
+                profilePictureLink: null,
+                name: {
+                    firstName: firstName,
+                    lastName: lastName,
+                    middleName: null,
+                },
+                referenceID: null,
+                email: email,
+                birthday: null
+            },
             verified: false,
             verificationString: verificationString,
             password: password,
@@ -278,7 +288,7 @@ router.post('/signin', async (req, res, next) => {
         });
     };
 
-    
+
 
     // Check if the username exists
     database.ref(`/usernames/${username}`).once('value', (snapshot) => {
@@ -375,7 +385,7 @@ router.get('/profile/:userID', async (req, res, next) => {
 
     // Get the user from the database
     const userID = req.params.userID;
-    database.ref(`/users/${userID}`).once('value', (snapshot) => {
+    database.ref(`/users/${userID}/profile`).once('value', (snapshot) => {
         const user = snapshot.val();
 
         if (!user) {
@@ -392,9 +402,9 @@ router.get('/profile/:userID', async (req, res, next) => {
             message: 'Success',
             user: {
                 username: user.username,
-                firstName: user.firstName,
-                middleName: user.middleName,
-                lastName: user.lastName,
+                firstName: user.name.firstName,
+                middleName: user.name.middleName,
+                lastName: user.name.lastName,
                 suffix: user.suffix || '',
                 email: user.email,
                 userID: user.userID,
