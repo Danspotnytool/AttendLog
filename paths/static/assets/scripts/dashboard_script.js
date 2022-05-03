@@ -250,6 +250,8 @@ const checkPage = async () => {
 
     const sidePanelLinks = Array.from(document.querySelectorAll('#menuContainer ul li'));
 
+    document.getElementById('mainContainer').innerHTML = '';
+
     switch (pathname) {
         case '/dashboard':
             headerTitle.innerHTML = 'Dashboard';
@@ -327,44 +329,83 @@ const checkPage = async () => {
             });
             break;
 
-        case '/dashboard/profile':
-            // Get the Main Panel Header
-            headerTitle.innerHTML = 'Profile';
+            case '/dashboard/profile':
+                // Get the Main Panel Header
+                headerTitle.innerHTML = 'Profile';
 
-            fetch(`${window.location.origin}/dashboardPanels/profile`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            }).then((response) => {
-                console.log(response);
-                if (response.status != 200) {
-                    notify({
-                        type: 'error',
-                        header: 'Error: Unable to fetch the profile panel',
-                        body: 'Try reloading the page',
-                        footer: `${new Date()}`,
-                        timeout: 5000
+                fetch(`${window.location.origin}/dashboardPanels/profile`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                }).then((response) => {
+                    console.log(response);
+                    if (response.status != 200) {
+                        notify({
+                            type: 'error',
+                            header: 'Error: Unable to fetch the profile panel',
+                            body: 'Try reloading the page',
+                            footer: `${new Date()}`,
+                            timeout: 5000
+                        });
+                        return;
+                    };
+                    return response.text();
+                }).then((data) => {
+                    const mainContainer = document.getElementById('mainContainer');
+                    mainContainer.innerHTML = data;
+
+                    // Get script tags inside the mainContainer
+                    const scriptTags = Array.from(document.getElementById('mainContainer').getElementsByTagName('script'));
+                    scriptTags.forEach((script) => {
+                        eval(script.innerHTML);
                     });
-                    return;
-                };
-                return response.text();
-            }).then((data) => {
-                const mainContainer = document.getElementById('mainContainer');
-                mainContainer.innerHTML = data;
 
-                // Get script tags inside the mainContainer
-                const scriptTags = Array.from(document.getElementById('mainContainer').getElementsByTagName('script'));
-                scriptTags.forEach((script) => {
-                    eval(script.innerHTML);
+                    document.title = 'Edit Profile - AttendLog';
+
+                    sidePanelLinks.find(link => link.getAttribute('active') === 'true').setAttribute('active', 'false');
+                    sidePanelLinks.find(link => link.getAttribute('href') === 'Profile').setAttribute('active', 'true');
                 });
+                break;
 
-                document.title = 'Profile - AttendLog';
+            case '/dashboard/profile/edit':
+                // Get the Main Panel Header
+                headerTitle.innerHTML = 'Profile';
+    
+                fetch(`${window.location.origin}/dashboardPanels/profile/edit`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                }).then((response) => {
+                    console.log(response);
+                    if (response.status != 200) {
+                        notify({
+                            type: 'error',
+                            header: 'Error: Unable to fetch the profile panel',
+                            body: 'Try reloading the page',
+                            footer: `${new Date()}`,
+                            timeout: 5000
+                        });
+                        return;
+                    };
+                    return response.text();
+                }).then((data) => {
+                    const mainContainer = document.getElementById('mainContainer');
+                    mainContainer.innerHTML = data;
 
-                sidePanelLinks.find(link => link.getAttribute('active') === 'true').setAttribute('active', 'false');
-                sidePanelLinks.find(link => link.getAttribute('href') === 'Profile').setAttribute('active', 'true');
-            });
-            break;
+                    // Get script tags inside the mainContainer
+                    const scriptTags = Array.from(document.getElementById('mainContainer').getElementsByTagName('script'));
+                    scriptTags.forEach((script) => {
+                        eval(script.innerHTML);
+                    });
+
+                    document.title = 'Profile - AttendLog';
+
+                    sidePanelLinks.find(link => link.getAttribute('active') === 'true').setAttribute('active', 'false');
+                    sidePanelLinks.find(link => link.getAttribute('href') === 'Profile').setAttribute('active', 'true');
+                });
+                break;
 
         default:
             headerTitle.innerHTML = 'Dashboard';

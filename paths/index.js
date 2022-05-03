@@ -19,6 +19,9 @@ const direction = fs.readdirSync(path.join(__dirname, './directions')).filter((f
 // Require all dashboardDirections
 const dashboardDirections = fs.readdirSync(path.join(__dirname, './directions/dashboardDirections'));
 
+// Require all profile directions
+const profileDirections = fs.readdirSync(path.join(__dirname, './directions/dashboardDirections/profile'));
+
 // Require accountSystem directions
 const accountSystems = fs.readdirSync(path.join(__dirname, './accountSystem'));
 
@@ -105,6 +108,20 @@ module.exports = (app) => {
             } else {
                 return res.redirect(`/signup`);
             };
+        });
+    });
+
+    // '/dashboard/profile/edit'
+    app.get('/dashboard/profile/edit', (req, res, next) => {
+        res.redirect('/dashboard/profile');
+    });
+
+    profileDirections.forEach((dir) => {
+        // Require the direction
+        const profileDirectionObj = require(`./directions/dashboardDirections/profile/${dir}`);
+        // Add the direction to the main app
+        app.get(`/dashboardPanels/profile/${profileDirectionObj.direction}`, (req, res, next) => {
+            profileDirectionObj.execute(req, res, next);
         });
     });
 

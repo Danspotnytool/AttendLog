@@ -1,0 +1,132 @@
+<body>
+    <style>
+        #profileContainer {
+            width: 90%;
+            margin: 2rem auto;
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        #profilePictureContainer {
+            height: 100%;
+            width: 35%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+        }
+        #profilePictureContainer img {
+            height: 70%;
+            width: 70%;
+        }
+        #profilePictureContainer button {
+            padding: 1.5rem 4rem;
+            border: unset;
+            border-radius: 1.5rem;
+            background-color: #c7d0d8;
+            font-size: 1.75rem;
+            cursor: pointer;
+        }
+
+        #profileInfoContainer {
+            width: 65%;
+        }
+        #profileDescriptionCard {
+            height: 100%;
+            margin: auto;
+            border-radius: 2rem;
+            font-size: 2rem;
+        }
+        #profileDescriptionCard form {
+            padding: 2rem;
+            text-align: left;
+        }
+        #profileDescriptionCard label {
+            margin-top: 0.5rem;
+            margin-bottom: 0.25rem;
+            display: block;
+        }
+        #profileDescriptionCard input {
+            width: 100%;
+            padding: 1rem;
+            border: unset;
+            border-radius: 1rem;
+            font-size: 2rem;
+            background-color: #c7d0d8;
+            display: block;
+        }
+        #profileDescriptionCard table {
+            width: 100%;
+        }
+
+        #profileDescriptionCard div {
+            width: 100%;
+            text-align: right;
+        }
+        #profileDescriptionCard div button {
+            margin-top: 1rem;
+            padding: 0.75rem 2rem;
+            border: solid 2px #000000;
+            border-radius: 100rem;
+            font-size: 1.75rem;
+            cursor: pointer;
+        }
+    </style>
+    <div id="profileContainer">
+        <div id="profilePictureContainer">
+            <img src="../../assets/svg/profile-picture-icon.svg" alt="">
+            <button>Edit Picture</button>
+        </div>
+        <div id="profileInfoContainer">
+            <div id="profileDescriptionCard">
+                <form>
+                    <label for="firstName">First Name:</label>
+                    <input type="text" name="firstName" id="firstName" placeholder="John">
+
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" name="lastName" id="lastName" placeholder="Doe">
+
+                    <label for="middleName">Middle Name:</label>
+                    <input type="text" name="middleName" id="middleName" placeholder="Deguzman">
+
+                    <table>
+                        <tr>
+                            <td>
+                                <label for="prefix">Prefix:</label>
+                                <input type="text" name="prefix" id="prefix" placeholder="Mr.">
+                            </td>
+                            <td>
+                                <label for="suffix">Suffix:</label>
+                                <input type="text" name="suffix" id="suffix" placeholder="Jr.">
+                            </td>
+                        </tr>
+                    </table>
+                    
+                    <label for="birthday">Birthday:</label>
+                    <input type="date" name="birthday" id="birthday" placeholder="">
+
+                    <table>
+                        <tr>
+                            <td>
+                                <label for="course">Course:</label>
+                                <input type="text" name="course" id="course" placeholder="BSIT">
+                            </td>
+                            <td>
+                                <label for="referenceID">Reference ID:</label>
+                                <input type="text" name="referenceID" id="referenceID" placeholder="16551079569">
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div>
+                        <button type="button">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+
+    </script>
+</body>
