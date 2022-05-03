@@ -11,6 +11,8 @@ const fs = require('fs');
 const path = require('path');
 
 
+
+
 // Require firebase utility
 const { database } = require('../../util/databaseConnection.js');
 
@@ -32,6 +34,56 @@ const verificationText = fs.readFileSync(path.join(__dirname, '../../emailTempla
 router.use(bodyParser.json());
 router.use(expressFileUpload());
 
+
+// Use discord as database for images
+const Discord = require('discord.js');
+const client = new Discord.Client({
+    partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
+    intents: [
+        Discord.Intents.FLAGS.GUILDS,
+        Discord.Intents.FLAGS.GUILD_MEMBERS,
+        Discord.Intents.FLAGS.GUILD_BANS,
+        Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+        Discord.Intents.FLAGS.GUILD_INTEGRATIONS,
+        Discord.Intents.FLAGS.GUILD_MESSAGES,
+        Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+        Discord.Intents.FLAGS.DIRECT_MESSAGES,
+        Discord.Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
+        Discord.Intents.FLAGS.DIRECT_MESSAGE_TYPING,
+    ]
+});
+
+client.on('ready', () => {
+    logger.log('Discord API is ready');
+});
+
+const uploadImage = async (imageBuffer, userID) => {
+    try {
+        // Create an image from the image buffer
+        // const { MessageAttachment } = require('discord.js')
+
+        // const buffer = Buffer.from('Text in file')
+        // const attachment = new MessageAttachment(buffer, 'file.txt')
+        // channel.send(attachment)
+        imageBuffer = Buffer.from(imageBuffer);
+        const attachment = new Discord.MessageAttachment(imageBuffer, 'image.text');
+
+        const channel = client.channels.cache.get(process.env.DISCORD_CHANNEL_ID);
+        const message = await channel.send({content: `${userID}`, files: [
+            { attachment: imageBuffer }
+        ]});
+
+        // Get the url of the image attachment
+        const url = message.attachments.first().url;
+
+        return url;
+    } catch(err) {
+        console.log(err);
+        return err;
+    };
+};
+
+client.login(process.env.DISCORD_TOKEN);
 
 
 // Connect to socket.io client
@@ -402,15 +454,19 @@ router.get('/profile/:userID', async (req, res, next) => {
             res.send({
                 message: 'Success',
                 user: {
-                    userID: user.userID,
+                    userID: userID,
                     username: user.username,
-                    firstName: user.name.firstName,
-                    middleName: user.name.middleName,
-                    lastName: user.name.lastName,
+                    name: {
+                        firstName: user.name.firstName,
+                        middleName: user.name.middleName,
+                        lastName: user.name.lastName
+                    },
+                    prefix: user.prefix || '',
                     suffix: user.suffix || '',
                     email: user.email,
                     userID: user.userID,
-                    referenceID: user.referenceID || 'N/A'
+                    referenceID: user.referenceID || 'N/A',
+                    profilePicture: user.profilePicture || '',
                 },
                 code: '200'
             });
@@ -424,21 +480,29 @@ router.post('/profile/:userID/edit', async (req, res, next) => {
         type: 'editProfile',
     }));
 
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
     // Get file from the request
-    const file = req.files;
+    let file = null;
+    try {
+        file = req.files['profilePicture'];
+    } catch (err) {
+
+    };
 
     // Get All the data from the request
-    const { username, firstName, middleName, lastName, suffix, email, password, referenceID } = req.body;
+    const { username, firstName, middleName, lastName, prefix, suffix, birthday, course, referenceID } = req.body;
 
     // Check if all of those data are empty
-    if (!username && !firstName && !middleName && !lastName && !suffix && !email && !password && !referenceID && !file) {
+    if (file || username || firstName || middleName || lastName || prefix || suffix || birthday || course || referenceID) {
+
+    } else {
+        logger.log(`${ip} - Edit Profile Attempt - Missing fields`);
         return res.send({
-            message: 'Please fill in all the fields',
+            message: 'Please fill in any of the fields',
             code: '400'
         });
     };
-
-    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
     // Validate the token on the header cookie
     const user = {
@@ -449,7 +513,7 @@ router.post('/profile/:userID/edit', async (req, res, next) => {
         user.userID = JSON.parse(req.headers.cookie).userID;
         user.token = JSON.parse(req.headers.cookie).token;
     } catch (err) {
-        logger.log(`${ip} - Get Profile Attempt - Invalid Authorization`);
+        logger.log(`${ip} - Get Edit Profile Attempt - Invalid Authorization`);
         return res.send({
             message: 'Invalid Authorization',
             code: '400'
@@ -459,24 +523,75 @@ router.post('/profile/:userID/edit', async (req, res, next) => {
     const userRef = database.ref(`/users/${user.userID}`);
     await userRef.once('value', (snapshot) => {
         if (!snapshot.val()) {
-            logger.log(`${ip} - Get Profile Attempt - Invalid User`);
+            logger.log(`${ip} - Get Edit Profile Attempt - Invalid User`);
             return res.send({
                 message: 'Invalid User',
                 code: '400'
             });
         };
         if (snapshot.val().token !== user.token) {
-            logger.log(`${ip} - Get Profile Attempt - Invalid Authorization`);
+            logger.log(`${ip} - Get Edit Profile Attempt - Invalid Authorization`);
             return res.send({
                 message: 'Invalid Authorization',
                 code: '400'
             });
         };
-        // Assign the user's classes to the response
-        if (snapshot.val().classes) {
-            user.classes = snapshot.val().classes;
+        // Assign all snapshot data to the user object
+        Object.keys(snapshot.val()).forEach(key => {
+            user[key] = snapshot.val()[key];
+        });
+
+        if (file) {
+            // Check if file is an image
+            if (file.mimetype.split('/')[0] !== 'image') {
+                return res.send({
+                    message: 'File is not an image',
+                    code: '400'
+                });
+            };
+
+            // Check if file is too large
+            //  7mb is the max size
+            if (file.size > 7000000) {
+                return res.send({
+                    message: 'File is too large',
+                    code: '400'
+                });
+            };
+
+            // Upload the file to the storage
+            uploadImage(file.data, user.userID).then((url) => {
+                logger.log(`${ip} - Edit Profile Success`);
+                // Update the user's profile picture
+                database.ref(`/users/${user.userID}/profile/profilePicture`).set(url);
+            }).catch((err) => {
+                console.log(err);
+            });
         };
 
+        // Update the user's profile
+        const updatedUser = {
+            username: username || user.username,
+            name: {
+                firstName: firstName || user.profile.name.firstName || '',
+                middleName: middleName || user.profile.name.middleName || '',
+                lastName: lastName || user.profile.name.lastName || '',
+            },
+            prefix: prefix || user.profile.prefix || '',
+            suffix: suffix || user.profile.suffix || '',
+            birthday: birthday || user.profile.birthday || '',
+            course: course || user.profile.course || '',
+            referenceID: referenceID || user.profile.referenceID || ''
+        };
+
+        // Update the user's profile
+        // Only update the fields that are not empty
+        database.ref(`/users/${user.userID}/profile`).update(updatedUser);
+        logger.log(`${ip} - Edit Profile Success`);
+        res.send({
+            message: 'Success',
+            code: '200'
+        });
     });
 });
 

@@ -28,6 +28,8 @@
         #profilePictureContainer img {
             height: 100%;
             width: 100%;
+            border-radius: 50%;
+            aspect-ratio: 1;
         }
         #profilePictureContainer button {
             padding: 1.5rem 4rem;
@@ -102,7 +104,7 @@
     </style>
     <div id="profileContainer">
         <div id="profilePictureContainer">
-            <img src="/assets/svg/profile-picture-icon.svg" alt="">
+            <img src="/assets/svg/profile-picture-icon.svg" alt="" id="profilePicture">
             <button id="editProfile">Edit Profile</button>
         </div>
         <div id="profileInfoContainer">
@@ -145,7 +147,7 @@
                     </tr>
                     <tr>
                         <td class="infoName">
-                            Current Reference ID:
+                            Reference ID:
                         </td>
                         <td class="infoValue" id="referenceID">
 
@@ -172,14 +174,17 @@
                 const emailElement = document.getElementById('email');
                 const userIDElement = document.getElementById('userID');
                 const referenceIDElement = document.getElementById('referenceID');
+                const profilePictureElement = document.getElementById('profilePicture');
 
-                const { username, firstName, middleName, lastName, suffix, email, userID, referenceID } = res.user;
+                const { username, suffix, email, userID, referenceID, profilePicture } = res.user;
+                const { firstName, middleName, lastName } = res.user.name;
 
                 usernameElement.innerText = username;
                 fullnameElement.innerText = middleName ? `${firstName} ${middleName} ${lastName} ${suffix}` : `${firstName} ${lastName} ${suffix}`;
                 emailElement.innerText = email;
-                userIDElement.innerText = userID;
+                userIDElement.innerText = userID || JSON.parse(document.cookie).userID;
                 referenceIDElement.innerText = referenceID;
+                profilePictureElement.src = profilePicture || "/assets/svg/profile-picture-icon.svg";
             }).catch((err) => {
                 console.log(err);
             });

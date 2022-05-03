@@ -86,7 +86,7 @@
         <div id="profileInfoContainer">
             <div id="profileDescriptionCard">
                 <form id="profileForm">
-                    <input type="file" style="display: none;" name="profilePicture" id="profilePicture">
+                    <input type="file" style="display: none;" accept="image/*" name="profilePicture" id="profilePicture">
 
                     <label for="firstName">First Name:</label>
                     <input type="text" name="firstName" id="firstName" placeholder="John">
@@ -151,7 +151,8 @@
 
 
             document.getElementById('profilePicture').oninput = (event) => {
-                console.log(event.target.files[0]);
+                document.getElementById('profilePicturePreview').src = '/assets/svg/profile-picture-icon.svg';
+
                 const fileReader = new FileReader();
 
                 fileReader.onload = (event) => {
@@ -187,16 +188,6 @@
                 const profileForm = document.getElementById('profileForm');
                 const formData = new FormData(profileForm);
 
-                // formData.append('profilePicture', canvasBuffer);
-                // formData.append('firstName', document.getElementById('firstName').value || null);
-                // formData.append('lastName', document.getElementById('lastName').value || null);
-                // formData.append('middleName', document.getElementById('middleName').value || null);
-                // formData.append('prefix', document.getElementById('prefix').value || null);
-                // formData.append('suffix', document.getElementById('suffix').value || null);
-                // formData.append('birthday', document.getElementById('birthday').value || null);
-                // formData.append('course', document.getElementById('course').value || null);
-                // formData.append('referenceID', document.getElementById('referenceID').value || null);
-
                 // Get the userID from the cookie
                 const { userID } = JSON.parse(document.cookie);
 
@@ -205,7 +196,6 @@
                     method: 'POST',
                     body: formData
                 }).then((response) => {
-                console.log(response);
                     if (response.status != 200) {
                         notify({
                             type: 'error',
@@ -218,7 +208,7 @@
                     };
                     return response.json();
                 }).then(data => {
-                    if (data.code !== 200) {
+                    if (data.code != '200') {
                         return notify({
                             type: 'error',
                             header: 'Error: Unable to save the profile',
@@ -227,7 +217,15 @@
                             timeout: 5000
                         });
                     };
-                    console.log(data);
+                    notify({
+                        type: 'log',
+                        header: 'Success: Profile saved',
+                        body: 'Your profile has been saved',
+                        footer: `${new Date()}`,
+                        timeout: 5000
+                    });
+                    // Change window location to the dashboard profile page
+                    window.location.href = `${window.location.origin}/dashboard/profile`;
                 });
             };
         })();
