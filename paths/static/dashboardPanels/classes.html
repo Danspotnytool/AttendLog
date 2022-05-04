@@ -331,7 +331,7 @@
                             };
                             classCard.appendChild(description);
 
-                            classesContainer.appendChild(classCard);
+                            classesContainer.insertBefore(classCard, classesContainer.firstChild);
                         });
                     };
                 }).catch((err) => {
