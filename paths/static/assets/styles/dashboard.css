@@ -328,6 +328,7 @@ input, textarea {
     width: 5rem;
     right: 2rem;
     bottom: 2rem;
+    display: none;
     position: absolute;
     overflow: hidden;
     transition: 0.25s;

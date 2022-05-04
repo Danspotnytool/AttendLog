@@ -11,6 +11,7 @@
             margin: 1rem;
             border-radius: 1rem;
             display: inline-block;
+            vertical-align: top;
             position: relative;
             filter: drop-shadow(0 0 0.5rem #000000);
             overflow: hidden;
@@ -75,7 +76,7 @@
             }
         }
 
-        .noClassesButtons {
+        .createClassCardButtons {
             width: 100%;
             padding: 1rem 1.5rem;
             border: unset;
@@ -85,7 +86,7 @@
             cursor: pointer;
             transition: 0.25s;
         }
-        .noClassesButtons:hover {
+        .createClassCardButtons:hover {
             background-color: #d4d4d4;
         }
     </style>
@@ -107,6 +108,29 @@
                     };
                 };
 
+                const createClassCard = document.createElement('div');
+                createClassCard.classList.add('classCard');
+                createClassCard.style.backgroundColor = '#ffffff';
+                createClassCard.style.display = 'inline-flex';
+                createClassCard.style.flexDirection = 'column';
+                createClassCard.style.alignItems = 'center';
+                createClassCard.style.justifyContent = 'center';
+
+                createClassCard.innerHTML = `
+                    <div>
+                        <button class="createClassCardButtons">Create a Class</button>
+                        <button class="createClassCardButtons">Join a Class</button>
+                    </div>
+                `;
+                createClassCard.querySelectorAll('.createClassCardButtons')[0].onclick = () => {
+                    createClass.click();
+                };
+                createClassCard.querySelectorAll('.createClassCardButtons')[1].onclick = () => {
+                    joinClass.click();
+                };
+
+                classesContainer.appendChild(createClassCard);
+
                 fetch('/api/classes/get', {
                     method: 'GET',
                     headers: {
@@ -117,51 +141,23 @@
                     if (data.code === '400') {
                         switch (data.message) {
                             case 'No Classes':
-                                const noClassesCard = document.createElement('div');
-                                noClassesCard.classList.add('classCard');
-                                noClassesCard.style.backgroundColor = '#ffffff';
-                                noClassesCard.style.display = 'inline-flex';
-                                noClassesCard.style.flexDirection = 'column';
-                                noClassesCard.style.alignItems = 'center';
-                                noClassesCard.style.justifyContent = 'center';
+                                const noClassesText = document.createElement('div');
+                                noClassesText.innerHTML = 'You have no classes';
+                                noClassesText.style.marginBottom = '1rem';
+                                noClassesText.style.fontSize = '2.75rem';
+                                noClassesText.style.textAlign = 'center';
 
-                                const noClassesTitle = document.createElement('div');
-                                noClassesTitle.style.marginBottom = '1.5rem';
-                                noClassesTitle.style.textAlign = 'center';
-                                noClassesTitle.style.display = 'inline-block';
-                                noClassesTitle.style.fontSize = '3rem';
-                                noClassesTitle.innerHTML = 'No Classes';
-
-                                const noClassessButtons = document.createElement('div');
-                                noClassessButtons.style.display = 'inline-flex';
-                                noClassessButtons.style.flexDirection = 'column';
-                                noClassessButtons.style.justifyContent = 'center';
-                                noClassessButtons.style.alignItems = 'center';
-
-                                const createClassButton = document.createElement('button');
-                                createClassButton.classList.add('noClassesButtons');
-                                createClassButton.innerHTML = 'Create a Class';
-                                noClassessButtons.appendChild(createClassButton);
-                                const createClass = document.getElementById('createClass');
-                                createClassButton.addEventListener('click', () => {
-                                    createClass.click();
-                                });
-                                
-                                const joinClassButton = document.createElement('button');
-                                joinClassButton.classList.add('noClassesButtons');
-                                joinClassButton.innerHTML = 'Join a Class';
-                                noClassessButtons.appendChild(joinClassButton);
-                                const joinClass = document.getElementById('joinClass');
-                                joinClassButton.addEventListener('click', () => {
-                                    joinClass.click();
-                                });
-
-                                noClassesCard.appendChild(noClassesTitle);
-                                noClassesCard.appendChild(noClassessButtons);
-                                classesContainer.appendChild(noClassesCard);
+                                // Add the text to the top of createClassCard
+                                createClassCard.insertBefore(noClassesText, createClassCard.firstChild);
                                 break;
 
                             case 'User not verified':
+                                if (classesContainer.children.length > 0) {
+                                    while (classesContainer.firstChild) {
+                                        classesContainer.removeChild(classesContainer.firstChild);
+                                    };
+                                };
+
                                 const notVerifiedCard = document.createElement('div');
                                 notVerifiedCard.classList.add('classCard');
                                 notVerifiedCard.style.backgroundColor = '#ffffff';
@@ -177,16 +173,16 @@
                                 notVerifiedTitle.style.fontSize = '3rem';
                                 notVerifiedTitle.innerHTML = 'Not Verified';
 
-                                const notVerifiedButtons = document.createElement('div');
-                                notVerifiedButtons.style.display = 'inline-flex';
-                                notVerifiedButtons.style.flexDirection = 'column';
-                                notVerifiedButtons.style.justifyContent = 'center';
-                                notVerifiedButtons.style.alignItems = 'center';
+                                const notVerifiedButton = document.createElement('div');
+                                notVerifiedButton.style.display = 'inline-flex';
+                                notVerifiedButton.style.flexDirection = 'column';
+                                notVerifiedButton.style.justifyContent = 'center';
+                                notVerifiedButton.style.alignItems = 'center';
 
                                 const resendVerificationButton = document.createElement('button');
-                                resendVerificationButton.classList.add('noClassesButtons');
+                                resendVerificationButton.classList.add('createClassCardButtons');
                                 resendVerificationButton.innerHTML = 'Resend Verification Email';
-                                notVerifiedButtons.appendChild(resendVerificationButton);
+                                notVerifiedButton.appendChild(resendVerificationButton);
                                 
                                 resendVerificationButton.onclick = () => {
                                     resendVerificationButton.innerHTML = 'Resending...';
@@ -260,7 +256,7 @@
                                 };
 
                                 notVerifiedCard.appendChild(notVerifiedTitle);
-                                notVerifiedCard.appendChild(notVerifiedButtons);
+                                notVerifiedCard.appendChild(notVerifiedButton);
                                 classesContainer.appendChild(notVerifiedCard);
                                 break;
                             default:
