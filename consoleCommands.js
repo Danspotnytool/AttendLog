@@ -44,6 +44,9 @@ module.exports = (server) => {
                     await database.ref('/emails').set({
                         placeholder: true
                     });
+                    await database.ref('/records').set({
+                        placeholder: true
+                    });
                     await database.ref('/usernames').set({
                         placeholder: true
                     });

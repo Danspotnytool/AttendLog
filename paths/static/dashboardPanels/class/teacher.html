@@ -2,7 +2,7 @@
     <style>
         #classColor {
             height: 200px;
-            width: 800px;
+            width: 900px;
             max-width: 100%;
             margin: auto;
             background-color: green;
@@ -18,10 +18,10 @@
             };
         }
         #classTeacherProfile {
-            height: 10rem;
-            width: 10rem;
+            height: 15rem;
+            width: 15rem;
             margin: auto;
-            margin-top: -7.5rem;
+            margin-top: -10rem;
             border: solid 5px #ffffff;
             border-radius: 50%;
             background-image: url('../../assets/svg/profile-picture-icon.svg');
@@ -56,7 +56,7 @@
         #teacherName {
             width: fit-content;
             margin: auto;
-            font-size: 3.5rem;
+            font-size: 4rem;
             text-align: center;
             position: relative;
         }
@@ -79,10 +79,10 @@
         }
 
         #classOptions {
-            width: 25rem;
+            width: fit-content;
             margin: auto;
-            padding: 0.5rem;
-            font-size: 1.5rem;
+            padding: 2rem 4rem;
+            font-size: 2rem;
             text-align: center;
             background-color: #c7d0d8;
         }
@@ -102,8 +102,8 @@
         }
 
         .record {
-            height: 10rem;
-            width: 25rem;
+            height: 15rem;
+            width: 35rem;
             margin: 1rem auto;
             border: solid 2px #000000;
             border-radius: 0.75rem;
@@ -116,7 +116,7 @@
         }
         .record div {
             width: 100%;
-            font-size: 1.5rem;
+            font-size: 2rem;
             text-align: center;
         }
     </style>
@@ -132,7 +132,7 @@
             <div id="className">Thesis</div>
             <div class="classInfoLabel">Class Name</div>
 
-            <button type="button" id="copyClassCredentials">Copy Class Credetials</button>
+            <button type="button" id="copyClassCredentials">Copy Class Credetials to invite your students</button>
         </div>
     </div>
 
@@ -164,15 +164,69 @@
                         <div class="dateEnded">Time Ended: ${this.dateEnded}</div>
                     `;
                     record.onclick = () => {
-                        if (record.classList.contains("locked")) {
-                            return;
-                        };
                     };
 
                     const classRecordContainer = document.getElementById("classRecordContainer");
                     classRecordContainer.appendChild(record);
                 };
             };
+
+
+
+            // Get the classID from the URL
+            const classID = `${window.location.pathname}`.split("/")[`${window.location.pathname}`.split("/").length - 1];
+            
+            // Get the class data from the database
+            fetch(`/api/classes/get/${classID}`,{
+                method: "GET",
+            }).then(response => {
+                if (response.status !== 200) {
+                    return notify({
+                        type: 'error',
+                        header: 'Unable to get class data',
+                        body: 'Please try again later',
+                        footer: new Date().toLocaleString(),
+                        timeout: 5000
+                    });
+                };
+                return response.json();
+            }).then(data => {
+                if (data.code !== '200') {
+                    return notify({
+                        type: 'error',
+                        header: 'Unable to get class data',
+                        body: `${data.message}`,
+                        footer: new Date().toLocaleString(),
+                        timeout: 5000
+                    });
+                };
+                console.log(data);
+                const { classColor, className, } = data.classInfo;
+                const { name, profilePicture } = data.classInfo.teacherProfile;
+
+                // Set the class color
+                document.getElementById("classColor").style.backgroundColor = classColor;
+                // Set the profile picture
+                document.getElementById("classTeacherProfile").style.backgroundImage = `url('${profilePicture || '../../assets/svg/profile-picture-icon.svg'}')`;
+                // Set the class teacher name
+                document.getElementById("teacherName").innerHTML = `${name.prefix ? `${name.prefix}. ` : ''}${name.firstName} ${name.middleName ? `${name.middleName.charAt(0)}.` : ''} ${name.lastName}`;
+                // Set the class name
+                document.getElementById("className").innerHTML = className;
+
+                const copyClassCredentials = document.getElementById("copyClassCredentials");
+                copyClassCredentials.onclick = () => {
+                    navigator.clipboard.writeText(`Class ID: ${classID}\nClass Token: ${data.classInfo.classToken}`);
+                };
+            }).catch(err => {
+                console.log(err);
+                notify({
+                    type: 'error',
+                    header: 'Unable to get class data',
+                    body: 'Please try again later',
+                    footer: new Date().toLocaleString(),
+                    timeout: 5000
+                });
+            });
         })();
     </script>
 </body>

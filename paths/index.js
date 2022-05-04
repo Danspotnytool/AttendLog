@@ -77,6 +77,15 @@ module.exports = (app) => {
     dashboardDirections.forEach((dir) => {
         // Require the direction
         const dashboardDirectionObj = require(`./directions/dashboardDirections/${dir}`);
+        if (dashboardDirectionObj.direction === 'class') {
+            app.get(`/dashboardPanels/class/:classID`, (req, res, next) => {
+                dashboardDirectionObj.execute(req, res, next);
+            });
+            app.get(`/dashboard/class`, (req, res, next) => {
+                res.redirect(`/dashboard`);
+            });
+            return;
+        };
         // Add the direction to the main app
         app.get(`/dashboardPanels/${dashboardDirectionObj.direction}`, (req, res, next) => {
             dashboardDirectionObj.execute(req, res, next);
@@ -125,7 +134,10 @@ module.exports = (app) => {
         });
     });
 
-
+    // '/dashboard/class/*'
+    app.get('/dashboard/class/*', (req, res, next) => {
+        res.redirect('/dashboard/class');
+    });
 
     accountSystems.forEach((dir) => {
         // Require the direction

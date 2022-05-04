@@ -131,7 +131,7 @@
 
                 classesContainer.appendChild(createClassCard);
 
-                fetch('/api/classes/get', {
+                fetch('/api/classes/getAll', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json'
@@ -277,6 +277,7 @@
                             const classCard = document.createElement('div');
                             classCard.className = 'classCard';
                             classCard.style.backgroundColor = `${classData.classColor}`;
+                            classCard.style.cursor = 'pointer';
 
                             // Check if the class color is dark or light
                             const color = classData.classColor;
@@ -330,6 +331,11 @@
                                 description.style.color = 'black';
                             };
                             classCard.appendChild(description);
+
+                            classCard.onclick = () => {
+                                window.history.pushState({}, '', `${window.location.origin}/dashboard/class/${classData.classID}`);
+                                checkPage();
+                            };
 
                             classesContainer.insertBefore(classCard, classesContainer.firstChild);
                         });

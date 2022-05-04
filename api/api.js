@@ -11,11 +11,12 @@ const global = require('../util/global.js');
 const users = require('./routes/users.js');
 const classes = require('./routes/classes.js');
 const verifications = require('./routes/verifications.js');
+const records = require('./routes/records.js');
 
 module.exports = (app) => {
     // Catch all requests
     app.use('*', (req, res, next) => {
-        if (global.loadedAPIs.length !== 4) {
+        if (global.loadedAPIs.length !== 5) {
             const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
             logger.log(`${ip} tried to access ${req.originalUrl} but the API is not loaded yet`);
             return res.send({
@@ -30,6 +31,7 @@ module.exports = (app) => {
     app.use('/api/users', users);
     app.use('/api/classes', classes);
     app.use('/api/verifications', verifications);
+    app.use('/api/records', records);
 
     app.get('/api/*', (req, res) => {
         res.status(404).send({

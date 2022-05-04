@@ -103,6 +103,9 @@ router.post('/create', async (req, res) => {
         classID: `${Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))}`,
         className: className,
         classColor: classColor,
+        classStudents: [
+            user.userID
+        ],
         classDescription: classDescription,
         createdAt: Date.now(),
         classTeacher: user.userID,
@@ -139,7 +142,7 @@ router.post('/create', async (req, res) => {
 });
 
 // Getting user's classes
-router.get('/get', async (req, res) => {
+router.get('/getAll', async (req, res) => {
     sendMessage(JSON.stringify({
         type: 'getClasses'
     }));
@@ -229,10 +232,10 @@ router.get('/get', async (req, res) => {
                     thisClass['teacherName'] = snapshot.val().username;
                 });
                 // Get the number of students in the class
-                await database.ref(`/classes/${userClass}/students`).once('value', (snapshot) => {
+                await database.ref(`/classes/${userClass}/classStudents`).once('value', (snapshot) => {
                     // Check if the class has any students
                     if (snapshot.val()) {
-                        thisClass['numberOfStudents'] = snapshot.val().length;
+                        thisClass['numberOfStudents'] = snapshot.val().length - 1;
                     } else {
                         thisClass['numberOfStudents'] = 0;
                     };
@@ -263,6 +266,106 @@ router.get('/get', async (req, res) => {
     logger.log(`${ip} - ${user.userID} - Get Class Success`);
     // Send the response
     return res.send(classesPromise);
+});
+
+
+
+// Get specific class
+router.get('/get/:classID', async (req, res) => {
+    sendMessage(JSON.stringify({
+        type: 'getClass'
+    }));
+
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+    // Validate the token on the header cookie
+    const user = {
+        userID: '',
+        token: ''
+    };
+    try {
+        user.userID = JSON.parse(req.headers.cookie).userID;
+        user.token = JSON.parse(req.headers.cookie).token;
+    } catch (err) {
+        logger.log(`${ip} - ${username} - Get Class Attempt - Invalid Authorization`);
+        return res.send({
+            message: 'Invalid Authorization',
+            code: '400'
+        });
+    };
+
+    // Validate the token on the database
+    const userRef = database.ref(`/users/${user.userID}`);
+    await userRef.once('value', (snapshot) => {
+        if (!snapshot.val()) {
+            logger.log(`${ip} - Get Class Attempt - Invalid User`);
+            return res.send({
+                message: 'Invalid User',
+                code: '400'
+            });
+        } else if (snapshot.val().token !== user.token) {
+            logger.log(`${ip} - ${username} - Get Class Attempt - Invalid Authorization`);
+            return res.send({
+                message: 'Invalid Authorization',
+                code: '400'
+            });
+        };
+
+        // Get the class
+        const classID = req.params.classID;
+        const classRef = database.ref(`/classes/${classID}`); 
+        classRef.once('value', async (snapshot) => {
+            if (!snapshot.val()) {
+                logger.log(`${ip} - Get Class Attempt - Invalid Class`);
+                return res.send({
+                    message: 'Invalid Class',
+                    code: '400'
+                });
+            };
+            // Check if the user is in the class
+            const classStudents = snapshot.val().classStudents;
+
+            try {
+                if (!classStudents) {
+                    logger.log(`${ip} - ${user.userID} - Get Class Attempt - User not in class`);
+                    return res.send({
+                        message: 'User not in class',
+                        code: '400'
+                    });
+                } else if (classStudents.includes(user.userID) || snapshot.val().classTeacher === user.userID) {
+
+                } else {
+                    logger.log(`${ip} - ${user.userID} - Get Class Attempt - User not in class`);
+                    return res.send({
+                        message: 'User not in class',
+                        code: '400'
+                    });
+                };
+            } catch(err) {
+                logger.log(`${ip} - ${user.userID} - Get Class Attempt - User not in class`);
+                return res.send({
+                    message: 'User not in class',
+                    code: '400'
+                });
+            };
+            // Get the class information
+            const classInfo = snapshot.val();
+            // Check if this user is the teacher
+            if (classInfo.classTeacher === user.userID) {
+            } else {
+                delete classInfo.classToken;
+            };
+            // Get the teacher's name
+            await database.ref(`/users/${classInfo.classTeacher}`).once('value', (snapshot) => {
+                classInfo['teacherProfile'] = snapshot.val().profile;
+            });
+
+            res.send({
+                classInfo: classInfo,
+                code: '200'
+            });
+        });
+    });
 });
 
 
@@ -367,15 +470,12 @@ router.post('/join', async (req, res) => {
 
         // Add the user to the class
         // Check if the class has any students
-        if (snapshot.val().students) {
-            // Get the students array length
-            const studentsLength = Object.keys(snapshot.val().students).length;
-            // Add the user to the students array
-            await database.ref(`/classes/${classID}/students/${studentsLength}`).set(user.userID);
-        } else {
-            // Add the user to the students array
-            await database.ref(`/classes/${classID}/students/0`).set(user.userID);
-        };
+
+        // Get the students array length
+        const studentsLength = Object.keys(snapshot.val().classStudents).length;
+        // Add the user to the students array
+        await database.ref(`/classes/${classID}/classStudents/${studentsLength}`).set(user.userID);
+
         // Add the class to the user's classes array
         user.classes.push(classID);
         // Update the user's classes array
