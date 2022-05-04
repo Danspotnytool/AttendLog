@@ -1,0 +1,144 @@
+<body>
+    <style>
+        #classColor {
+            height: 300px;
+            width: 800px;
+            max-width: 100%;
+            margin: auto;
+            background-color: green;
+            border-bottom-left-radius: 1.25rem;
+            border-bottom-right-radius: 1.25rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        @media screen and (max-width: 650px) {
+            #classColor {
+                height: 200px;
+            };
+        }
+        #classTeacherProfile {
+            height: 10rem;
+            width: 10rem;
+            margin: auto;
+            margin-top: -7.5rem;
+            border: solid 5px #ffffff;
+            border-radius: 50%;
+            background-image: url('../../assets/svg/profile-picture-icon.svg');
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+        }
+
+        #classInfo {
+            width: fit-content;
+            margin: auto;
+        }
+
+        .classInfoLabel {
+            width: 100%;
+            border-top: solid 2px #000000;
+            margin: auto;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        #teacherName {
+            width: fit-content;
+            margin: auto;
+            font-size: 3.5rem;
+            text-align: center;
+            position: relative;
+        }
+
+        #className {
+            width: fit-content;
+            margin: auto;
+            font-size: 3rem;
+            text-align: center;
+        }
+
+        
+        @media screen and (max-width: 650px) {
+            .classInfoLabel {
+                font-size: 1rem;
+            }
+            #teacherName {
+                font-size: 2.5rem;
+            }
+            #className {
+                font-size: 2rem;
+            }
+        }
+
+        .record {
+            height: 10rem;
+            width: 25rem;
+            margin: 1rem auto;
+            border: solid 2px #000000;
+            border-radius: 0.75rem;
+            background-color: #c7d0d8;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 1rem;
+            cursor: pointer;
+        }
+        .record.locked {
+            opacity: 0.5;
+            cursor: unset;
+        }
+        .record div {
+            width: 100%;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+    </style>
+
+    <div>
+        <div id="classColor"></div>
+        <div id="classTeacherProfile"></div>
+
+        <div id="classInfo">
+            <div id="teacherName">John Dougma Bacht</div>
+            <div class="classInfoLabel">Teacher</div>
+
+            <div id="className">Thesis</div>
+            <div class="classInfoLabel">Class Name</div>
+        </div>
+    </div>
+    <div id="classRecordContainer">
+
+    </div>
+
+    <script>
+        (() => {
+            class AttendanceRecord {
+                constructor(dateStarted, dateEnded, attendance, recordID) {
+                    this.dateStarted = dateStarted;
+                    this.dateEnded = dateEnded;
+                    this.attendance = attendance;
+                    this.recordID = recordID;
+                };
+                display() {
+                    const record = document.createElement("div");
+                    record.classList.add("record");
+                    record.innerHTML = `
+                        <div class="attendance">${this.attendance}</div>
+                        <div class="dateStarted">Time Started: ${this.dateStarted}</div>
+                        <div class="dateEnded">Time Ended: ${this.dateEnded}</div>
+                    `;
+                    record.onclick = () => {
+                        if (record.classList.contains("locked")) {
+                            return;
+                        };
+                    };
+
+                    const classRecordContainer = document.getElementById("classRecordContainer");
+                    classRecordContainer.appendChild(record);
+                };
+            };
+        })();
+    </script>
+</body>
