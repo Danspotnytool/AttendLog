@@ -4,6 +4,7 @@
             width: 90%;
             margin: 2rem auto;
             display: flex;
+            flex-direction: row;
             gap: 2.5rem;
         }
 
@@ -76,6 +77,22 @@
             border-radius: 100rem;
             font-size: 1.75rem;
             cursor: pointer;
+        }
+
+        @media screen and (max-width: 650px) {
+            #profileContainer {
+                width: 90%;
+                flex-direction: column;
+                gap: 2.75rem;
+            }
+            #profilePictureContainer {
+                width: 60%;
+                margin: auto;
+            }
+            #profileInfoContainer {
+                width: 90%;
+                margin: auto;
+            }
         }
     </style>
     <div id="profileContainer">
