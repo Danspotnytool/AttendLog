@@ -198,7 +198,7 @@
                 emailElement.innerText = email;
                 userIDElement.innerText = userID || JSON.parse(document.cookie).userID;
                 referenceIDElement.innerText = referenceID;
-                profilePictureElement.style.backgroundImage = `url(${profilePicture})` || "url('../../assets/svg/profile-picture-icon.svg')";
+                profilePictureElement.style.backgroundImage = `url(${profilePicture || '../../assets/svg/profile-picture-icon.svg'})`;
             }).catch((err) => {
                 console.log(err);
             });
