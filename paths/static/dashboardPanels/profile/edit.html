@@ -17,10 +17,14 @@
             align-items: center;
             gap: 1rem;
         }
-        #profilePictureContainer img {
+        #profilePictureContainer div {
             height: 70%;
             width: 70%;
             border-radius: 50%;
+            background-image: url('../../assets/svg/profile-picture-icon.svg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
             aspect-ratio: 1;
         }
         #profilePictureContainer label {
@@ -97,7 +101,8 @@
     </style>
     <div id="profileContainer">
         <div id="profilePictureContainer">
-            <img src="../../assets/svg/profile-picture-icon.svg" alt="profilePicture" id="profilePicturePreview">
+            <div id="profilePicturePreview">
+            </div>
             <label for="profilePicture">Upload Picture</label>
         </div>
         <div id="profileInfoContainer">
@@ -179,19 +184,8 @@
                     const image = document.createElement('img');
                     image.src = buffer;
                     image.onload = async () => {
-                        // Cut the image to a square
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-                        canvas.width = canvas.height = Math.min(image.width, image.height); 
-                        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-                        // Get the image data from the canvas
-                        const data = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                        canvasBuffer = data;
                         // Preview the image
-                        document.getElementById('profilePicturePreview').src = canvas.toDataURL('image/png');
-                        
-                        // Convert the image to the other input
-                        document.getElementById('profilePicture').value = document.getElementById('profilePictureInput').value;
+                        document.getElementById('profilePicturePreview').style.backgroundImage = `url(${image.src})`;
                     };
                 };
 

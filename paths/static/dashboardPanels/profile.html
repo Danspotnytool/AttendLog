@@ -25,10 +25,14 @@
             align-items: center;
             gap: 1rem;
         }
-        #profilePictureContainer img {
+        #profilePictureContainer div {
             height: 100%;
             width: 100%;
             border-radius: 50%;
+            background-image: url('../../assets/svg/profile-picture-icon.svg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
             aspect-ratio: 1;
         }
         #profilePictureContainer button {
@@ -104,7 +108,8 @@
     </style>
     <div id="profileContainer">
         <div id="profilePictureContainer">
-            <img src="/assets/svg/profile-picture-icon.svg" alt="" id="profilePicture">
+            <div id="profilePicture">
+            </div>
             <button id="editProfile">Edit Profile</button>
         </div>
         <div id="profileInfoContainer">
@@ -193,7 +198,7 @@
                 emailElement.innerText = email;
                 userIDElement.innerText = userID || JSON.parse(document.cookie).userID;
                 referenceIDElement.innerText = referenceID;
-                profilePictureElement.src = profilePicture || "/assets/svg/profile-picture-icon.svg";
+                profilePictureElement.style.backgroundImage = `url(${profilePicture})` || "url('../../assets/svg/profile-picture-icon.svg')";
             }).catch((err) => {
                 console.log(err);
             });
