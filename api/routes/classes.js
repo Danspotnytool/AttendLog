@@ -36,6 +36,7 @@ const sendMessage = (message) => {
 
 // Test if connection to database is possible
 database.ref('/').once('value').then(() => {
+    global.loadedAPIs.push('classes');
     logger.log('Classes database connected');
 }).catch((error) => {
     logger.log(error);

@@ -54,6 +54,7 @@ const client = new Discord.Client({
 });
 
 client.on('ready', () => {
+    global.loadedAPIs.push('discord');
     logger.log('Discord API is ready');
 });
 
@@ -100,6 +101,7 @@ const sendMessage = (message) => {
 
 // Test if connection to database is possible
 database.ref('/').once('value').then(() => {
+    global.loadedAPIs.push('users');
     logger.log('Users database connected');
 }).catch((error) => {
     logger.log(error);

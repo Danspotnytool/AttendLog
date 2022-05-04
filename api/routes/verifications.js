@@ -48,6 +48,7 @@ const verifications = [];
 
 // Test if connection to database is possible
 database.ref('/').once('value').then(() => {
+    global.loadedAPIs.push('verifications');
     logger.log('Verifications database connected');
 }).catch((error) => {
     logger.log(error);
