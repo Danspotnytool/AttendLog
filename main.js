@@ -51,7 +51,7 @@ app.get('*', (req, res) => {
 
 
 // Listen to port
-http.listen((port), () => {
+const server = http.listen((port), () => {
     logger.log(`Server is running on port ${port}`);
     global.startupTime = Date.now();
     global.connectedUsers = 0;
@@ -62,6 +62,8 @@ http.listen((port), () => {
     logger.error(err);
 });
 
+// Require Console Commands
+const consoleCommands = require('./consoleCommands.js')(server);
 
 
 const connectedToSocketArray = [
