@@ -264,7 +264,15 @@
                                 classesContainer.appendChild(notVerifiedCard);
                                 break;
                             default:
-                                console.log(data.message);
+                                if (res.code != '200') {
+                                    return notify({
+                                        type: 'error',
+                                        header: 'Error',
+                                        body: res.message,
+                                        footer: new Date().toLocaleString(),
+                                        timeout: 5000
+                                    });
+                                };
                                 break;
                         };
                     } else {

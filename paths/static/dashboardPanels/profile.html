@@ -169,6 +169,15 @@
                 }
             }).then(response => response.json())
             .then((res) => {
+                if (res.code != '200') {
+                    return notify({
+                        type: 'error',
+                        header: 'Error',
+                        body: res.message,
+                        footer: new Date().toLocaleString(),
+                        timeout: 5000
+                    });
+                };
                 const usernameElement = document.getElementById('username');
                 const fullnameElement = document.getElementById('fullname');
                 const emailElement = document.getElementById('email');
