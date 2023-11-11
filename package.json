@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/Danspotnytool/Attendance-Monitory-System#readme",
   "dependencies": {
-    "axios": "^0.26.0",
+    "axios": "^1.6.0",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "discord.js": "^13.6.0",
